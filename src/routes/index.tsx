@@ -94,7 +94,7 @@ function Gauge({ value }: { value: number | null }) {
 
 function Stat({ dot, label, value, sub }: { dot: string; label: string; value: string; sub: string }) {
   return (
-    <div className="rounded-2xl bg-background px-4 py-3">
+    <div className="rounded-2xl bg-background/70 px-4 py-3 backdrop-blur-sm">
       <div className="flex items-center gap-1.5 text-xs font-semibold text-muted-foreground">
         <span className={`size-2 rounded-full ${dot}`} />
         {label}
