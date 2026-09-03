@@ -134,7 +134,9 @@
 @utility panel {
   background-color: var(--color-paper);
   border-radius: 1.5rem;
-  box-shadow: 0 0 0 1px var(--color-line);
+  box-shadow:
+    0 0 0 1px var(--color-line),
+    0 12px 32px -16px oklch(0.6 0.06 40 / 0.18);
 }
 
 @utility eyebrow {
