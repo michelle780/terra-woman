@@ -125,3 +125,54 @@ export async function fetchJournal(from: string, to: string): Promise<JournalEnt
   if (error) throw error;
   return (data ?? []) as JournalEntry[];
 }
+
+export type CheckinKey =
+  | "happiness"
+  | "fulfillment"
+  | "calm"
+  | "energy"
+  | "focus"
+  | "stress"
+  | "anxiety"
+  | "mood_swings"
+  | "bloating"
+  | "cramps";
+
+export type DailyCheckin = {
+  id: string;
+  checkin_date: string;
+} & Record<CheckinKey, number | null>;
+
+export const CHECKIN_FIELDS: { key: CheckinKey; label: string; low: string; high: string }[] = [
+  { key: "happiness", label: "Happiness", low: "Low", high: "Joyful" },
+  { key: "fulfillment", label: "Fulfillment", low: "Empty", high: "Fulfilled" },
+  { key: "calm", label: "Calm", low: "Tense", high: "At ease" },
+  { key: "energy", label: "Energy", low: "Drained", high: "Energized" },
+  { key: "focus", label: "Focus", low: "Foggy", high: "Sharp" },
+  { key: "stress", label: "Stress", low: "None", high: "Overwhelmed" },
+  { key: "anxiety", label: "Anxiety", low: "None", high: "Intense" },
+  { key: "mood_swings", label: "Mood swings", low: "Steady", high: "All over" },
+  { key: "bloating", label: "Bloating", low: "None", high: "Severe" },
+  { key: "cramps", label: "Cramps", low: "None", high: "Severe" },
+];
+
+export async function fetchCheckin(date: string): Promise<DailyCheckin | null> {
+  const { data, error } = await supabase
+    .from("daily_checkins")
+    .select("id, checkin_date, happiness, fulfillment, calm, energy, focus, stress, anxiety, mood_swings, bloating, cramps")
+    .eq("checkin_date", date)
+    .maybeSingle();
+  if (error) throw error;
+  return (data as DailyCheckin | null) ?? null;
+}
+
+export async function fetchCheckins(from: string, to: string): Promise<DailyCheckin[]> {
+  const { data, error } = await supabase
+    .from("daily_checkins")
+    .select("id, checkin_date, happiness, fulfillment, calm, energy, focus, stress, anxiety, mood_swings, bloating, cramps")
+    .gte("checkin_date", from)
+    .lte("checkin_date", to)
+    .order("checkin_date", { ascending: true });
+  if (error) throw error;
+  return (data ?? []) as DailyCheckin[];
+}

@@ -14,6 +14,60 @@ export type Database = {
   }
   public: {
     Tables: {
+      daily_checkins: {
+        Row: {
+          anxiety: number | null
+          bloating: number | null
+          calm: number | null
+          checkin_date: string
+          cramps: number | null
+          created_at: string
+          energy: number | null
+          focus: number | null
+          fulfillment: number | null
+          happiness: number | null
+          id: string
+          mood_swings: number | null
+          stress: number | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          anxiety?: number | null
+          bloating?: number | null
+          calm?: number | null
+          checkin_date: string
+          cramps?: number | null
+          created_at?: string
+          energy?: number | null
+          focus?: number | null
+          fulfillment?: number | null
+          happiness?: number | null
+          id?: string
+          mood_swings?: number | null
+          stress?: number | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          anxiety?: number | null
+          bloating?: number | null
+          calm?: number | null
+          checkin_date?: string
+          cramps?: number | null
+          created_at?: string
+          energy?: number | null
+          focus?: number | null
+          fulfillment?: number | null
+          happiness?: number | null
+          id?: string
+          mood_swings?: number | null
+          stress?: number | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       daily_metrics: {
         Row: {
           created_at: string

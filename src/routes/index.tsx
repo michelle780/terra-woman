@@ -5,6 +5,7 @@ import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { AppShell } from "@/components/AppShell";
 import { HoroscopeCard } from "@/components/HoroscopeCard";
+import { CheckInCard } from "@/components/CheckInCard";
 import { useAuth } from "@/lib/auth";
 import {
   fetchJournal,
@@ -400,6 +401,10 @@ function Today() {
             </div>
           )}
         </section>
+
+        <div className="md:col-span-2">
+          <CheckInCard />
+        </div>
 
         <div className="md:col-span-2">
           <HoroscopeCard />
