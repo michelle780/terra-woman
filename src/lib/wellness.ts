@@ -142,7 +142,11 @@ export type CheckinKey =
 export type DailyCheckin = {
   id: string;
   checkin_date: string;
+  mindfulness_minutes?: number | null;
 } & Record<CheckinKey, number | null>;
+
+const CHECKIN_SELECT =
+  "id, checkin_date, happiness, fulfillment, calm, energy, focus, stress, anxiety, mood_swings, bloating, cramps, mindfulness_minutes";
 
 export const CHECKIN_FIELDS: { key: CheckinKey; label: string; low: string; high: string }[] = [
   { key: "happiness", label: "Happiness", low: "Low", high: "Joyful" },

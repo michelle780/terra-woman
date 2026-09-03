@@ -63,6 +63,7 @@ export type Database = {
           fulfillment: number | null
           happiness: number | null
           id: string
+          mindfulness_minutes: number | null
           mood_swings: number | null
           stress: number | null
           updated_at: string
@@ -80,6 +81,7 @@ export type Database = {
           fulfillment?: number | null
           happiness?: number | null
           id?: string
+          mindfulness_minutes?: number | null
           mood_swings?: number | null
           stress?: number | null
           updated_at?: string
@@ -97,6 +99,7 @@ export type Database = {
           fulfillment?: number | null
           happiness?: number | null
           id?: string
+          mindfulness_minutes?: number | null
           mood_swings?: number | null
           stress?: number | null
           updated_at?: string
