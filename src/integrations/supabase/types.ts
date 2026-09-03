@@ -14,7 +14,206 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      daily_metrics: {
+        Row: {
+          created_at: string
+          hrv: number | null
+          id: string
+          metric_date: string
+          readiness: number | null
+          resting_hr: number | null
+          sleep_minutes: number | null
+          sleep_score: number | null
+          source: string
+          steps: number | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          hrv?: number | null
+          id?: string
+          metric_date: string
+          readiness?: number | null
+          resting_hr?: number | null
+          sleep_minutes?: number | null
+          sleep_score?: number | null
+          source?: string
+          steps?: number | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          hrv?: number | null
+          id?: string
+          metric_date?: string
+          readiness?: number | null
+          resting_hr?: number | null
+          sleep_minutes?: number | null
+          sleep_score?: number | null
+          source?: string
+          steps?: number | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      device_connections: {
+        Row: {
+          created_at: string
+          id: string
+          last_synced_at: string | null
+          provider: string
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          last_synced_at?: string | null
+          provider: string
+          status?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          last_synced_at?: string | null
+          provider?: string
+          status?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      journal_entries: {
+        Row: {
+          created_at: string
+          energy: number | null
+          entry_date: string
+          id: string
+          mood: string | null
+          note: string | null
+          symptoms: string[]
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          energy?: number | null
+          entry_date: string
+          id?: string
+          mood?: string | null
+          note?: string | null
+          symptoms?: string[]
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          energy?: number | null
+          entry_date?: string
+          id?: string
+          mood?: string | null
+          note?: string | null
+          symptoms?: string[]
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      medication_logs: {
+        Row: {
+          id: string
+          medication_id: string
+          taken_at: string
+          taken_on: string
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          medication_id: string
+          taken_at?: string
+          taken_on?: string
+          user_id: string
+        }
+        Update: {
+          id?: string
+          medication_id?: string
+          taken_at?: string
+          taken_on?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "medication_logs_medication_id_fkey"
+            columns: ["medication_id"]
+            isOneToOne: false
+            referencedRelation: "medications"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      medications: {
+        Row: {
+          active: boolean
+          created_at: string
+          dose: string | null
+          id: string
+          name: string
+          schedule_note: string | null
+          time_of_day: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          active?: boolean
+          created_at?: string
+          dose?: string | null
+          id?: string
+          name: string
+          schedule_note?: string | null
+          time_of_day?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          active?: boolean
+          created_at?: string
+          dose?: string | null
+          id?: string
+          name?: string
+          schedule_note?: string | null
+          time_of_day?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          display_name: string | null
+          id: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          display_name?: string | null
+          id: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          display_name?: string | null
+          id?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
