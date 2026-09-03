@@ -341,7 +341,7 @@ function Today() {
           <div className="flex items-center justify-between">
             <div>
               <p className="eyebrow">Journal</p>
-              <h2 className="mt-0.5 text-xl">How are you landing?</h2>
+              <h2 className="mt-0.5 text-xl">Personal check-in</h2>
             </div>
             <Link to="/journal" className="text-xs font-semibold text-muted-foreground underline">
               Open
