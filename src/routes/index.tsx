@@ -43,7 +43,7 @@ export const Route = createFileRoute("/")({
 });
 
 function Home() {
-  const { user, loading } = useAuth();
+  const { loading } = useAuth();
 
   if (loading) {
     return (
@@ -53,8 +53,8 @@ function Home() {
     );
   }
 
-  if (!user) return <Landing />;
-
+  // AppShell redirects to /auth when signed out, so Today is always the
+  // landing page after sign-in.
   return (
     <AppShell>
       <Today />
