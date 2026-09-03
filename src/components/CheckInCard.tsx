@@ -72,6 +72,7 @@ export function CheckInCard() {
   const { user } = useAuth();
   const today = todayKey();
   const [scores, setScores] = useState<Scores>(DEFAULTS);
+  const [mindfulMin, setMindfulMin] = useState<string>("");
 
   const { data: existing, isLoading } = useQuery({
     queryKey: ["checkin", today],
@@ -94,6 +95,7 @@ export function CheckInCard() {
       }
       return next;
     });
+    if (existing.mindfulness_minutes != null) setMindfulMin(String(existing.mindfulness_minutes));
   }, [existing]);
 
   const save = useMutation({
@@ -103,6 +105,7 @@ export function CheckInCard() {
           user_id: user!.id,
           checkin_date: today,
           ...scores,
+          mindfulness_minutes: mindfulMin === "" ? null : Math.max(0, Math.min(1440, Number(mindfulMin) || 0)),
         },
         { onConflict: "user_id,checkin_date" },
       );
