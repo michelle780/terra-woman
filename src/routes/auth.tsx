@@ -1,4 +1,4 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
@@ -145,6 +145,18 @@ function AuthPage() {
               ? "No account yet? Create one"
               : "Already have an account? Sign in"}
           </button>
+
+          <p className="mt-4 text-center text-[11px] text-muted-foreground">
+            By continuing you agree to our{" "}
+            <Link to="/terms" className="font-semibold text-sky hover:underline">
+              Terms
+            </Link>{" "}
+            and{" "}
+            <Link to="/privacy" className="font-semibold text-sky hover:underline">
+              Privacy Policy
+            </Link>
+            .
+          </p>
         </div>
       </div>
     </div>

@@ -94,7 +94,10 @@ export function AppShell({ children }: { children: ReactNode }) {
         <main>{children}</main>
 
         <p className="mt-6 pb-4 text-center text-[11px] text-muted-foreground">
-          Pulse is a personal wellness log · not medical advice
+          Pulse is a personal wellness log · not medical advice ·{" "}
+          <Link to="/privacy" className="font-semibold hover:underline">Privacy</Link>{" "}
+          ·{" "}
+          <Link to="/terms" className="font-semibold hover:underline">Terms</Link>
         </p>
       </div>
     </div>

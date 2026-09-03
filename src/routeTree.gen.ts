@@ -13,6 +13,8 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as JournalRouteImport } from './routes/journal'
 import { Route as MedicationsRouteImport } from './routes/medications'
+import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as TermsRouteImport } from './routes/terms'
 import { Route as TrendsRouteImport } from './routes/trends'
 
 const IndexRoute = IndexRouteImport.update({
@@ -35,6 +37,16 @@ const MedicationsRoute = MedicationsRouteImport.update({
   path: '/medications',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PrivacyRoute = PrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TermsRoute = TermsRouteImport.update({
+  id: '/terms',
+  path: '/terms',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const TrendsRoute = TrendsRouteImport.update({
   id: '/trends',
   path: '/trends',
@@ -46,6 +58,8 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthRoute
   '/journal': typeof JournalRoute
   '/medications': typeof MedicationsRoute
+  '/privacy': typeof PrivacyRoute
+  '/terms': typeof TermsRoute
   '/trends': typeof TrendsRoute
 }
 export interface FileRoutesByTo {
@@ -53,6 +67,8 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
   '/journal': typeof JournalRoute
   '/medications': typeof MedicationsRoute
+  '/privacy': typeof PrivacyRoute
+  '/terms': typeof TermsRoute
   '/trends': typeof TrendsRoute
 }
 export interface FileRoutesById {
@@ -61,14 +77,38 @@ export interface FileRoutesById {
   '/auth': typeof AuthRoute
   '/journal': typeof JournalRoute
   '/medications': typeof MedicationsRoute
+  '/privacy': typeof PrivacyRoute
+  '/terms': typeof TermsRoute
   '/trends': typeof TrendsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/auth' | '/journal' | '/medications' | '/trends'
+  fullPaths:
+    | '/'
+    | '/auth'
+    | '/journal'
+    | '/medications'
+    | '/privacy'
+    | '/terms'
+    | '/trends'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auth' | '/journal' | '/medications' | '/trends'
-  id: '__root__' | '/' | '/auth' | '/journal' | '/medications' | '/trends'
+  to:
+    | '/'
+    | '/auth'
+    | '/journal'
+    | '/medications'
+    | '/privacy'
+    | '/terms'
+    | '/trends'
+  id:
+    | '__root__'
+    | '/'
+    | '/auth'
+    | '/journal'
+    | '/medications'
+    | '/privacy'
+    | '/terms'
+    | '/trends'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -76,6 +116,8 @@ export interface RootRouteChildren {
   AuthRoute: typeof AuthRoute
   JournalRoute: typeof JournalRoute
   MedicationsRoute: typeof MedicationsRoute
+  PrivacyRoute: typeof PrivacyRoute
+  TermsRoute: typeof TermsRoute
   TrendsRoute: typeof TrendsRoute
 }
 
@@ -109,6 +151,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MedicationsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/privacy': {
+      id: '/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/terms': {
+      id: '/terms'
+      path: '/terms'
+      fullPath: '/terms'
+      preLoaderRoute: typeof TermsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/trends': {
       id: '/trends'
       path: '/trends'
@@ -124,6 +180,8 @@ const rootRouteChildren: RootRouteChildren = {
   AuthRoute: AuthRoute,
   JournalRoute: JournalRoute,
   MedicationsRoute: MedicationsRoute,
+  PrivacyRoute: PrivacyRoute,
+  TermsRoute: TermsRoute,
   TrendsRoute: TrendsRoute,
 }
 export const routeTree = rootRouteImport
