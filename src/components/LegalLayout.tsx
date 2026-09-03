@@ -27,7 +27,7 @@ export function LegalLayout({
           >
             <span className="size-2.5 rounded-full bg-copper" />
           </Link>
-          <span className="font-display text-lg font-semibold">Terra Woman</span>
+          <span className="font-display text-base font-semibold uppercase tracking-[0.22em]">Terra Woman</span>
         </header>
 
         <article className="rise mt-6 rounded-[28px] bg-paper p-6 ring-1 ring-line sm:p-9">
