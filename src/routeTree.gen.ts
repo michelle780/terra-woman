@@ -11,6 +11,8 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthRouteImport } from './routes/auth'
+import { Route as CycleRouteImport } from './routes/cycle'
+import { Route as DevicesRouteImport } from './routes/devices'
 import { Route as InviteRouteImport } from './routes/invite'
 import { Route as JournalRouteImport } from './routes/journal'
 import { Route as MedicationsRouteImport } from './routes/medications'
@@ -26,6 +28,16 @@ const IndexRoute = IndexRouteImport.update({
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
   path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CycleRoute = CycleRouteImport.update({
+  id: '/cycle',
+  path: '/cycle',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DevicesRoute = DevicesRouteImport.update({
+  id: '/devices',
+  path: '/devices',
   getParentRoute: () => rootRouteImport,
 } as any)
 const InviteRoute = InviteRouteImport.update({
@@ -62,6 +74,8 @@ const TrendsRoute = TrendsRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/cycle': typeof CycleRoute
+  '/devices': typeof DevicesRoute
   '/invite': typeof InviteRoute
   '/journal': typeof JournalRoute
   '/medications': typeof MedicationsRoute
@@ -72,6 +86,8 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/cycle': typeof CycleRoute
+  '/devices': typeof DevicesRoute
   '/invite': typeof InviteRoute
   '/journal': typeof JournalRoute
   '/medications': typeof MedicationsRoute
@@ -83,6 +99,8 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/cycle': typeof CycleRoute
+  '/devices': typeof DevicesRoute
   '/invite': typeof InviteRoute
   '/journal': typeof JournalRoute
   '/medications': typeof MedicationsRoute
@@ -95,6 +113,8 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/auth'
+    | '/cycle'
+    | '/devices'
     | '/invite'
     | '/journal'
     | '/medications'
@@ -105,6 +125,8 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/auth'
+    | '/cycle'
+    | '/devices'
     | '/invite'
     | '/journal'
     | '/medications'
@@ -115,6 +137,8 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/auth'
+    | '/cycle'
+    | '/devices'
     | '/invite'
     | '/journal'
     | '/medications'
@@ -126,6 +150,8 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthRoute: typeof AuthRoute
+  CycleRoute: typeof CycleRoute
+  DevicesRoute: typeof DevicesRoute
   InviteRoute: typeof InviteRoute
   JournalRoute: typeof JournalRoute
   MedicationsRoute: typeof MedicationsRoute
@@ -148,6 +174,20 @@ declare module '@tanstack/react-router' {
       path: '/auth'
       fullPath: '/auth'
       preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/cycle': {
+      id: '/cycle'
+      path: '/cycle'
+      fullPath: '/cycle'
+      preLoaderRoute: typeof CycleRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/devices': {
+      id: '/devices'
+      path: '/devices'
+      fullPath: '/devices'
+      preLoaderRoute: typeof DevicesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/invite': {
@@ -198,6 +238,8 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthRoute: AuthRoute,
+  CycleRoute: CycleRoute,
+  DevicesRoute: DevicesRoute,
   InviteRoute: InviteRoute,
   JournalRoute: JournalRoute,
   MedicationsRoute: MedicationsRoute,

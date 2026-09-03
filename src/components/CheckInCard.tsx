@@ -3,7 +3,15 @@ import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/lib/auth";
-import { CHECKIN_FIELDS, fetchCheckin, todayKey, type CheckinKey } from "@/lib/wellness";
+import {
+  CHECKIN_FIELDS,
+  cycleStatus,
+  fetchCheckin,
+  fetchPeriods,
+  todayKey,
+  type CheckinKey,
+} from "@/lib/wellness";
+import { Link } from "@tanstack/react-router";
 
 type Scores = Record<CheckinKey, number>;
 
@@ -70,6 +78,12 @@ export function CheckInCard() {
     queryFn: () => fetchCheckin(today),
   });
 
+  const { data: periods = [] } = useQuery({
+    queryKey: ["cycle-periods"],
+    queryFn: fetchPeriods,
+  });
+  const cycle = cycleStatus(periods, today);
+
   useEffect(() => {
     if (!existing) return;
     setScores((prev) => {
@@ -111,6 +125,12 @@ export function CheckInCard() {
           <p className="mt-1 text-xs text-muted-foreground">
             A quick 1–10 on the things that ebb and flow — takes under a minute.
           </p>
+          <Link
+            to="/cycle"
+            className="mt-2 inline-flex items-center gap-1.5 rounded-full bg-rose/20 px-3 py-1 text-[11px] font-bold ring-1 ring-rose/30"
+          >
+            {cycle ? `Cycle day ${cycle.day} · ${cycle.phase}` : "Track your cycle"}
+          </Link>
         </div>
         <button
           onClick={() => save.mutate()}

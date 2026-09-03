@@ -176,3 +176,107 @@ export async function fetchCheckins(from: string, to: string): Promise<DailyChec
   if (error) throw error;
   return (data ?? []) as DailyCheckin[];
 }
+
+export type FlowLevel = "spotting" | "light" | "medium" | "heavy";
+
+export const FLOW_LEVELS: { value: FlowLevel; label: string }[] = [
+  { value: "spotting", label: "Spotting" },
+  { value: "light", label: "Light" },
+  { value: "medium", label: "Medium" },
+  { value: "heavy", label: "Heavy" },
+];
+
+export const CYCLE_SYMPTOMS = [
+  "Cramps",
+  "Bloating",
+  "Headache",
+  "Breast tenderness",
+  "Back pain",
+  "Fatigue",
+  "Mood swings",
+  "Acne",
+  "Cravings",
+  "Nausea",
+  "Insomnia",
+] as const;
+
+export type CyclePeriod = {
+  id: string;
+  start_date: string;
+  end_date: string | null;
+  flow: FlowLevel | null;
+  symptoms: string[];
+  notes: string | null;
+};
+
+export async function fetchPeriods(): Promise<CyclePeriod[]> {
+  const { data, error } = await supabase
+    .from("cycle_periods")
+    .select("id, start_date, end_date, flow, symptoms, notes")
+    .order("start_date", { ascending: false });
+  if (error) throw error;
+  return (data ?? []) as CyclePeriod[];
+}
+
+export function daysBetween(from: string, to: string): number {
+  const a = new Date(`${from}T00:00:00`).getTime();
+  const b = new Date(`${to}T00:00:00`).getTime();
+  return Math.round((b - a) / 86_400_000);
+}
+
+export function periodLength(p: CyclePeriod): number | null {
+  if (!p.end_date) return null;
+  return daysBetween(p.start_date, p.end_date) + 1;
+}
+
+/** Average gap between period start dates, in days. */
+export function averageCycleLength(periods: CyclePeriod[]): number | null {
+  const starts = periods.map((p) => p.start_date).sort();
+  if (starts.length < 2) return null;
+  let total = 0;
+  for (let i = 1; i < starts.length; i += 1) {
+    total += daysBetween(starts[i - 1] as string, starts[i] as string);
+  }
+  return Math.round(total / (starts.length - 1));
+}
+
+export type CycleStatus = {
+  day: number;
+  phase: string;
+  bleeding: boolean;
+  nextPredicted: string | null;
+};
+
+export function cycleStatus(periods: CyclePeriod[], date = todayKey()): CycleStatus | null {
+  const past = periods
+    .filter((p) => p.start_date <= date)
+    .sort((a, b) => (a.start_date < b.start_date ? 1 : -1));
+  const current = past[0];
+  if (!current) return null;
+  const day = daysBetween(current.start_date, date) + 1;
+  const bleeding = current.end_date ? date <= current.end_date : day <= 5;
+  const avg = averageCycleLength(periods) ?? 28;
+  let phase = "Luteal";
+  if (bleeding) phase = "Menstrual";
+  else if (day <= Math.round(avg / 2) - 2) phase = "Follicular";
+  else if (day <= Math.round(avg / 2) + 1) phase = "Ovulatory";
+  const next = new Date(`${current.start_date}T00:00:00`);
+  next.setDate(next.getDate() + avg);
+  return { day, phase, bleeding, nextPredicted: toDateKey(next) };
+}
+
+export type DeviceConnection = {
+  id: string;
+  provider: string;
+  status: string;
+  last_synced_at: string | null;
+};
+
+export async function fetchDeviceConnections(): Promise<DeviceConnection[]> {
+  const { data, error } = await supabase
+    .from("device_connections")
+    .select("id, provider, status, last_synced_at")
+    .order("created_at", { ascending: true });
+  if (error) throw error;
+  return (data ?? []) as DeviceConnection[];
+}
