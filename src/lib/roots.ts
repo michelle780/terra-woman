@@ -29,6 +29,12 @@ export const ROOTS_COLUMNS = [
   "featured",
   "published",
   "editorial_notes",
+  "visual_template",
+  "visual_asset_url",
+  "visual_asset_type",
+  "visual_asset_source",
+  "visual_asset_credit",
+  "visual_asset_rights_status",
 ] as const;
 
 export type RootsColumn = (typeof ROOTS_COLUMNS)[number];
@@ -67,6 +73,12 @@ export type RootsRecord = {
   featured: boolean;
   published: boolean;
   editorial_notes: string | null;
+  visual_template: string | null;
+  visual_asset_url: string | null;
+  visual_asset_type: string | null;
+  visual_asset_source: string | null;
+  visual_asset_credit: string | null;
+  visual_asset_rights_status: string;
   updated_at?: string;
 };
 
@@ -304,6 +316,7 @@ export function buildPreview(csv: string, existing: RootsRecord[]): ImportPrevie
 
     const full = {
       historical_accuracy_status: "DRAFT",
+      visual_asset_rights_status: "UNKNOWN",
       medical_context_required: false,
       featured: false,
       published: false,
