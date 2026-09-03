@@ -161,7 +161,7 @@ function Cycle() {
           Period dates, flow and symptoms — kept private to your account and read alongside your
           daily check-in.
         </p>
-        <div className="mt-4 grid gap-3 sm:grid-cols-4">
+        <div className="mt-4 grid gap-3 sm:grid-cols-3 lg:grid-cols-6">
           <div className="rounded-2xl bg-rose/15 px-4 py-3 ring-1 ring-rose/30">
             <p className="eyebrow">Cycle day</p>
             <p className="font-display text-2xl font-semibold">{status ? status.day : "—"}</p>
@@ -171,6 +171,27 @@ function Cycle() {
             <p className="font-display text-2xl font-semibold">{status ? status.phase : "—"}</p>
           </div>
           <div className="rounded-2xl bg-background px-4 py-3 ring-1 ring-line">
+            <p className="eyebrow">Luteal window</p>
+            {status ? (
+              <>
+                <p className="font-display text-2xl font-semibold">
+                  Day {status.lutealStart}–{status.cycleLength}
+                </p>
+                <p className="text-[11px] text-muted-foreground">
+                  {status.phase === "Luteal" ? "You're in it now" : `Starts ~day ${status.lutealStart}`}
+                </p>
+              </>
+            ) : (
+              <p className="font-display text-2xl font-semibold">—</p>
+            )}
+          </div>
+          <div className="rounded-2xl bg-background px-4 py-3 ring-1 ring-line">
+            <p className="eyebrow">Ovulation (est.)</p>
+            <p className="font-display text-2xl font-semibold">
+              {status ? `Day ${status.ovulationDay}` : "—"}
+            </p>
+          </div>
+          <div className="rounded-2xl bg-background px-4 py-3 ring-1 ring-line">
             <p className="eyebrow">Avg cycle</p>
             <p className="font-display text-2xl font-semibold">{avg ? `${avg}d` : "—"}</p>
           </div>
@@ -178,6 +199,21 @@ function Cycle() {
             <p className="eyebrow">Next expected</p>
             <p className="font-display text-lg font-semibold">
               {status?.nextPredicted ? fmt(status.nextPredicted) : "—"}
+            </p>
+          </div>
+        </div>
+
+        <div className="mt-3 flex items-center gap-3 rounded-2xl bg-sage/15 px-4 py-3 ring-1 ring-sage/30">
+          <span className="text-3xl" aria-hidden>
+            {moon.icon}
+          </span>
+          <div>
+            <p className="font-display text-lg font-semibold">
+              {moon.name} <span className="text-sm font-normal text-muted-foreground">· {moon.illumination}% lit</span>
+            </p>
+            <p className="text-xs text-muted-foreground">
+              Tonight's moon phase — some people like to notice how their energy and sleep shift with
+              the lunar cycle.
             </p>
           </div>
         </div>
