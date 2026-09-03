@@ -358,15 +358,141 @@ export type Database = {
         }
         Relationships: []
       }
+      roots_content: {
+        Row: {
+          approximate_year: number | null
+          body: string | null
+          content_type: string | null
+          created_at: string
+          culture: string | null
+          day: number | null
+          editorial_notes: string | null
+          exact_date: string | null
+          featured: boolean
+          geography: string | null
+          historical_accuracy_status: string
+          historical_period: string | null
+          id: string
+          medical_context_required: boolean
+          modern_context: string | null
+          month: number | null
+          published: boolean
+          quote: string | null
+          quote_attribution: string | null
+          secondary_source_url: string | null
+          short_body: string | null
+          short_title: string | null
+          source_name: string | null
+          source_url: string | null
+          title: string
+          topic: string | null
+          updated_at: string
+          why_it_matters: string | null
+          woman_lifespan: string | null
+          woman_name: string | null
+        }
+        Insert: {
+          approximate_year?: number | null
+          body?: string | null
+          content_type?: string | null
+          created_at?: string
+          culture?: string | null
+          day?: number | null
+          editorial_notes?: string | null
+          exact_date?: string | null
+          featured?: boolean
+          geography?: string | null
+          historical_accuracy_status?: string
+          historical_period?: string | null
+          id: string
+          medical_context_required?: boolean
+          modern_context?: string | null
+          month?: number | null
+          published?: boolean
+          quote?: string | null
+          quote_attribution?: string | null
+          secondary_source_url?: string | null
+          short_body?: string | null
+          short_title?: string | null
+          source_name?: string | null
+          source_url?: string | null
+          title: string
+          topic?: string | null
+          updated_at?: string
+          why_it_matters?: string | null
+          woman_lifespan?: string | null
+          woman_name?: string | null
+        }
+        Update: {
+          approximate_year?: number | null
+          body?: string | null
+          content_type?: string | null
+          created_at?: string
+          culture?: string | null
+          day?: number | null
+          editorial_notes?: string | null
+          exact_date?: string | null
+          featured?: boolean
+          geography?: string | null
+          historical_accuracy_status?: string
+          historical_period?: string | null
+          id?: string
+          medical_context_required?: boolean
+          modern_context?: string | null
+          month?: number | null
+          published?: boolean
+          quote?: string | null
+          quote_attribution?: string | null
+          secondary_source_url?: string | null
+          short_body?: string | null
+          short_title?: string | null
+          source_name?: string | null
+          source_url?: string | null
+          title?: string
+          topic?: string | null
+          updated_at?: string
+          why_it_matters?: string | null
+          woman_lifespan?: string | null
+          woman_name?: string | null
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "editor" | "user"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -493,6 +619,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "editor", "user"],
+    },
   },
 } as const
