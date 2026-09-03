@@ -55,44 +55,45 @@
 :root {
   --radius: 1.5rem;
 
-  /* Soft clinical pastel palette */
-  --background: oklch(0.962 0.01 81.8); /* cream */
-  --foreground: oklch(0.315 0.017 255.6); /* ink */
-  --paper: oklch(0.986 0.006 84.6);
-  --line: oklch(0.906 0.018 81.3);
+  /* Blush & Sage palette — warm, cozy, softly feminine */
+  --background: oklch(0.959 0.012 82.9); /* warm cream #FAF6F1 */
+  --foreground: oklch(0.35 0.025 55); /* warm espresso ink */
+  --paper: oklch(0.984 0.009 88);
+  --line: oklch(0.905 0.02 75);
 
-  --card: oklch(0.986 0.006 84.6);
-  --card-foreground: oklch(0.315 0.017 255.6);
-  --popover: oklch(0.986 0.006 84.6);
-  --popover-foreground: oklch(0.315 0.017 255.6);
+  --card: oklch(0.984 0.009 88);
+  --card-foreground: oklch(0.35 0.025 55);
+  --popover: oklch(0.984 0.009 88);
+  --popover-foreground: oklch(0.35 0.025 55);
 
-  --primary: oklch(0.745 0.072 235.6); /* sky */
-  --primary-foreground: oklch(0.315 0.017 255.6);
-  --secondary: oklch(0.962 0.01 81.8);
-  --secondary-foreground: oklch(0.315 0.017 255.6);
+  --primary: oklch(0.48 0.045 145); /* deep sage #5A6B5C */
+  --primary-foreground: oklch(0.97 0.012 82.9);
+  --secondary: oklch(0.94 0.022 70);
+  --secondary-foreground: oklch(0.35 0.025 55);
 
-  --muted: oklch(0.962 0.01 81.8);
-  --muted-foreground: oklch(0.563 0.02 256.3); /* soft */
-  --accent: oklch(0.777 0.059 166.2); /* mint */
-  --accent-foreground: oklch(0.315 0.017 255.6);
+  --muted: oklch(0.94 0.022 70);
+  --muted-foreground: oklch(0.55 0.03 60); /* warm taupe */
+  --accent: oklch(0.83 0.05 15); /* blush */
+  --accent-foreground: oklch(0.35 0.025 55);
 
-  --destructive: oklch(0.62 0.16 25);
-  --destructive-foreground: oklch(0.986 0.006 84.6);
+  --destructive: oklch(0.58 0.14 25);
+  --destructive-foreground: oklch(0.984 0.009 88);
 
-  --border: oklch(0.906 0.018 81.3);
-  --input: oklch(0.906 0.018 81.3);
-  --ring: oklch(0.745 0.072 235.6);
+  --border: oklch(0.905 0.02 75);
+  --input: oklch(0.905 0.02 75);
+  --ring: oklch(0.7 0.06 15);
 
-  --sky: oklch(0.745 0.072 235.6);
-  --rose: oklch(0.798 0.076 359.9);
-  --mint: oklch(0.777 0.059 166.2);
-  --amber: oklch(0.834 0.093 76.7);
+  /* Metric accents: blush, rosewood, sage, honey */
+  --sky: oklch(0.83 0.05 15); /* blush #E8B4B8 */
+  --rose: oklch(0.62 0.1 12); /* rosewood */
+  --mint: oklch(0.72 0.06 140); /* sage #A8BFA0 */
+  --amber: oklch(0.8 0.08 75); /* honey */
 
-  --chart-1: oklch(0.745 0.072 235.6);
-  --chart-2: oklch(0.798 0.076 359.9);
-  --chart-3: oklch(0.777 0.059 166.2);
-  --chart-4: oklch(0.834 0.093 76.7);
-  --chart-5: oklch(0.563 0.02 256.3);
+  --chart-1: oklch(0.62 0.1 12);
+  --chart-2: oklch(0.72 0.06 140);
+  --chart-3: oklch(0.83 0.05 15);
+  --chart-4: oklch(0.8 0.08 75);
+  --chart-5: oklch(0.48 0.045 145);
 }
 
 @layer base {
