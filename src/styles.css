@@ -152,3 +152,63 @@
   letter-spacing: 0.14em;
   color: var(--color-muted-foreground);
 }
+
+/* ---- Tree of life: sections strung along a living copper spine ---- */
+.tree-spine {
+  position: relative;
+}
+
+.tree-spine::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 2.5rem;
+  left: 0.75rem;
+  width: 1px;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    var(--copper-soft) 6%,
+    var(--copper-soft) 88%,
+    transparent
+  );
+  opacity: 0.55;
+  pointer-events: none;
+}
+
+.tree-spine > * {
+  position: relative;
+}
+
+.tree-spine > *::before {
+  content: "";
+  position: absolute;
+  top: 2rem;
+  left: -1.75rem;
+  width: 1.5rem;
+  height: 1px;
+  background: linear-gradient(to right, var(--copper-soft), transparent);
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.tree-spine > *::after {
+  content: "";
+  position: absolute;
+  top: calc(2rem - 3px);
+  left: -1.9rem;
+  width: 7px;
+  height: 7px;
+  border-radius: 9999px;
+  background: var(--copper-soft);
+  box-shadow: 0 0 0 4px oklch(from var(--copper-soft) l c h / 0.18);
+  pointer-events: none;
+}
+
+@media (max-width: 767px) {
+  .tree-spine::before,
+  .tree-spine > *::before,
+  .tree-spine > *::after {
+    display: none;
+  }
+}

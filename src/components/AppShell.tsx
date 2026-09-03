@@ -4,6 +4,7 @@ import { LogOut } from "lucide-react";
 import { useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/lib/auth";
+import oakTree from "@/assets/oak-tree.png";
 
 const NAV = [
   { to: "/", label: "Today" },
@@ -68,8 +69,20 @@ export function AppShell({ children }: { children: ReactNode }) {
   });
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
-      <div className="mx-auto max-w-5xl px-4 py-5 sm:px-6">
+    <div className="relative min-h-screen bg-background text-foreground">
+      <div
+        aria-hidden
+        className="pointer-events-none fixed inset-0 z-0 flex items-center justify-center overflow-hidden"
+      >
+        <img
+          src={oakTree}
+          alt=""
+          width={1024}
+          height={1536}
+          className="h-[115vh] w-auto max-w-none opacity-[0.07] mix-blend-multiply"
+        />
+      </div>
+      <div className="relative z-10 mx-auto max-w-5xl px-4 py-5 sm:px-6">
         <header className="flex items-center justify-between gap-4">
           <div className="flex items-center gap-3">
             <div className="grid size-9 shrink-0 place-items-center rounded-full bg-copper/15 ring-1 ring-copper/30">
@@ -117,7 +130,7 @@ export function AppShell({ children }: { children: ReactNode }) {
           ))}
         </nav>
 
-        <main>{children}</main>
+        <main className="tree-spine md:pl-8">{children}</main>
 
         <p className="mt-6 pb-4 text-center text-[11px] text-muted-foreground">
           Terra Woman is your personal wellness oasis · not medical advice ·{" "}
