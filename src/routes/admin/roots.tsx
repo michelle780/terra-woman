@@ -1,8 +1,18 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useMemo, useRef, useState } from "react";
 import { AppShell } from "@/components/AppShell";
 import { useAuth } from "@/lib/auth";
+import { supabase } from "@/integrations/supabase/client";
+import { RootsCard } from "@/components/roots/templates";
+import {
+  allowedTemplates,
+  hasUsableAsset,
+  recommendTemplate,
+  resolveTemplate,
+  VISUAL_TEMPLATES,
+  type VisualTemplate,
+} from "@/lib/roots-visual";
 import {
   buildPreview,
   commitImport,
@@ -349,6 +359,11 @@ function RootsAdmin() {
           <ImportPanel
             existing={records}
             onDone={() => void queryClient.invalidateQueries({ queryKey: ["roots-content"] })}
+          />
+
+          <VisualTreatmentPanel
+            records={records}
+            onSaved={() => void queryClient.invalidateQueries({ queryKey: ["roots-content"] })}
           />
 
           <section className="mt-6 rounded-2xl bg-paper p-5 ring-1 ring-line">
