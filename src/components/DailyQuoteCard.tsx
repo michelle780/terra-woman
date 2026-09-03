@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { quoteOfTheDay } from "@/lib/quotes";
+import { QUOTES, quoteOfTheDay } from "@/lib/quotes";
 import { todayKey } from "@/lib/wellness";
 
 type RootsQuote = {
@@ -44,15 +44,19 @@ export function DailyQuoteCard() {
     staleTime: 5 * 60_000,
   });
 
-  const r = rootsQuotes.length > 0 ? rootsQuotes[dayIndex(today, rootsQuotes.length)] : undefined;
-  const q = r
-    ? {
-        text: r.quote,
-        author: r.quote_attribution ?? "From the ROOTS archive",
-        source: r.source_name ?? "Terra Woman ROOTS",
-        url: r.source_url ?? undefined,
-      }
-    : { text: fallback.text, author: fallback.author, source: fallback.source, url: fallback.url as string | undefined };
+  // One combined pool — ROOTS "in her words" quotes first, then the curated
+  // list — so the daily pick rotates across the whole library.
+  const pool = [
+    ...rootsQuotes.map((r) => ({
+      text: r.quote,
+      author: r.quote_attribution ?? "From the ROOTS archive",
+      source: r.source_name ?? "Terra Woman ROOTS",
+      url: r.source_url ?? undefined,
+      fromRoots: true,
+    })),
+    ...QUOTES.map((c) => ({ ...c, fromRoots: false })),
+  ];
+  const q = pool.length > 0 ? pool[dayIndex(today, pool.length)]! : { ...fallback, fromRoots: false };
 
   return (
     <section className="rise relative overflow-hidden rounded-[28px] bg-paper ring-1 ring-line">
@@ -78,7 +82,7 @@ export function DailyQuoteCard() {
             className="text-[11px] font-semibold uppercase tracking-[0.28em] text-copper-ink"
             style={{ fontFamily: "var(--font-sans)" }}
           >
-            Quote of the day · In her words
+            {q.fromRoots ? "Quote of the day · In her words" : "Quote of the day"}
           </p>
         </div>
 
