@@ -86,7 +86,7 @@ function Journal() {
     <>
       <section className="rise mt-4 rounded-[28px] bg-paper p-5 ring-1 ring-line sm:p-7">
         <p className="eyebrow">Journal</p>
-        <h1 className="mt-1 text-3xl leading-tight">How are you landing today?</h1>
+        <h1 className="mt-1 text-3xl leading-tight">Personal check-in</h1>
 
         <div className="mt-5">
           <div className="text-xs font-semibold text-muted-foreground">Mood</div>
