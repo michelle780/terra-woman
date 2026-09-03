@@ -424,11 +424,9 @@ function Today() {
         <div className="md:col-span-2">
           <CheckInCard />
         </div>
-
-        <div className="md:col-span-2">
-          <InviteCard />
-        </div>
       </div>
+
+      <InviteCard />
 
       <section className="rise mt-4 rounded-[24px] bg-paper p-5 ring-1 ring-line">
         <div className="flex items-center justify-between">
