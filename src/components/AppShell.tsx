@@ -20,7 +20,7 @@ const NAV = [
 
 function DeviceChip({ label }: { label: string }) {
   return (
-    <span className="hidden items-center gap-1.5 rounded-full bg-paper px-3 py-1.5 text-xs font-semibold ring-1 ring-line sm:inline-flex">
+    <span className="hidden items-center gap-1.5 rounded-full bg-paper/70 px-3 py-1.5 text-xs font-semibold ring-1 ring-line backdrop-blur-md sm:inline-flex">
       <span className="size-1.5 rounded-full bg-muted-foreground/40" />
       {label}
     </span>
