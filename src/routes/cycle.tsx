@@ -84,6 +84,7 @@ function Cycle() {
 
   const status = cycleStatus(periods, today);
   const avg = averageCycleLength(periods);
+  const moon = moonPhase(today);
 
   function reset() {
     setEditing(null);
