@@ -22,13 +22,13 @@ import {
 export const Route = createFileRoute("/cycle")({
   head: () => ({
     meta: [
-      { title: "Menstrual cycle — The Bigger Picture wellness tracker" },
+      { title: "Menstrual cycle — Terra Woman wellness tracker" },
       {
         name: "description",
         content:
           "Log period start and end dates, flow and symptoms, and see how your daily 1–10 check-in shifts across each cycle phase.",
       },
-      { property: "og:title", content: "Menstrual cycle — The Bigger Picture wellness tracker" },
+      { property: "og:title", content: "Menstrual cycle — Terra Woman wellness tracker" },
       {
         property: "og:description",
         content: "Period dates, duration, flow and symptoms linked to your daily check-in.",

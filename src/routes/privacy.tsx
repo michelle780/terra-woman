@@ -10,17 +10,17 @@ import {
 export const Route = createFileRoute("/privacy")({
   head: () => ({
     meta: [
-      { title: "Privacy Policy — The Bigger Picture wellness tracker" },
+      { title: "Privacy Policy — Terra Woman wellness tracker" },
       {
         name: "description",
         content:
-          "How The Bigger Picture collects, uses and protects your sleep, readiness, HRV, medication and journal data.",
+          "How Terra Woman collects, uses and protects your sleep, readiness, HRV, medication and journal data.",
       },
-      { property: "og:title", content: "Privacy Policy — The Bigger Picture wellness tracker" },
+      { property: "og:title", content: "Privacy Policy — Terra Woman wellness tracker" },
       {
         property: "og:description",
         content:
-          "How The Bigger Picture collects, uses and protects your personal wellness and health data.",
+          "How Terra Woman collects, uses and protects your personal wellness and health data.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -36,11 +36,11 @@ function PrivacyPage() {
     <LegalLayout
       title="Privacy Policy"
       updated={UPDATED}
-      intro="The Bigger Picture is a personal wellness log. This policy explains what information we collect when you use The Bigger Picture, how we use it, and the choices you have. The Bigger Picture is not a medical device and does not provide medical advice."
+      intro="Terra Woman is a personal wellness log. This policy explains what information we collect when you use Terra Woman, how we use it, and the choices you have. Terra Woman is not a medical device and does not provide medical advice."
     >
       <LegalSection n={1} title="Information we collect">
         <LegalP>
-          We collect only the information you provide or choose to sync into The Bigger Picture:
+          We collect only the information you provide or choose to sync into Terra Woman:
         </LegalP>
         <LegalUl>
           <li>
@@ -78,7 +78,7 @@ function PrivacyPage() {
         <LegalP>We use your information to:</LegalP>
         <LegalUl>
           <li>Display your wellness trends, summaries, and daily check-ins.</li>
-          <li>Operate, maintain, and improve The Bigger Picture features.</li>
+          <li>Operate, maintain, and improve Terra Woman features.</li>
           <li>Authenticate you and keep your account secure.</li>
           <li>Provide support and respond to your requests.</li>
         </LegalUl>
@@ -106,10 +106,10 @@ function PrivacyPage() {
       <LegalSection n={4} title="Device data (Oura and Apple Watch)">
         <LegalP>
           Today, wellness metrics are entered manually. When device sync is
-          enabled, The Bigger Picture will import metrics from the providers you explicitly
+          enabled, Terra Woman will import metrics from the providers you explicitly
           link. You connect a device through its own authorization flow, and
-          you can revoke The Bigger Picture's access at any time from the provider's
-          settings or from within The Bigger Picture.
+          you can revoke Terra Woman's access at any time from the provider's
+          settings or from within Terra Woman.
         </LegalP>
         <LegalP>
           We import only the wellness metrics described above. We do not
@@ -125,7 +125,7 @@ function PrivacyPage() {
         </LegalP>
         <LegalUl>
           <li>
-            <strong>Performance of a contract</strong> — to provide the The Bigger Picture
+            <strong>Performance of a contract</strong> — to provide the Terra Woman
             service you requested.
           </li>
           <li>
@@ -155,7 +155,7 @@ function PrivacyPage() {
         <LegalUl>
           <li>
             With infrastructure and authentication providers that help us run
-            The Bigger Picture, under contractual obligations to protect the data.
+            Terra Woman, under contractual obligations to protect the data.
           </li>
           <li>
             When required by law, regulation, or legal process, or to protect
@@ -185,7 +185,7 @@ function PrivacyPage() {
 
       <LegalSection n={9} title="Children's privacy">
         <LegalP>
-          The Bigger Picture is not intended for children under 16, and we do not knowingly
+          Terra Woman is not intended for children under 16, and we do not knowingly
           collect information from them. If you believe a child has provided us
           information, contact us and we will delete it.
         </LegalP>
