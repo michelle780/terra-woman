@@ -44,18 +44,15 @@ export function DailyQuoteCard() {
     staleTime: 5 * 60_000,
   });
 
-  const q =
-    rootsQuotes.length > 0
-      ? (() => {
-          const r = rootsQuotes[dayIndex(today, rootsQuotes.length)];
-          return {
-            text: r.quote,
-            author: r.quote_attribution ?? "From the ROOTS archive",
-            source: r.source_name ?? "Terra Woman ROOTS",
-            url: r.source_url ?? undefined,
-          };
-        })()
-      : { text: fallback.text, author: fallback.author, source: fallback.source, url: fallback.url };
+  const r = rootsQuotes.length > 0 ? rootsQuotes[dayIndex(today, rootsQuotes.length)] : undefined;
+  const q = r
+    ? {
+        text: r.quote,
+        author: r.quote_attribution ?? "From the ROOTS archive",
+        source: r.source_name ?? "Terra Woman ROOTS",
+        url: r.source_url ?? undefined,
+      }
+    : { text: fallback.text, author: fallback.author, source: fallback.source, url: fallback.url as string | undefined };
 
   return (
     <section className="rise relative overflow-hidden rounded-[28px] bg-paper ring-1 ring-line">
