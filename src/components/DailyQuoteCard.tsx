@@ -1,13 +1,58 @@
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
 import { quoteOfTheDay } from "@/lib/quotes";
 import { todayKey } from "@/lib/wellness";
 
+type RootsQuote = {
+  id: string;
+  quote: string;
+  quote_attribution: string | null;
+  source_name: string | null;
+  source_url: string | null;
+};
+
+async function fetchRootsQuotes(): Promise<RootsQuote[]> {
+  const { data, error } = await supabase
+    .from("roots_content")
+    .select("id, quote, quote_attribution, source_name, source_url")
+    .eq("published", true)
+    .eq("historical_accuracy_status", "VERIFIED")
+    .not("quote", "is", null)
+    .order("id", { ascending: true });
+  if (error) throw error;
+  return (data ?? []).filter((r) => r.quote && r.quote.trim() !== "") as RootsQuote[];
+}
+
+function dayIndex(dateKey: string, modulo: number): number {
+  let h = 0;
+  for (const ch of dateKey) h = (h * 31 + ch.charCodeAt(0)) >>> 0;
+  return h % modulo;
+}
+
 /**
- * Quote of the day — editorial, oasis-inspired treatment.
- * Nods to The Female Quotient: warm cream stage, copper rule,
- * oversized serif headline, quiet empowering tone.
+ * Quote of the day — pulled from the ROOTS archive (published, verified
+ * "in her words" quotes), falling back to the curated list when the
+ * archive has none. Editorial, oasis-inspired treatment.
  */
 export function DailyQuoteCard() {
-  const q = quoteOfTheDay(todayKey());
+  const today = todayKey();
+  const fallback = quoteOfTheDay(today);
+
+  const { data: rootsQuotes = [] } = useQuery({
+    queryKey: ["roots-quotes"],
+    queryFn: fetchRootsQuotes,
+    staleTime: 5 * 60_000,
+  });
+
+  const r = rootsQuotes.length > 0 ? rootsQuotes[dayIndex(today, rootsQuotes.length)] : undefined;
+  const q = r
+    ? {
+        text: r.quote,
+        author: r.quote_attribution ?? "From the ROOTS archive",
+        source: r.source_name ?? "Terra Woman ROOTS",
+        url: r.source_url ?? undefined,
+      }
+    : { text: fallback.text, author: fallback.author, source: fallback.source, url: fallback.url as string | undefined };
 
   return (
     <section className="rise relative overflow-hidden rounded-[28px] bg-paper ring-1 ring-line">
@@ -33,7 +78,7 @@ export function DailyQuoteCard() {
             className="text-[11px] font-semibold uppercase tracking-[0.28em] text-copper-ink"
             style={{ fontFamily: "var(--font-sans)" }}
           >
-            Quote of the day
+            Quote of the day · In her words
           </p>
         </div>
 
@@ -49,14 +94,20 @@ export function DailyQuoteCard() {
             <p className="font-display text-lg font-semibold text-foreground">
               {q.author}
             </p>
-            <a
-              href={q.url}
-              target="_blank"
-              rel="noreferrer"
-              className="text-xs font-semibold uppercase tracking-[0.18em] text-copper-ink underline-offset-4 hover:underline"
-            >
-              {q.source}
-            </a>
+            {q.url ? (
+              <a
+                href={q.url}
+                target="_blank"
+                rel="noreferrer"
+                className="text-xs font-semibold uppercase tracking-[0.18em] text-copper-ink underline-offset-4 hover:underline"
+              >
+                {q.source}
+              </a>
+            ) : (
+              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-copper-ink">
+                {q.source}
+              </p>
+            )}
           </div>
         </div>
 
