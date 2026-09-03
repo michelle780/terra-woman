@@ -385,7 +385,7 @@ function WelcomePage() {
             </div>
           )}
 
-          <div className="mt-8 flex items-center justify-between gap-3">
+          <div className="mt-5 flex items-center justify-between gap-3">
             <button
               type="button"
               onClick={() => (step === 0 ? navigate({ to: "/" }) : setStep(step - 1))}
@@ -402,32 +402,33 @@ function WelcomePage() {
               {last ? (saving ? "Saving…" : "Enter my oasis") : "Continue"}
             </button>
           </div>
+
+          {/* Women healers through the centuries — one per step */}
+          <figure className="relative mt-4 overflow-hidden rounded-2xl bg-gradient-to-br from-copper/10 via-card to-sage/15 p-4 ring-1 ring-copper/25">
+            <span
+              aria-hidden
+              className="pointer-events-none absolute -top-2 left-3 font-display text-5xl leading-none text-copper/25"
+            >
+              "
+            </span>
+            <figcaption className="text-[10px] font-bold uppercase tracking-[0.18em] text-copper-ink">
+              The women before us · Step {step + 1}
+            </figcaption>
+            <blockquote className="mt-1.5 font-display text-sm leading-snug font-medium sm:text-base">
+              {wisdom.quote}
+            </blockquote>
+            <figcaption className="mt-1.5 text-[11px] text-muted-foreground">
+              <span className="font-semibold text-copper-ink">{wisdom.name}</span>
+              {" · "}
+              {wisdom.era}
+            </figcaption>
+          </figure>
+
+          <p className="mt-3 text-center text-[11px] text-muted-foreground">
+            For personal reflection only — not medical advice.
+          </p>
+          </div>
         </div>
-
-        {/* Women healers through the centuries — one per step */}
-        <figure className="relative mt-6 overflow-hidden rounded-3xl bg-gradient-to-br from-copper/10 via-card to-sage/15 p-6 ring-1 ring-copper/25 sm:p-7">
-          <span
-            aria-hidden
-            className="pointer-events-none absolute -top-3 left-4 font-display text-7xl leading-none text-copper/25"
-          >
-            "
-          </span>
-          <figcaption className="text-[10px] font-bold tracking-[0.18em] text-copper-ink uppercase">
-            The women before us · Step {step + 1}
-          </figcaption>
-          <blockquote className="mt-3 font-display text-lg leading-snug font-medium sm:text-xl">
-            {wisdom.quote}
-          </blockquote>
-          <figcaption className="mt-3 text-xs text-muted-foreground">
-            <span className="font-semibold text-copper-ink">{wisdom.name}</span>
-            {" · "}
-            {wisdom.era}
-          </figcaption>
-        </figure>
-
-        <p className="mt-6 text-center text-[11px] text-muted-foreground">
-          For personal reflection only — not medical advice.
-        </p>
       </div>
     </div>
   );
