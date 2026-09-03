@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { quoteOfTheDay } from "@/lib/quotes";
+import { QUOTES, quoteOfTheDay } from "@/lib/quotes";
 import { todayKey } from "@/lib/wellness";
 
 type RootsQuote = {
@@ -82,7 +82,7 @@ export function DailyQuoteCard() {
             className="text-[11px] font-semibold uppercase tracking-[0.28em] text-copper-ink"
             style={{ fontFamily: "var(--font-sans)" }}
           >
-            Quote of the day · In her words
+            {q.fromRoots ? "Quote of the day · In her words" : "Quote of the day"}
           </p>
         </div>
 
