@@ -83,7 +83,7 @@ function Stat({ dot, label, value, sub }: { dot: string; label: string; value: s
   );
 }
 
-function MetricsForm({ metric, onDone }: { metric?: DailyMetric; onDone: () => void }) {
+function MetricsForm({ metric, onDone }: { metric?: DailyMetric | undefined; onDone: () => void }) {
   const qc = useQueryClient();
   const { user } = useAuth();
   const [form, setForm] = useState({
@@ -175,11 +175,12 @@ function Today() {
   const qc = useQueryClient();
   const today = todayKey();
   const week = lastNDays(7);
+  const from = week[0] as string;
   const [editing, setEditing] = useState(false);
 
   const metricsQ = useQuery({
-    queryKey: ["metrics", week[0], today],
-    queryFn: () => fetchMetrics(week[0], today),
+    queryKey: ["metrics", from, today],
+    queryFn: () => fetchMetrics(from, today),
   });
   const medsQ = useQuery({ queryKey: ["medications"], queryFn: fetchMedications });
   const logsQ = useQuery({
@@ -419,7 +420,7 @@ function Today() {
               <div key={d} className="flex flex-1 flex-col items-center gap-2">
                 <div
                   className={`w-full rounded-t-lg ${i === week.length - 1 ? "bg-sky" : "bg-sky/60"}`}
-                  style={{ height: `${(sleepSeries[i] / maxSleep) * 100}%` }}
+                  style={{ height: `${((sleepSeries[i] ?? 0) / maxSleep) * 100}%` }}
                 />
                 <span className="text-[10px] font-semibold text-muted-foreground">
                   {i === week.length - 1

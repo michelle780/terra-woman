@@ -49,7 +49,7 @@ function Medications() {
   const medsQ = useQuery({ queryKey: ["medications"], queryFn: fetchMedications });
   const logsQ = useQuery({
     queryKey: ["medication-logs", "14d"],
-    queryFn: () => fetchMedicationLogs(days[0], today),
+    queryFn: () => fetchMedicationLogs(days[0] as string, today),
   });
 
   const add = useMutation({
