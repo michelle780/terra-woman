@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { AppShell } from "@/components/AppShell";
+import { MoodTrendsChart } from "@/components/MoodTrendsChart";
 import { fetchMetrics, formatSleep, lastNDays, todayKey } from "@/lib/wellness";
 
 export const Route = createFileRoute("/trends")({
@@ -106,6 +107,8 @@ function Trends() {
           })}
         </div>
       </section>
+
+      <MoodTrendsChart from={from} to={today} />
 
       {SERIES.map((s) => {
         const values = days.map((d) => byDate.get(d)?.[s.key] ?? 0);
