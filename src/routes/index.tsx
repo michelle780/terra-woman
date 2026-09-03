@@ -25,13 +25,13 @@ import {
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "The Bigger Picture — your private daily wellness log" },
+      { title: "The Bigger Picture — your private daily wellness oasis" },
       {
         name: "description",
         content:
-          "Track sleep, readiness, HRV, energy, symptoms and medications in one calm private log, and see how they move together.",
+          "A calm, empowering oasis to track sleep, readiness, HRV, energy, symptoms, cycle and medications, and see how they move together.",
       },
-      { property: "og:title", content: "The Bigger Picture — your private daily wellness log" },
+      { property: "og:title", content: "The Bigger Picture — your private daily wellness oasis" },
       {
         property: "og:description",
         content: "Ring and watch metrics, medications, symptoms and daily journal in one place.",
