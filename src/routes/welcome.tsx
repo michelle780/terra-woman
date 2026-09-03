@@ -64,6 +64,40 @@ type Answers = {
 
 const STEPS = ["Your name", "Rhythm", "Where to meet you", "What matters", "Anything else"];
 
+/** A woman healer or keeper of wellness for each step of the journey. */
+const HEALER_WISDOM = [
+  {
+    quote:
+      "In the 12th century, Hildegard von Bingen — abbess, herbalist and composer — wrote one of Europe's first medical texts on women's bodies, linking health to the whole of nature.",
+    name: "Hildegard von Bingen",
+    era: "1098 – 1179 · Germany",
+  },
+  {
+    quote:
+      "Trota of Salerno taught at Europe's first medical school and wrote on women's health — her work was so widely copied that 'Trotula' became a byword for women's medicine for centuries.",
+    name: "Trota of Salerno",
+    era: "11th century · Italy",
+  },
+  {
+    quote:
+      "For most of human history, birth was attended by women. The word 'midwife' simply means 'with woman' — a lineage of hands and knowledge passed woman to woman.",
+    name: "The midwives",
+    era: "Every century, everywhere",
+  },
+  {
+    quote:
+      "Denied entry to medical school as a woman, Elizabeth Garrett Anderson taught herself, qualified in 1865, then founded a hospital staffed entirely by women — for women.",
+    name: "Elizabeth Garrett Anderson",
+    era: "1836 – 1917 · England",
+  },
+  {
+    quote:
+      "In village after village, the 'wise woman' kept the remedies — willow bark for pain, raspberry leaf for the womb. Much of modern pharmacy traces back to what they already knew.",
+    name: "The wise women",
+    era: "The healers of yesteryear",
+  },
+] as const;
+
 function WelcomePage() {
   const { user, loading } = useAuth();
   const navigate = useNavigate();
