@@ -1,6 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { AppShell } from "@/components/AppShell";
 import { HoroscopeCard } from "@/components/HoroscopeCard";
+import { DailyQuoteCard } from "@/components/DailyQuoteCard";
+import { nextPhase } from "@/lib/astro";
 import { moonPhase, todayKey } from "@/lib/wellness";
 
 export const Route = createFileRoute("/astrology")({
@@ -32,20 +34,10 @@ function AstrologyAndMoon() {
   const today = todayKey();
   const moon = moonPhase(today);
 
-  const next = (target: string) => {
-    const d = new Date(`${today}T00:00:00Z`);
-    for (let i = 1; i <= 60; i++) {
-      d.setUTCDate(d.getUTCDate() + 1);
-      const key = d.toISOString().slice(0, 10);
-      if (key) {
-        const p = moonPhase(key);
-        if (p.name === target) return { key, illumination: p.illumination };
-      }
-    }
-    return null;
-  };
-  const nextFull = next("Full Moon");
-  const nextNew = next("New Moon");
+  const fmtDate = (d: Date | null) =>
+    d ? d.toLocaleDateString(undefined, { month: "short", day: "numeric" }) : null;
+  const nextFull = fmtDate(nextPhase(180));
+  const nextNew = fmtDate(nextPhase(0));
 
   const upcoming: { key: string; name: string; icon: string; illumination: number }[] = [];
   const d = new Date(`${today}T00:00:00Z`);
@@ -93,13 +85,13 @@ function AstrologyAndMoon() {
               <div className="rounded-2xl bg-background px-4 py-3 ring-1 ring-line">
                 <p className="eyebrow">Next full</p>
                 <p className="font-display text-lg font-semibold">
-                  {nextFull ? fmt(nextFull.key) : "—"}
+                  {nextFull ?? "—"}
                 </p>
               </div>
               <div className="rounded-2xl bg-background px-4 py-3 ring-1 ring-line">
                 <p className="eyebrow">Next new</p>
                 <p className="font-display text-lg font-semibold">
-                  {nextNew ? fmt(nextNew.key) : "—"}
+                  {nextNew ?? "—"}
                 </p>
               </div>
             </div>
@@ -109,6 +101,8 @@ function AstrologyAndMoon() {
           <HoroscopeCard />
         </div>
       </section>
+
+      <DailyQuoteCard />
 
       {/* Secondary — the 30-day lunar outlook */}
       <section className="rise rounded-[24px] bg-paper p-5 ring-1 ring-line">

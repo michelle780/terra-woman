@@ -6,6 +6,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { AppShell } from "@/components/AppShell";
 
 import { CheckInCard } from "@/components/CheckInCard";
+import { DailyQuoteCard } from "@/components/DailyQuoteCard";
 import { InviteCard } from "@/components/InviteCard";
 
 import { useAuth } from "@/lib/auth";
@@ -424,6 +425,10 @@ function Today() {
         <div className="md:col-span-2">
           <CheckInCard />
         </div>
+      </div>
+
+      <div className="mt-4">
+        <DailyQuoteCard />
       </div>
 
       <InviteCard />
