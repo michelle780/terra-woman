@@ -397,6 +397,27 @@ function WelcomePage() {
           </div>
         </div>
 
+        {/* Women healers through the centuries — one per step */}
+        <figure className="relative mt-6 overflow-hidden rounded-3xl bg-gradient-to-br from-copper/10 via-card to-sage/15 p-6 ring-1 ring-copper/25 sm:p-7">
+          <span
+            aria-hidden
+            className="pointer-events-none absolute -top-3 left-4 font-display text-7xl leading-none text-copper/25"
+          >
+            "
+          </span>
+          <figcaption className="text-[10px] font-bold tracking-[0.18em] text-copper-ink uppercase">
+            The women before us · Step {step + 1}
+          </figcaption>
+          <blockquote className="mt-3 font-display text-lg leading-snug font-medium sm:text-xl">
+            {HEALER_WISDOM[step].quote}
+          </blockquote>
+          <figcaption className="mt-3 text-xs text-muted-foreground">
+            <span className="font-semibold text-copper-ink">{HEALER_WISDOM[step].name}</span>
+            {" · "}
+            {HEALER_WISDOM[step].era}
+          </figcaption>
+        </figure>
+
         <p className="mt-6 text-center text-[11px] text-muted-foreground">
           For personal reflection only — not medical advice.
         </p>
