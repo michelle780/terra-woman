@@ -216,7 +216,7 @@ export function buildPreview(csv: string, existing: RootsRecord[]): ImportPrevie
     return { rows, errors: [{ line: 0, id: "", message: "The file is empty." }], newCount: 0, updatedCount: 0, unchangedCount: 0 };
   }
 
-  const header = table[0].map((h) => h.trim());
+  const header = (table[0] ?? []).map((h) => h.trim());
   const missingCols = ["id", "title"].filter((c) => !header.includes(c));
   if (missingCols.length) {
     return {
@@ -232,7 +232,7 @@ export function buildPreview(csv: string, existing: RootsRecord[]): ImportPrevie
   const seen = new Set<string>();
 
   for (let i = 1; i < table.length; i++) {
-    const cells = table[i];
+    const cells = table[i] ?? [];
     const line = i + 1;
     const get = (col: string) => {
       const idx = header.indexOf(col);
