@@ -170,12 +170,6 @@ export const QUOTES: DailyQuote[] = [
     url: "https://www.lalahdelia.com/",
   },
   {
-    text: "Almost everything will work again if you unplug it for a few minutes, including you.",
-    author: "Anne Lamott",
-    source: "annelamott.com",
-    url: "https://annelamott.com/",
-  },
-  {
     text: "Health is a relationship between you and your body.",
     author: "Terri Guillemets",
     source: "quotegarden.com",

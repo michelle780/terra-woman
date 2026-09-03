@@ -44,15 +44,19 @@ export function DailyQuoteCard() {
     staleTime: 5 * 60_000,
   });
 
-  const r = rootsQuotes.length > 0 ? rootsQuotes[dayIndex(today, rootsQuotes.length)] : undefined;
-  const q = r
-    ? {
-        text: r.quote,
-        author: r.quote_attribution ?? "From the ROOTS archive",
-        source: r.source_name ?? "Terra Woman ROOTS",
-        url: r.source_url ?? undefined,
-      }
-    : { text: fallback.text, author: fallback.author, source: fallback.source, url: fallback.url as string | undefined };
+  // One combined pool — ROOTS "in her words" quotes first, then the curated
+  // list — so the daily pick rotates across the whole library.
+  const pool = [
+    ...rootsQuotes.map((r) => ({
+      text: r.quote,
+      author: r.quote_attribution ?? "From the ROOTS archive",
+      source: r.source_name ?? "Terra Woman ROOTS",
+      url: r.source_url ?? undefined,
+      fromRoots: true,
+    })),
+    ...QUOTES.map((c) => ({ ...c, fromRoots: false })),
+  ];
+  const q = pool.length > 0 ? pool[dayIndex(today, pool.length)]! : { ...fallback, fromRoots: false };
 
   return (
     <section className="rise relative overflow-hidden rounded-[28px] bg-paper ring-1 ring-line">
