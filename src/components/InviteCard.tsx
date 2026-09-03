@@ -8,12 +8,12 @@ export function InviteCard() {
   const link =
     typeof window === "undefined" ? "" : `${window.location.origin}/invite`;
   const text =
-    "I've been using Pulse to track how I sleep, feel and cycle day to day. You can set up your own private log here:";
+    "I've been using The Bigger Picture to track how I sleep, feel and cycle day to day. You can set up your own private log here:";
 
   async function share() {
     try {
       if (typeof navigator !== "undefined" && navigator.share) {
-        await navigator.share({ title: "Pulse", text, url: link });
+        await navigator.share({ title: "The Bigger Picture", text, url: link });
         return;
       }
       await navigator.clipboard.writeText(`${text} ${link}`);
@@ -40,7 +40,7 @@ export function InviteCard() {
         <Share2 className="size-3.5 text-amber" aria-hidden />
       </span>
       <div className="min-w-0 flex-1">
-        <p className="text-xs font-semibold leading-tight">Invite a friend to Pulse</p>
+        <p className="text-xs font-semibold leading-tight">Invite a friend to The Bigger Picture</p>
         <p className="truncate text-[10px] text-muted-foreground">
           Your entries stay private — nothing is shared between accounts.
         </p>

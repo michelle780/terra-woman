@@ -8,13 +8,13 @@ import { fetchMetrics, formatSleep, lastNDays, todayKey } from "@/lib/wellness";
 export const Route = createFileRoute("/trends")({
   head: () => ({
     meta: [
-      { title: "Trends — Pulse wellness tracker" },
+      { title: "Trends — The Bigger Picture wellness tracker" },
       {
         name: "description",
         content:
           "See how sleep, readiness, HRV, resting heart rate and steps move over the last 7, 14 or 30 days.",
       },
-      { property: "og:title", content: "Trends — Pulse wellness tracker" },
+      { property: "og:title", content: "Trends — The Bigger Picture wellness tracker" },
       {
         property: "og:description",
         content: "Weekly and monthly charts for sleep, readiness, HRV and activity.",

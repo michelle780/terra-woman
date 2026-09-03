@@ -27,7 +27,7 @@ export function LegalLayout({
           >
             <span className="size-2.5 rounded-full bg-sky" />
           </Link>
-          <span className="text-base font-bold">Pulse</span>
+          <span className="text-base font-bold">The Bigger Picture</span>
         </header>
 
         <article className="rise mt-6 rounded-[28px] bg-paper p-6 ring-1 ring-line sm:p-9">
@@ -44,7 +44,7 @@ export function LegalLayout({
         </article>
 
         <p className="mt-6 text-center text-[11px] text-muted-foreground">
-          Pulse is a personal wellness log · not medical advice
+          The Bigger Picture is a personal wellness log · not medical advice
         </p>
       </div>
     </div>

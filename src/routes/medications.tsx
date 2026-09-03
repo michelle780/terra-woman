@@ -17,13 +17,13 @@ import {
 export const Route = createFileRoute("/medications")({
   head: () => ({
     meta: [
-      { title: "Medications — Pulse wellness tracker" },
+      { title: "Medications — The Bigger Picture wellness tracker" },
       {
         name: "description",
         content:
           "Keep your medication list, doses and times, and see how consistently you have taken them over the last two weeks.",
       },
-      { property: "og:title", content: "Medications — Pulse wellness tracker" },
+      { property: "og:title", content: "Medications — The Bigger Picture wellness tracker" },
       {
         property: "og:description",
         content: "Doses, timing and adherence for every medication you take.",

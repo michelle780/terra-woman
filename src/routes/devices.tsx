@@ -10,16 +10,16 @@ import { fetchDeviceConnections } from "@/lib/wellness";
 export const Route = createFileRoute("/devices")({
   head: () => ({
     meta: [
-      { title: "Devices & APIs — Pulse wellness tracker" },
+      { title: "Devices & APIs — The Bigger Picture wellness tracker" },
       {
         name: "description",
         content:
-          "Connect Oura, Apple Health, Fitbit, Garmin, Whoop, Google Fit or your own API source so your sleep, recovery and activity data flows into Pulse.",
+          "Connect Oura, Apple Health, Fitbit, Garmin, Whoop, Google Fit or your own API source so your sleep, recovery and activity data flows into The Bigger Picture.",
       },
-      { property: "og:title", content: "Devices & APIs — Pulse wellness tracker" },
+      { property: "og:title", content: "Devices & APIs — The Bigger Picture wellness tracker" },
       {
         property: "og:description",
-        content: "Manage the devices and data sources that populate your Pulse dashboard.",
+        content: "Manage the devices and data sources that populate your The Bigger Picture dashboard.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -107,7 +107,7 @@ function Devices() {
         <p className="eyebrow">Data sources</p>
         <h1 className="mt-0.5 text-2xl">Devices & APIs</h1>
         <p className="mt-1 text-xs text-muted-foreground">
-          Add the devices and services you want feeding Pulse. Adding a source saves it to your
+          Add the devices and services you want feeding The Bigger Picture. Adding a source saves it to your
           private account; you can mark a sync whenever you bring data in manually, and live API
           pulls will use the same list once each provider is authorised.
         </p>
@@ -217,7 +217,7 @@ function Devices() {
           </ul>
         ) : null}
         <p className="mt-4 text-[11px] text-muted-foreground">
-          Pulse never asks for device passwords, and your source list is visible only to you.
+          The Bigger Picture never asks for device passwords, and your source list is visible only to you.
         </p>
       </section>
     </div>

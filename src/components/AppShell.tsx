@@ -76,7 +76,7 @@ export function AppShell({ children }: { children: ReactNode }) {
               <span className="size-2.5 rounded-full bg-sky" />
             </div>
             <div>
-              <div className="text-base font-bold leading-none">Pulse</div>
+              <div className="text-base font-bold leading-none">The Bigger Picture</div>
               <div className="text-xs text-muted-foreground">{today}</div>
             </div>
           </div>
@@ -116,7 +116,7 @@ export function AppShell({ children }: { children: ReactNode }) {
         <main>{children}</main>
 
         <p className="mt-6 pb-4 text-center text-[11px] text-muted-foreground">
-          Pulse is a personal wellness log · not medical advice ·{" "}
+          The Bigger Picture is a personal wellness log · not medical advice ·{" "}
           <Link to="/privacy" className="font-semibold hover:underline">Privacy</Link>{" "}
           ·{" "}
           <Link to="/terms" className="font-semibold hover:underline">Terms</Link>

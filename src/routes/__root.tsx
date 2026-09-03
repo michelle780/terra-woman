@@ -79,13 +79,13 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Pulse — personal wellness tracker" },
+      { title: "The Bigger Picture — personal wellness tracker" },
       {
         name: "description",
         content:
           "A private daily log for Oura and Apple Watch metrics, medications, symptoms and mood.",
       },
-      { property: "og:title", content: "Pulse — personal wellness tracker" },
+      { property: "og:title", content: "The Bigger Picture — personal wellness tracker" },
       {
         property: "og:description",
         content:

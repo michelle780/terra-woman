@@ -10,13 +10,13 @@ import { MOODS, SYMPTOMS, fetchJournal, lastNDays, todayKey } from "@/lib/wellne
 export const Route = createFileRoute("/journal")({
   head: () => ({
     meta: [
-      { title: "Journal — Pulse wellness tracker" },
+      { title: "Journal — The Bigger Picture wellness tracker" },
       {
         name: "description",
         content:
           "Record mood, energy, symptoms and a short note each day so patterns show up next to your sleep and recovery data.",
       },
-      { property: "og:title", content: "Journal — Pulse wellness tracker" },
+      { property: "og:title", content: "Journal — The Bigger Picture wellness tracker" },
       {
         property: "og:description",
         content: "Daily mood, energy and symptom notes alongside your health metrics.",
