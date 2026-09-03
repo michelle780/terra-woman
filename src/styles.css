@@ -88,6 +88,8 @@
   --rose: oklch(0.62 0.1 12); /* rosewood */
   --mint: oklch(0.72 0.06 140); /* sage #A8BFA0 */
   --amber: oklch(0.8 0.08 75); /* honey */
+  --copper: oklch(0.7 0.06 55); /* rose-gold/copper editorial accent */
+  --copper-soft: oklch(0.82 0.05 55);
 
   --chart-1: oklch(0.62 0.1 12);
   --chart-2: oklch(0.72 0.06 140);
