@@ -179,11 +179,16 @@ function WelcomePage() {
           Welcome{a.displayName ? `, ${a.displayName.split(" ")[0]}` : ""}.
         </h1>
         <p className="mt-2 max-w-lg text-sm text-muted-foreground">
-          Five short prompts so this feels like your oasis, not another app. You can change
-          any of it later.
+          Five short prompts so this feels like your oasis, not another app. With each one your
+          tree grows — roots first, the way the healers, herbalists and midwives before us
+          passed their knowing down.
         </p>
 
-        <div className="mt-6 flex gap-1.5" aria-hidden>
+        <div className="mt-6">
+          <TreeGrowth step={step} total={STEPS.length} />
+        </div>
+
+        <div className="mt-4 flex gap-1.5" aria-hidden>
           {STEPS.map((label, i) => (
             <div
               key={label}
