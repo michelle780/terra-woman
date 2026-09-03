@@ -76,7 +76,7 @@ export function AppShell({ children }: { children: ReactNode }) {
               <span className="size-2.5 rounded-full bg-copper" />
             </div>
             <div className="leading-none">
-              <div className="font-display text-lg font-semibold leading-none text-foreground">
+              <div className="font-display text-base font-semibold uppercase tracking-[0.22em] leading-none text-foreground">
                 Terra Woman
               </div>
               <div className="mt-1 text-[11px] font-medium tracking-wide text-muted-foreground">

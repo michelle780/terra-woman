@@ -33,7 +33,7 @@ export function Landing({ invitedBy }: { invitedBy?: string | null }) {
             <div className="grid size-9 place-items-center rounded-full bg-copper/15 ring-1 ring-copper/30">
               <span className="size-2.5 rounded-full bg-copper" />
             </div>
-            <span className="font-display text-lg font-semibold">Terra Woman</span>
+            <span className="font-display text-base font-semibold uppercase tracking-[0.22em]">Terra Woman</span>
           </div>
           <Link
             to="/auth"
