@@ -35,6 +35,26 @@ export function AppShell({ children }: { children: ReactNode }) {
     if (!loading && !user) navigate({ to: "/auth", replace: true });
   }, [loading, user, navigate]);
 
+  const { data: profile } = useQuery({
+    queryKey: ["profile", user?.id],
+    enabled: !!user,
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("profiles")
+        .select("*")
+        .eq("id", user!.id)
+        .maybeSingle();
+      if (error) throw error;
+      return data;
+    },
+  });
+
+  useEffect(() => {
+    if (user && profile !== undefined && !profile?.onboarded_at) {
+      navigate({ to: "/welcome", replace: true });
+    }
+  }, [user, profile, navigate]);
+
   async function handleSignOut() {
     if (signingOut) return;
     setSigningOut(true);
