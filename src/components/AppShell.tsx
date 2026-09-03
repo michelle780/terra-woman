@@ -5,8 +5,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/lib/auth";
 
 const NAV = [
-  { to: "/", label: "Today" },
   { to: "/trends", label: "Trends" },
+  { to: "/", label: "Today" },
   { to: "/cycle", label: "Cycle" },
   { to: "/medications", label: "Meds" },
   { to: "/journal", label: "Journal" },
