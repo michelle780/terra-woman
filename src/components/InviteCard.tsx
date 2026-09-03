@@ -8,7 +8,7 @@ export function InviteCard() {
   const link =
     typeof window === "undefined" ? "" : `${window.location.origin}/invite`;
   const text =
-    "I've been using The Bigger Picture to track how I sleep, feel and cycle day to day. You can set up your own private log here:";
+    "I've been using The Bigger Picture to track how I sleep, feel and cycle day to day. It's a calm little oasis — set up your own private log here:";
 
   async function share() {
     try {
