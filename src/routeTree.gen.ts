@@ -10,12 +10,14 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AstrologyRouteImport } from './routes/astrology'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as CycleRouteImport } from './routes/cycle'
 import { Route as DevicesRouteImport } from './routes/devices'
 import { Route as InviteRouteImport } from './routes/invite'
 import { Route as JournalRouteImport } from './routes/journal'
 import { Route as MedicationsRouteImport } from './routes/medications'
+import { Route as MoonRouteImport } from './routes/moon'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as TrendsRouteImport } from './routes/trends'
@@ -23,6 +25,11 @@ import { Route as TrendsRouteImport } from './routes/trends'
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AstrologyRoute = AstrologyRouteImport.update({
+  id: '/astrology',
+  path: '/astrology',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthRoute = AuthRouteImport.update({
@@ -55,6 +62,11 @@ const MedicationsRoute = MedicationsRouteImport.update({
   path: '/medications',
   getParentRoute: () => rootRouteImport,
 } as any)
+const MoonRoute = MoonRouteImport.update({
+  id: '/moon',
+  path: '/moon',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PrivacyRoute = PrivacyRouteImport.update({
   id: '/privacy',
   path: '/privacy',
@@ -73,24 +85,28 @@ const TrendsRoute = TrendsRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/astrology': typeof AstrologyRoute
   '/auth': typeof AuthRoute
   '/cycle': typeof CycleRoute
   '/devices': typeof DevicesRoute
   '/invite': typeof InviteRoute
   '/journal': typeof JournalRoute
   '/medications': typeof MedicationsRoute
+  '/moon': typeof MoonRoute
   '/privacy': typeof PrivacyRoute
   '/terms': typeof TermsRoute
   '/trends': typeof TrendsRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/astrology': typeof AstrologyRoute
   '/auth': typeof AuthRoute
   '/cycle': typeof CycleRoute
   '/devices': typeof DevicesRoute
   '/invite': typeof InviteRoute
   '/journal': typeof JournalRoute
   '/medications': typeof MedicationsRoute
+  '/moon': typeof MoonRoute
   '/privacy': typeof PrivacyRoute
   '/terms': typeof TermsRoute
   '/trends': typeof TrendsRoute
@@ -98,12 +114,14 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/astrology': typeof AstrologyRoute
   '/auth': typeof AuthRoute
   '/cycle': typeof CycleRoute
   '/devices': typeof DevicesRoute
   '/invite': typeof InviteRoute
   '/journal': typeof JournalRoute
   '/medications': typeof MedicationsRoute
+  '/moon': typeof MoonRoute
   '/privacy': typeof PrivacyRoute
   '/terms': typeof TermsRoute
   '/trends': typeof TrendsRoute
@@ -112,36 +130,42 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/astrology'
     | '/auth'
     | '/cycle'
     | '/devices'
     | '/invite'
     | '/journal'
     | '/medications'
+    | '/moon'
     | '/privacy'
     | '/terms'
     | '/trends'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/astrology'
     | '/auth'
     | '/cycle'
     | '/devices'
     | '/invite'
     | '/journal'
     | '/medications'
+    | '/moon'
     | '/privacy'
     | '/terms'
     | '/trends'
   id:
     | '__root__'
     | '/'
+    | '/astrology'
     | '/auth'
     | '/cycle'
     | '/devices'
     | '/invite'
     | '/journal'
     | '/medications'
+    | '/moon'
     | '/privacy'
     | '/terms'
     | '/trends'
@@ -149,12 +173,14 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AstrologyRoute: typeof AstrologyRoute
   AuthRoute: typeof AuthRoute
   CycleRoute: typeof CycleRoute
   DevicesRoute: typeof DevicesRoute
   InviteRoute: typeof InviteRoute
   JournalRoute: typeof JournalRoute
   MedicationsRoute: typeof MedicationsRoute
+  MoonRoute: typeof MoonRoute
   PrivacyRoute: typeof PrivacyRoute
   TermsRoute: typeof TermsRoute
   TrendsRoute: typeof TrendsRoute
@@ -167,6 +193,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/astrology': {
+      id: '/astrology'
+      path: '/astrology'
+      fullPath: '/astrology'
+      preLoaderRoute: typeof AstrologyRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/auth': {
@@ -211,6 +244,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MedicationsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/moon': {
+      id: '/moon'
+      path: '/moon'
+      fullPath: '/moon'
+      preLoaderRoute: typeof MoonRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/privacy': {
       id: '/privacy'
       path: '/privacy'
@@ -237,12 +277,14 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AstrologyRoute: AstrologyRoute,
   AuthRoute: AuthRoute,
   CycleRoute: CycleRoute,
   DevicesRoute: DevicesRoute,
   InviteRoute: InviteRoute,
   JournalRoute: JournalRoute,
   MedicationsRoute: MedicationsRoute,
+  MoonRoute: MoonRoute,
   PrivacyRoute: PrivacyRoute,
   TermsRoute: TermsRoute,
   TrendsRoute: TrendsRoute,

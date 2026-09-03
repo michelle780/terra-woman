@@ -426,10 +426,6 @@ function Today() {
         </div>
 
         <div className="md:col-span-2">
-          <HoroscopeCard />
-        </div>
-
-        <div className="md:col-span-2">
           <InviteCard />
         </div>
       </div>
