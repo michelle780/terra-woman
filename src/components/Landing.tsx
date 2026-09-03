@@ -104,3 +104,57 @@ export function Landing({ invitedBy }: { invitedBy?: string | null }) {
     </div>
   );
 }
+
+const ZODIAC_GLYPHS = [
+  "♈", "♉", "♊", "♋", "♌", "♍", "♎", "♏", "♐", "♑", "♒", "♓",
+];
+
+function LandingMoon() {
+  const moon = moonPhase(todayKey());
+  return (
+    <section className="rise rounded-[24px] bg-paper p-5 ring-1 ring-line">
+      <div className="flex items-center gap-2 text-xs font-semibold text-muted-foreground">
+        <span className="size-2 rounded-full bg-mint" />
+        Tonight's moon
+      </div>
+      <div className="mt-3 flex items-center gap-3">
+        <span className="text-4xl" aria-hidden>
+          {moon.icon}
+        </span>
+        <div>
+          <p className="font-display text-xl font-semibold">
+            {moon.name}{" "}
+            <span className="text-sm font-normal text-muted-foreground">
+              · {moon.illumination}% lit
+            </span>
+          </p>
+          <p className="text-xs text-muted-foreground">
+            A gentle way to notice how your energy shifts with the lunar cycle.
+          </p>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function LandingAstrology() {
+  return (
+    <section className="rise rounded-[24px] bg-paper p-5 ring-1 ring-line">
+      <div className="flex items-center gap-2 text-xs font-semibold text-muted-foreground">
+        <span className="size-2 rounded-full bg-amber" />
+        Daily horoscope
+      </div>
+      <div className="mt-3 flex flex-wrap gap-1.5 text-2xl">
+        {ZODIAC_GLYPHS.map((g) => (
+          <span key={g} aria-hidden className="text-amber/80">
+            {g}
+          </span>
+        ))}
+      </div>
+      <p className="mt-3 text-sm text-muted-foreground">
+        A short, daily reading for your sign — focused on rest, energy and self-care. Pick your
+        sign when you sign up.
+      </p>
+    </section>
+  );
+}
