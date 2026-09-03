@@ -1,5 +1,8 @@
 # Roadmap
 
-## Tasks
-- [ ] Confirm login method(s) — currently email/password + Google OAuth both enabled. User asked to be sure of which is available.
-- [ ] Add an astrological sign section — capture user's zodiac sign (from birthdate) and show a sign-based section.
+- [x] ROOTS Visual Lab (approved by user)
+- [x] Public ROOTS feed (/roots) with alternating treatments + Terra Woman Tree
+- [x] ROOTS story page (/roots/$id) with hero, story, sources, share/save, related
+- [x] Admin Visual Treatment editor (template override, asset rights, previews)
+- [ ] Compact /welcome onboarding so each step + progress fits one viewport (no scrolling)
+- [ ] Verify admin Visual Treatment panel in browser (needs onboarded admin session)

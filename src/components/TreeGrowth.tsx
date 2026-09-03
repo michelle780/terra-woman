@@ -27,7 +27,7 @@ export function TreeGrowth({ step, total }: { step: number; total: number }) {
   return (
     <figure className="m-0 flex flex-col items-center">
       <div
-        className="relative h-44 w-44 sm:h-52 sm:w-52"
+        className="relative h-32 w-32 sm:h-40 sm:w-40"
         role="img"
         aria-label={`Growth stage ${stage + 1} of ${STAGE_LABELS.length}: ${STAGE_LABELS[stage]}`}
       >

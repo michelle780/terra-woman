@@ -200,48 +200,54 @@ function WelcomePage() {
   const wisdom = HEALER_WISDOM[step] ?? HEALER_WISDOM[0]!;
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
-      <div className="mx-auto max-w-2xl px-4 py-10 sm:px-6">
-        <div className="flex items-center gap-3">
-          <div className="grid size-9 shrink-0 place-items-center rounded-full bg-copper/15 ring-1 ring-copper/30">
-            <span className="size-2.5 rounded-full bg-copper" />
+    <div className="flex min-h-screen items-center bg-background text-foreground">
+      <div className="mx-auto w-full max-w-4xl px-4 py-4 sm:px-6">
+        <div className="flex items-center justify-between gap-3">
+          <div className="flex items-center gap-3">
+            <div className="grid size-8 shrink-0 place-items-center rounded-full bg-copper/15 ring-1 ring-copper/30">
+              <span className="size-2 rounded-full bg-copper" />
+            </div>
+            <div className="font-display text-sm font-semibold uppercase leading-none tracking-[0.22em]">
+              Terra Woman
+            </div>
           </div>
-          <div className="font-display text-base font-semibold uppercase tracking-[0.22em] leading-none">
-            Terra Woman
+          <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-copper-ink">
+            Step {step + 1} of {STEPS.length} · {STEPS[step]}
+          </p>
+        </div>
+
+        <div className="mt-3 grid items-start gap-4 md:grid-cols-[300px_1fr] md:gap-6">
+          {/* Left: greeting, growing tree, progress */}
+          <div>
+            <h1 className="font-display text-xl font-semibold leading-tight sm:text-3xl">
+              Welcome{a.displayName ? `, ${a.displayName.split(" ")[0]}` : ""}.
+            </h1>
+            <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
+              Five short prompts so this feels like your oasis. With each one your tree grows —
+              roots first, the way the healers and midwives before us passed their knowing down.
+            </p>
+
+            <div className="mt-3 flex justify-center md:mt-4">
+              <TreeGrowth step={step} total={STEPS.length} />
+            </div>
+
+            <div className="mt-3 flex gap-1.5" aria-hidden>
+              {STEPS.map((label, i) => (
+                <div
+                  key={label}
+                  className={`h-1 flex-1 rounded-full transition-colors ${
+                    i <= step ? "bg-copper/70" : "bg-line"
+                  }`}
+                />
+              ))}
+            </div>
           </div>
-        </div>
 
-        <h1 className="mt-8 font-display text-4xl leading-tight font-semibold">
-          Welcome{a.displayName ? `, ${a.displayName.split(" ")[0]}` : ""}.
-        </h1>
-        <p className="mt-2 max-w-lg text-sm text-muted-foreground">
-          Five short prompts so this feels like your oasis, not another app. With each one your
-          tree grows — roots first, the way the healers, herbalists and midwives before us
-          passed their knowing down.
-        </p>
-
-        <div className="mt-6">
-          <TreeGrowth step={step} total={STEPS.length} />
-        </div>
-
-        <div className="mt-4 flex gap-1.5" aria-hidden>
-          {STEPS.map((label, i) => (
-            <div
-              key={label}
-              className={`h-1 flex-1 rounded-full transition-colors ${
-                i <= step ? "bg-copper/70" : "bg-line"
-              }`}
-            />
-          ))}
-        </div>
-        <p className="mt-2 text-[11px] font-semibold tracking-[0.14em] text-copper-ink uppercase">
-          Step {step + 1} of {STEPS.length} · {STEPS[step]}
-        </p>
-
-        <div className="mt-6 rounded-3xl bg-card p-6 ring-1 ring-line sm:p-8">
+          {/* Right: the prompt card */}
+          <div className="rounded-3xl bg-card p-4 ring-1 ring-line sm:p-5">
           {step === 0 && (
             <div>
-              <h2 className="font-display text-2xl font-semibold">What should we call you?</h2>
+              <h2 className="font-display text-xl font-semibold">What should we call you?</h2>
               <p className="mt-1 text-sm text-muted-foreground">
                 Just a first name is perfect — it's only ever shown to you.
               </p>
@@ -250,23 +256,23 @@ function WelcomePage() {
                 value={a.displayName}
                 onChange={(e) => set("displayName", e.target.value)}
                 placeholder="Your name"
-                className="mt-5 w-full rounded-2xl bg-paper px-4 py-3 text-sm ring-1 ring-line outline-none focus:ring-2 focus:ring-copper/40"
+                className="mt-3 w-full rounded-2xl bg-paper px-4 py-3 text-sm ring-1 ring-line outline-none focus:ring-2 focus:ring-copper/40"
               />
             </div>
           )}
 
           {step === 1 && (
             <div>
-              <h2 className="font-display text-2xl font-semibold">
+              <h2 className="font-display text-xl font-semibold">
                 How often would you like a nudge to check in?
               </h2>
-              <div className="mt-5 grid gap-2">
+              <div className="mt-3 grid gap-1.5">
                 {FREQUENCIES.map((f) => (
                   <button
                     key={f.value}
                     type="button"
                     onClick={() => set("frequency", f.value)}
-                    className={`flex items-center justify-between rounded-2xl px-4 py-3 text-left ring-1 transition-colors ${
+                    className={`flex items-center justify-between rounded-2xl px-4 py-2 text-left ring-1 transition-colors ${
                       a.frequency === f.value
                         ? "bg-copper/12 ring-copper/40"
                         : "bg-paper ring-line hover:bg-copper/10"
@@ -278,7 +284,7 @@ function WelcomePage() {
                 ))}
               </div>
               {a.frequency !== "none" && (
-                <label className="mt-5 block">
+                <label className="mt-3 block">
                   <span className="text-[11px] font-semibold tracking-[0.14em] text-muted-foreground uppercase">
                     Best time of day
                   </span>
@@ -286,7 +292,7 @@ function WelcomePage() {
                     type="time"
                     value={a.reminderTime}
                     onChange={(e) => set("reminderTime", e.target.value)}
-                    className="mt-2 w-40 rounded-2xl bg-paper px-4 py-3 text-sm ring-1 ring-line outline-none focus:ring-2 focus:ring-copper/40"
+                    className="mt-1.5 w-40 rounded-2xl bg-paper px-4 py-2 text-sm ring-1 ring-line outline-none focus:ring-2 focus:ring-copper/40"
                   />
                 </label>
               )}
@@ -295,14 +301,14 @@ function WelcomePage() {
 
           {step === 2 && (
             <div>
-              <h2 className="font-display text-2xl font-semibold">Where do you like to be met?</h2>
-              <div className="mt-5 grid gap-2">
+              <h2 className="font-display text-xl font-semibold">Where do you like to be met?</h2>
+              <div className="mt-3 grid gap-1.5">
                 {CHANNELS.map((c) => (
                   <button
                     key={c.value}
                     type="button"
                     onClick={() => set("channel", c.value)}
-                    className={`flex items-center justify-between rounded-2xl px-4 py-3 text-left ring-1 transition-colors ${
+                    className={`flex items-center justify-between rounded-2xl px-4 py-2 text-left ring-1 transition-colors ${
                       a.channel === c.value
                         ? "bg-copper/12 ring-copper/40"
                         : "bg-paper ring-line hover:bg-copper/10"
@@ -314,7 +320,7 @@ function WelcomePage() {
                 ))}
               </div>
               {a.channel === "sms" && (
-                <label className="mt-5 block">
+                <label className="mt-3 block">
                   <span className="text-[11px] font-semibold tracking-[0.14em] text-muted-foreground uppercase">
                     Mobile number
                   </span>
@@ -322,7 +328,7 @@ function WelcomePage() {
                     value={a.phone}
                     onChange={(e) => set("phone", e.target.value)}
                     placeholder="+1 555 123 4567"
-                    className="mt-2 w-full rounded-2xl bg-paper px-4 py-3 text-sm ring-1 ring-line outline-none focus:ring-2 focus:ring-copper/40"
+                    className="mt-1.5 w-full rounded-2xl bg-paper px-4 py-2 text-sm ring-1 ring-line outline-none focus:ring-2 focus:ring-copper/40"
                   />
                 </label>
               )}
@@ -335,13 +341,13 @@ function WelcomePage() {
 
           {step === 3 && (
             <div>
-              <h2 className="font-display text-2xl font-semibold">
+              <h2 className="font-display text-xl font-semibold">
                 What matters most right now?
               </h2>
               <p className="mt-1 text-sm text-muted-foreground">
                 Pick as many as you like — we'll lead with these.
               </p>
-              <div className="mt-5 flex flex-wrap gap-2">
+              <div className="mt-3 flex flex-wrap gap-2">
                 {FOCUS.map((item) => (
                   <button
                     key={item}
@@ -362,7 +368,7 @@ function WelcomePage() {
 
           {step === 4 && (
             <div>
-              <h2 className="font-display text-2xl font-semibold">
+              <h2 className="font-display text-xl font-semibold">
                 Anything else we should know?
               </h2>
               <p className="mt-1 text-sm text-muted-foreground">
@@ -372,14 +378,14 @@ function WelcomePage() {
               <textarea
                 value={a.notes}
                 onChange={(e) => set("notes", e.target.value)}
-                rows={5}
+                rows={3}
                 placeholder="I'm tracking perimenopause symptoms and want to feel steadier in the afternoons…"
                 className="mt-5 w-full resize-none rounded-2xl bg-paper px-4 py-3 text-sm ring-1 ring-line outline-none focus:ring-2 focus:ring-copper/40"
               />
             </div>
           )}
 
-          <div className="mt-8 flex items-center justify-between gap-3">
+          <div className="mt-5 flex items-center justify-between gap-3">
             <button
               type="button"
               onClick={() => (step === 0 ? navigate({ to: "/" }) : setStep(step - 1))}
@@ -396,32 +402,33 @@ function WelcomePage() {
               {last ? (saving ? "Saving…" : "Enter my oasis") : "Continue"}
             </button>
           </div>
+
+          {/* Women healers through the centuries — one per step */}
+          <figure className="relative mt-4 overflow-hidden rounded-2xl bg-gradient-to-br from-copper/10 via-card to-sage/15 p-4 ring-1 ring-copper/25">
+            <span
+              aria-hidden
+              className="pointer-events-none absolute -top-2 left-3 font-display text-5xl leading-none text-copper/25"
+            >
+              "
+            </span>
+            <figcaption className="text-[10px] font-bold uppercase tracking-[0.18em] text-copper-ink">
+              The women before us · Step {step + 1}
+            </figcaption>
+            <blockquote className="mt-1.5 font-display text-sm leading-snug font-medium sm:text-base">
+              {wisdom.quote}
+            </blockquote>
+            <figcaption className="mt-1.5 text-[11px] text-muted-foreground">
+              <span className="font-semibold text-copper-ink">{wisdom.name}</span>
+              {" · "}
+              {wisdom.era}
+            </figcaption>
+          </figure>
+
+          <p className="mt-3 text-center text-[11px] text-muted-foreground">
+            For personal reflection only — not medical advice.
+          </p>
+          </div>
         </div>
-
-        {/* Women healers through the centuries — one per step */}
-        <figure className="relative mt-6 overflow-hidden rounded-3xl bg-gradient-to-br from-copper/10 via-card to-sage/15 p-6 ring-1 ring-copper/25 sm:p-7">
-          <span
-            aria-hidden
-            className="pointer-events-none absolute -top-3 left-4 font-display text-7xl leading-none text-copper/25"
-          >
-            "
-          </span>
-          <figcaption className="text-[10px] font-bold tracking-[0.18em] text-copper-ink uppercase">
-            The women before us · Step {step + 1}
-          </figcaption>
-          <blockquote className="mt-3 font-display text-lg leading-snug font-medium sm:text-xl">
-            {wisdom.quote}
-          </blockquote>
-          <figcaption className="mt-3 text-xs text-muted-foreground">
-            <span className="font-semibold text-copper-ink">{wisdom.name}</span>
-            {" · "}
-            {wisdom.era}
-          </figcaption>
-        </figure>
-
-        <p className="mt-6 text-center text-[11px] text-muted-foreground">
-          For personal reflection only — not medical advice.
-        </p>
       </div>
     </div>
   );
