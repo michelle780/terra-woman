@@ -272,7 +272,7 @@ function WelcomePage() {
                     key={f.value}
                     type="button"
                     onClick={() => set("frequency", f.value)}
-                    className={`flex items-center justify-between rounded-2xl px-4 py-3 text-left ring-1 transition-colors ${
+                    className={`flex items-center justify-between rounded-2xl px-4 py-2 text-left ring-1 transition-colors ${
                       a.frequency === f.value
                         ? "bg-copper/12 ring-copper/40"
                         : "bg-paper ring-line hover:bg-copper/10"
@@ -308,7 +308,7 @@ function WelcomePage() {
                     key={c.value}
                     type="button"
                     onClick={() => set("channel", c.value)}
-                    className={`flex items-center justify-between rounded-2xl px-4 py-3 text-left ring-1 transition-colors ${
+                    className={`flex items-center justify-between rounded-2xl px-4 py-2 text-left ring-1 transition-colors ${
                       a.channel === c.value
                         ? "bg-copper/12 ring-copper/40"
                         : "bg-paper ring-line hover:bg-copper/10"
