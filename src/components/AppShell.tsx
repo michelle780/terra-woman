@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState, type ReactNode } from "react";
 import { LogOut } from "lucide-react";
-import { useQueryClient } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/lib/auth";
 import oakTree from "@/assets/oak-tree.png";
@@ -34,6 +34,26 @@ export function AppShell({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (!loading && !user) navigate({ to: "/auth", replace: true });
   }, [loading, user, navigate]);
+
+  const { data: profile } = useQuery({
+    queryKey: ["profile", user?.id],
+    enabled: !!user,
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("profiles")
+        .select("*")
+        .eq("id", user!.id)
+        .maybeSingle();
+      if (error) throw error;
+      return data;
+    },
+  });
+
+  useEffect(() => {
+    if (user && profile !== undefined && !profile?.onboarded_at) {
+      navigate({ to: "/welcome", replace: true });
+    }
+  }, [user, profile, navigate]);
 
   async function handleSignOut() {
     if (signingOut) return;
@@ -134,6 +154,8 @@ export function AppShell({ children }: { children: ReactNode }) {
 
         <p className="mt-6 pb-4 text-center text-[11px] text-muted-foreground">
           Terra Woman is your personal wellness oasis · not medical advice ·{" "}
+          <Link to="/welcome" className="font-semibold hover:underline">Preferences</Link>{" "}
+          ·{" "}
           <Link to="/privacy" className="font-semibold hover:underline">Privacy</Link>{" "}
           ·{" "}
           <Link to="/terms" className="font-semibold hover:underline">Terms</Link>
