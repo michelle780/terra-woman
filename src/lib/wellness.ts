@@ -288,16 +288,11 @@ const MOON_PHASES: { name: string; icon: string }[] = [
   { name: "Waning Crescent", icon: "🌘" },
 ];
 
-/** Astronomical moon phase for a date, from the Jan 6, 2000 18:14 UTC new moon. */
+/** Real ephemeris moon phase for a date (noon UTC), via astronomy-engine. */
 export function moonPhase(date = todayKey()): MoonPhase {
-  const SYNODIC = 29.53058867;
-  const refDays = Date.UTC(2000, 0, 6, 18, 14) / 86_400_000;
-  const nowDays = new Date(`${date}T00:00:00Z`).getTime() / 86_400_000;
-  const age = (((nowDays - refDays) % SYNODIC) + SYNODIC) % SYNODIC;
-  const index = Math.round((age / SYNODIC) * 8) % 8;
-  const illumination = Math.round(((1 - Math.cos((age / SYNODIC) * 2 * Math.PI)) / 2) * 100);
-  const phase = MOON_PHASES[index] ?? MOON_PHASES[0]!;
-  return { ...phase, illumination };
+  const d = moonDetail(new Date(`${date}T12:00:00Z`));
+  const match = MOON_PHASES.find((p) => p.name === d.name) ?? MOON_PHASES[0]!;
+  return { name: d.name, icon: match.icon, illumination: d.illumination };
 }
 
 export type DeviceConnection = {
