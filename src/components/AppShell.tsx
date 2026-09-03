@@ -1,6 +1,7 @@
 import { Link, useNavigate } from "@tanstack/react-router";
-import { useEffect, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import { LogOut } from "lucide-react";
+import { useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/lib/auth";
 
@@ -26,10 +27,30 @@ function DeviceChip({ label }: { label: string }) {
 export function AppShell({ children }: { children: ReactNode }) {
   const { user, loading } = useAuth();
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
+  const [signingOut, setSigningOut] = useState(false);
 
   useEffect(() => {
-    if (!loading && !user) navigate({ to: "/auth" });
+    if (!loading && !user) navigate({ to: "/auth", replace: true });
   }, [loading, user, navigate]);
+
+  async function handleSignOut() {
+    if (signingOut) return;
+    setSigningOut(true);
+    try {
+      await queryClient.cancelQueries();
+      queryClient.clear();
+      await supabase.auth.signOut();
+    } catch {
+      // Ignore: local session is cleared below regardless.
+    }
+    try {
+      await supabase.auth.signOut({ scope: "local" });
+    } catch {
+      // Already cleared.
+    }
+    navigate({ to: "/auth", replace: true });
+  }
 
   if (loading || !user) {
     return (
@@ -63,16 +84,14 @@ export function AppShell({ children }: { children: ReactNode }) {
             <DeviceChip label="Oura" />
             <DeviceChip label="Apple Watch" />
             <button
-              onClick={async () => {
-                await supabase.auth.signOut();
-                navigate({ to: "/auth" });
-              }}
+              onClick={handleSignOut}
+              disabled={signingOut}
               aria-label="Sign out"
-              className="grid size-9 place-items-center rounded-full bg-amber/25 text-xs font-bold ring-1 ring-amber/40 transition-colors hover:bg-amber/40"
+              className="inline-flex items-center gap-1.5 rounded-full bg-amber/25 px-3 py-1.5 text-xs font-bold ring-1 ring-amber/40 transition-colors hover:bg-amber/40 disabled:opacity-60"
               title="Sign out"
             >
-              <span className="sr-only">Sign out</span>
               <LogOut className="size-4" aria-hidden />
+              <span>{signingOut ? "Signing out…" : "Sign out"}</span>
             </button>
             <span className="grid size-9 place-items-center rounded-full bg-paper text-xs font-bold ring-1 ring-line">
               {initial}
