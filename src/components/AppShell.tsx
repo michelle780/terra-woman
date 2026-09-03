@@ -138,7 +138,7 @@ export function AppShell({ children }: { children: ReactNode }) {
               <LogOut className="size-4" aria-hidden />
               <span>{signingOut ? "Signing out…" : "Sign out"}</span>
             </button>
-            <span className="grid size-9 place-items-center rounded-full bg-paper text-xs font-bold ring-1 ring-line">
+            <span className="grid size-9 place-items-center rounded-full bg-paper/70 text-xs font-bold ring-1 ring-line backdrop-blur-md">
               {initial}
             </span>
           </div>
@@ -150,8 +150,8 @@ export function AppShell({ children }: { children: ReactNode }) {
               key={item.to}
               to={item.to}
               activeOptions={{ exact: item.to === "/" }}
-              className="rounded-full bg-paper px-4 py-1.5 text-xs font-semibold text-muted-foreground ring-1 ring-line transition-colors"
-              activeProps={{ className: "bg-sky/20 text-foreground ring-sky/30" }}
+              className="rounded-full bg-paper/70 px-4 py-1.5 text-xs font-semibold text-muted-foreground ring-1 ring-line backdrop-blur-md transition-colors"
+              activeProps={{ className: "bg-sky/20 text-foreground ring-sky/30 backdrop-blur-md" }}
             >
               {item.label}
             </Link>
