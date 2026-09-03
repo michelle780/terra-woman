@@ -6,6 +6,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { AppShell } from "@/components/AppShell";
 import { HoroscopeCard } from "@/components/HoroscopeCard";
 import { CheckInCard } from "@/components/CheckInCard";
+import { InviteCard } from "@/components/InviteCard";
+import { Landing } from "@/components/Landing";
 import { useAuth } from "@/lib/auth";
 import {
   fetchJournal,
@@ -22,27 +24,44 @@ import {
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Today — Pulse wellness tracker" },
+      { title: "Pulse — your private daily wellness log" },
       {
         name: "description",
         content:
-          "Your daily readiness, sleep, HRV and steps alongside medication check-ins and how you felt today.",
+          "Track sleep, readiness, HRV, energy, symptoms and medications in one calm private log, and see how they move together.",
       },
-      { property: "og:title", content: "Today — Pulse wellness tracker" },
+      { property: "og:title", content: "Pulse — your private daily wellness log" },
       {
         property: "og:description",
-        content: "Ring and watch metrics, medications and daily journal in one calm dashboard.",
+        content: "Ring and watch metrics, medications, symptoms and daily journal in one place.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
-  component: () => (
+  component: Home,
+});
+
+function Home() {
+  const { user, loading } = useAuth();
+
+  if (loading) {
+    return (
+      <div className="grid min-h-screen place-items-center">
+        <p className="text-sm text-muted-foreground">Loading…</p>
+      </div>
+    );
+  }
+
+  if (!user) return <Landing />;
+
+  return (
     <AppShell>
       <Today />
     </AppShell>
-  ),
-});
+  );
+}
+
 
 function Gauge({ value }: { value: number | null }) {
   const pct = Math.max(0, Math.min(100, value ?? 0));
@@ -408,6 +427,10 @@ function Today() {
 
         <div className="md:col-span-2">
           <HoroscopeCard />
+        </div>
+
+        <div className="md:col-span-2">
+          <InviteCard />
         </div>
       </div>
 
