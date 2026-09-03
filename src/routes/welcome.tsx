@@ -266,7 +266,7 @@ function WelcomePage() {
               <h2 className="font-display text-xl font-semibold">
                 How often would you like a nudge to check in?
               </h2>
-              <div className="mt-3 grid gap-2">
+              <div className="mt-3 grid gap-1.5">
                 {FREQUENCIES.map((f) => (
                   <button
                     key={f.value}
@@ -284,7 +284,7 @@ function WelcomePage() {
                 ))}
               </div>
               {a.frequency !== "none" && (
-                <label className="mt-5 block">
+                <label className="mt-3 block">
                   <span className="text-[11px] font-semibold tracking-[0.14em] text-muted-foreground uppercase">
                     Best time of day
                   </span>
@@ -292,7 +292,7 @@ function WelcomePage() {
                     type="time"
                     value={a.reminderTime}
                     onChange={(e) => set("reminderTime", e.target.value)}
-                    className="mt-2 w-40 rounded-2xl bg-paper px-4 py-3 text-sm ring-1 ring-line outline-none focus:ring-2 focus:ring-copper/40"
+                    className="mt-1.5 w-40 rounded-2xl bg-paper px-4 py-2 text-sm ring-1 ring-line outline-none focus:ring-2 focus:ring-copper/40"
                   />
                 </label>
               )}
@@ -302,7 +302,7 @@ function WelcomePage() {
           {step === 2 && (
             <div>
               <h2 className="font-display text-xl font-semibold">Where do you like to be met?</h2>
-              <div className="mt-3 grid gap-2">
+              <div className="mt-3 grid gap-1.5">
                 {CHANNELS.map((c) => (
                   <button
                     key={c.value}
@@ -320,7 +320,7 @@ function WelcomePage() {
                 ))}
               </div>
               {a.channel === "sms" && (
-                <label className="mt-5 block">
+                <label className="mt-3 block">
                   <span className="text-[11px] font-semibold tracking-[0.14em] text-muted-foreground uppercase">
                     Mobile number
                   </span>
@@ -328,7 +328,7 @@ function WelcomePage() {
                     value={a.phone}
                     onChange={(e) => set("phone", e.target.value)}
                     placeholder="+1 555 123 4567"
-                    className="mt-2 w-full rounded-2xl bg-paper px-4 py-3 text-sm ring-1 ring-line outline-none focus:ring-2 focus:ring-copper/40"
+                    className="mt-1.5 w-full rounded-2xl bg-paper px-4 py-2 text-sm ring-1 ring-line outline-none focus:ring-2 focus:ring-copper/40"
                   />
                 </label>
               )}
