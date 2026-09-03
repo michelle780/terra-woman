@@ -44,7 +44,7 @@ export function LegalLayout({
         </article>
 
         <p className="mt-6 text-center text-[11px] text-muted-foreground">
-          The Bigger Picture is a personal wellness log · not medical advice
+          The Bigger Picture is your personal wellness oasis · not medical advice
         </p>
       </div>
     </div>
