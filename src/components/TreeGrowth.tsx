@@ -24,12 +24,12 @@ export function TreeGrowth({ step, total }: { step: number; total: number }) {
         viewBox="0 0 220 260"
         role="img"
         aria-label={`Growth stage ${stage + 1} of ${STAGE_LABELS.length}: ${STAGE_LABELS[stage]}`}
-        className="h-44 w-auto text-copper sm:h-52"
+        className="h-40 w-auto text-copper sm:h-48"
       >
         <g
           fill="none"
           stroke="currentColor"
-          strokeWidth="1"
+          strokeWidth="1.15"
           strokeLinecap="round"
           strokeLinejoin="round"
         >
@@ -100,9 +100,9 @@ export function TreeGrowth({ step, total }: { step: number; total: number }) {
 
           {/* canopy */}
           <g opacity={on(4)} style={{ transition: "opacity 900ms ease 150ms" }}>
-            <path d="M110 52 C74 52 52 70 52 90 C52 104 62 114 74 118" opacity="0.55" />
-            <path d="M110 52 C146 52 168 70 168 90 C168 104 158 114 146 118" opacity="0.55" />
-            <path d="M74 118 C86 124 98 126 110 126 C122 126 134 124 146 118" opacity="0.35" />
+            <path d="M110 52 C74 52 52 70 52 90 C52 104 62 114 74 118" opacity="0.8" />
+            <path d="M110 52 C146 52 168 70 168 90 C168 104 158 114 146 118" opacity="0.8" />
+            <path d="M74 118 C86 124 98 126 110 126 C122 126 134 124 146 118" opacity="0.5" />
             <circle cx="110" cy="40" r="9" opacity="0.5" />
             <circle cx="110" cy="40" r="3.2" fill="currentColor" stroke="none" opacity="0.6" />
           </g>
@@ -129,7 +129,7 @@ export function TreeGrowth({ step, total }: { step: number; total: number }) {
               transform={`rotate(${i % 2 === 0 ? -32 : 32} ${leaf.x} ${leaf.y})`}
               fill="currentColor"
               stroke="none"
-              opacity={on(leaf.from) * 0.35}
+              opacity={on(leaf.from) * 0.5}
               style={{ transition: "opacity 800ms ease 200ms" }}
             />
           ))}
