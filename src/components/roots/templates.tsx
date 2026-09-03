@@ -34,8 +34,8 @@ import {
 export type RootsCardProps = {
   record: RootsRecord;
   /** "card" = archive feed, "share" = 1080x1350 portrait proportions. */
-  format?: "card" | "share";
-  className?: string;
+  format?: "card" | "share" | undefined;
+  className?: string | undefined;
 };
 
 const TYPE_LABEL: Record<string, string> = {
@@ -59,8 +59,8 @@ function Frame({
 }: {
   children: ReactNode;
   tone: "cream" | "forest";
-  format?: "card" | "share";
-  className?: string;
+  format?: "card" | "share" | undefined;
+  className?: string | undefined;
 }) {
   const { ref, className: revealed } = useReveal<HTMLElement>();
   return (
@@ -350,7 +350,7 @@ export function LivingTreeCard({ record: r, format, className }: RootsCardProps)
 
 export const TEMPLATE_COMPONENTS: Record<
   VisualTemplate,
-  (props: RootsCardProps) => JSX.Element
+  (props: RootsCardProps) => ReactNode
 > = {
   herbarium: HerbariumCard,
   woman: WomanCard,
