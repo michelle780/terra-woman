@@ -311,27 +311,48 @@ export type Database = {
         Row: {
           birth_date: string | null
           birth_time: string | null
+          checkin_frequency: string | null
+          contact_phone: string | null
           created_at: string
           display_name: string | null
+          focus_areas: string[]
           id: string
+          onboarded_at: string | null
+          onboarding_notes: string | null
+          preferred_channel: string | null
+          reminder_time: string | null
           updated_at: string
           zodiac_sign: string | null
         }
         Insert: {
           birth_date?: string | null
           birth_time?: string | null
+          checkin_frequency?: string | null
+          contact_phone?: string | null
           created_at?: string
           display_name?: string | null
+          focus_areas?: string[]
           id: string
+          onboarded_at?: string | null
+          onboarding_notes?: string | null
+          preferred_channel?: string | null
+          reminder_time?: string | null
           updated_at?: string
           zodiac_sign?: string | null
         }
         Update: {
           birth_date?: string | null
           birth_time?: string | null
+          checkin_frequency?: string | null
+          contact_phone?: string | null
           created_at?: string
           display_name?: string | null
+          focus_areas?: string[]
           id?: string
+          onboarded_at?: string | null
+          onboarding_notes?: string | null
+          preferred_channel?: string | null
+          reminder_time?: string | null
           updated_at?: string
           zodiac_sign?: string | null
         }
