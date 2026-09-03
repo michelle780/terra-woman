@@ -30,7 +30,7 @@ export function DailyQuoteCard() {
         <div className="flex items-center gap-2.5">
           <span className="h-px w-8 bg-copper/60" aria-hidden />
           <p
-            className="text-[11px] font-semibold uppercase tracking-[0.28em] text-copper"
+            className="text-[11px] font-semibold uppercase tracking-[0.28em] text-copper-ink"
             style={{ fontFamily: "var(--font-sans)" }}
           >
             Quote of the day
