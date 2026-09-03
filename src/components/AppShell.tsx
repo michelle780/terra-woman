@@ -154,6 +154,8 @@ export function AppShell({ children }: { children: ReactNode }) {
 
         <p className="mt-6 pb-4 text-center text-[11px] text-muted-foreground">
           Terra Woman is your personal wellness oasis · not medical advice ·{" "}
+          <Link to="/welcome" className="font-semibold hover:underline">Preferences</Link>{" "}
+          ·{" "}
           <Link to="/privacy" className="font-semibold hover:underline">Privacy</Link>{" "}
           ·{" "}
           <Link to="/terms" className="font-semibold hover:underline">Terms</Link>
