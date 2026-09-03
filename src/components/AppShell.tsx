@@ -84,16 +84,14 @@ export function AppShell({ children }: { children: ReactNode }) {
             <DeviceChip label="Oura" />
             <DeviceChip label="Apple Watch" />
             <button
-              onClick={async () => {
-                await supabase.auth.signOut();
-                navigate({ to: "/auth" });
-              }}
+              onClick={handleSignOut}
+              disabled={signingOut}
               aria-label="Sign out"
-              className="grid size-9 place-items-center rounded-full bg-amber/25 text-xs font-bold ring-1 ring-amber/40 transition-colors hover:bg-amber/40"
+              className="inline-flex items-center gap-1.5 rounded-full bg-amber/25 px-3 py-1.5 text-xs font-bold ring-1 ring-amber/40 transition-colors hover:bg-amber/40 disabled:opacity-60"
               title="Sign out"
             >
-              <span className="sr-only">Sign out</span>
               <LogOut className="size-4" aria-hidden />
+              <span>{signingOut ? "Signing out…" : "Sign out"}</span>
             </button>
             <span className="grid size-9 place-items-center rounded-full bg-paper text-xs font-bold ring-1 ring-line">
               {initial}
