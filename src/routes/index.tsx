@@ -7,7 +7,7 @@ import { AppShell } from "@/components/AppShell";
 
 import { CheckInCard } from "@/components/CheckInCard";
 import { InviteCard } from "@/components/InviteCard";
-import { Landing } from "@/components/Landing";
+
 import { useAuth } from "@/lib/auth";
 import {
   fetchJournal,
@@ -43,7 +43,7 @@ export const Route = createFileRoute("/")({
 });
 
 function Home() {
-  const { user, loading } = useAuth();
+  const { loading } = useAuth();
 
   if (loading) {
     return (
@@ -53,8 +53,8 @@ function Home() {
     );
   }
 
-  if (!user) return <Landing />;
-
+  // AppShell redirects to /auth when signed out, so Today is always the
+  // landing page after sign-in.
   return (
     <AppShell>
       <Today />
