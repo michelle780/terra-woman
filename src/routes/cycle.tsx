@@ -203,7 +203,7 @@ function Cycle() {
           </div>
         </div>
 
-        <div className="mt-3 flex items-center gap-3 rounded-2xl bg-sage/15 px-4 py-3 ring-1 ring-sage/30">
+        <div className="mt-3 flex items-center gap-3 rounded-2xl bg-mint/15 px-4 py-3 ring-1 ring-mint/30">
           <span className="text-3xl" aria-hidden>
             {moon.icon}
           </span>
