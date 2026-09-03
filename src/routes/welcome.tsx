@@ -200,45 +200,51 @@ function WelcomePage() {
   const wisdom = HEALER_WISDOM[step] ?? HEALER_WISDOM[0]!;
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
-      <div className="mx-auto max-w-2xl px-4 py-10 sm:px-6">
-        <div className="flex items-center gap-3">
-          <div className="grid size-9 shrink-0 place-items-center rounded-full bg-copper/15 ring-1 ring-copper/30">
-            <span className="size-2.5 rounded-full bg-copper" />
+    <div className="flex min-h-screen items-center bg-background text-foreground">
+      <div className="mx-auto w-full max-w-4xl px-4 py-4 sm:px-6">
+        <div className="flex items-center justify-between gap-3">
+          <div className="flex items-center gap-3">
+            <div className="grid size-8 shrink-0 place-items-center rounded-full bg-copper/15 ring-1 ring-copper/30">
+              <span className="size-2 rounded-full bg-copper" />
+            </div>
+            <div className="font-display text-sm font-semibold uppercase leading-none tracking-[0.22em]">
+              Terra Woman
+            </div>
           </div>
-          <div className="font-display text-base font-semibold uppercase tracking-[0.22em] leading-none">
-            Terra Woman
+          <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-copper-ink">
+            Step {step + 1} of {STEPS.length} · {STEPS[step]}
+          </p>
+        </div>
+
+        <div className="mt-3 grid items-start gap-4 md:grid-cols-[300px_1fr] md:gap-6">
+          {/* Left: greeting, growing tree, progress */}
+          <div>
+            <h1 className="font-display text-2xl font-semibold leading-tight sm:text-3xl">
+              Welcome{a.displayName ? `, ${a.displayName.split(" ")[0]}` : ""}.
+            </h1>
+            <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
+              Five short prompts so this feels like your oasis. With each one your tree grows —
+              roots first, the way the healers and midwives before us passed their knowing down.
+            </p>
+
+            <div className="mt-3 flex justify-center md:mt-4">
+              <TreeGrowth step={step} total={STEPS.length} />
+            </div>
+
+            <div className="mt-3 flex gap-1.5" aria-hidden>
+              {STEPS.map((label, i) => (
+                <div
+                  key={label}
+                  className={`h-1 flex-1 rounded-full transition-colors ${
+                    i <= step ? "bg-copper/70" : "bg-line"
+                  }`}
+                />
+              ))}
+            </div>
           </div>
-        </div>
 
-        <h1 className="mt-8 font-display text-4xl leading-tight font-semibold">
-          Welcome{a.displayName ? `, ${a.displayName.split(" ")[0]}` : ""}.
-        </h1>
-        <p className="mt-2 max-w-lg text-sm text-muted-foreground">
-          Five short prompts so this feels like your oasis, not another app. With each one your
-          tree grows — roots first, the way the healers, herbalists and midwives before us
-          passed their knowing down.
-        </p>
-
-        <div className="mt-6">
-          <TreeGrowth step={step} total={STEPS.length} />
-        </div>
-
-        <div className="mt-4 flex gap-1.5" aria-hidden>
-          {STEPS.map((label, i) => (
-            <div
-              key={label}
-              className={`h-1 flex-1 rounded-full transition-colors ${
-                i <= step ? "bg-copper/70" : "bg-line"
-              }`}
-            />
-          ))}
-        </div>
-        <p className="mt-2 text-[11px] font-semibold tracking-[0.14em] text-copper-ink uppercase">
-          Step {step + 1} of {STEPS.length} · {STEPS[step]}
-        </p>
-
-        <div className="mt-6 rounded-3xl bg-card p-6 ring-1 ring-line sm:p-8">
+          {/* Right: the prompt card */}
+          <div className="rounded-3xl bg-card p-4 ring-1 ring-line sm:p-5">
           {step === 0 && (
             <div>
               <h2 className="font-display text-2xl font-semibold">What should we call you?</h2>
