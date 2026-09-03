@@ -21,6 +21,7 @@ import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as TrendsRouteImport } from './routes/trends'
 import { Route as WelcomeRouteImport } from './routes/welcome'
+import { Route as AdminRootsRouteImport } from './routes/admin/roots'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -82,6 +83,11 @@ const WelcomeRoute = WelcomeRouteImport.update({
   path: '/welcome',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminRootsRoute = AdminRootsRouteImport.update({
+  id: '/admin/roots',
+  path: '/admin/roots',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -96,6 +102,7 @@ export interface FileRoutesByFullPath {
   '/terms': typeof TermsRoute
   '/trends': typeof TrendsRoute
   '/welcome': typeof WelcomeRoute
+  '/admin/roots': typeof AdminRootsRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -110,6 +117,7 @@ export interface FileRoutesByTo {
   '/terms': typeof TermsRoute
   '/trends': typeof TrendsRoute
   '/welcome': typeof WelcomeRoute
+  '/admin/roots': typeof AdminRootsRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -125,6 +133,7 @@ export interface FileRoutesById {
   '/terms': typeof TermsRoute
   '/trends': typeof TrendsRoute
   '/welcome': typeof WelcomeRoute
+  '/admin/roots': typeof AdminRootsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -141,6 +150,7 @@ export interface FileRouteTypes {
     | '/terms'
     | '/trends'
     | '/welcome'
+    | '/admin/roots'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -155,6 +165,7 @@ export interface FileRouteTypes {
     | '/terms'
     | '/trends'
     | '/welcome'
+    | '/admin/roots'
   id:
     | '__root__'
     | '/'
@@ -169,6 +180,7 @@ export interface FileRouteTypes {
     | '/terms'
     | '/trends'
     | '/welcome'
+    | '/admin/roots'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -184,6 +196,7 @@ export interface RootRouteChildren {
   TermsRoute: typeof TermsRoute
   TrendsRoute: typeof TrendsRoute
   WelcomeRoute: typeof WelcomeRoute
+  AdminRootsRoute: typeof AdminRootsRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -272,6 +285,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof WelcomeRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/roots': {
+      id: '/admin/roots'
+      path: '/admin/roots'
+      fullPath: '/admin/roots'
+      preLoaderRoute: typeof AdminRootsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -288,6 +308,7 @@ const rootRouteChildren: RootRouteChildren = {
   TermsRoute: TermsRoute,
   TrendsRoute: TrendsRoute,
   WelcomeRoute: WelcomeRoute,
+  AdminRootsRoute: AdminRootsRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
