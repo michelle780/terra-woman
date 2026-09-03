@@ -4,6 +4,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { AppShell } from "@/components/AppShell";
+import { HoroscopeCard } from "@/components/HoroscopeCard";
 import { useAuth } from "@/lib/auth";
 import {
   fetchJournal,
