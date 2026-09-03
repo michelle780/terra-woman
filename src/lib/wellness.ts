@@ -142,7 +142,11 @@ export type CheckinKey =
 export type DailyCheckin = {
   id: string;
   checkin_date: string;
+  mindfulness_minutes?: number | null;
 } & Record<CheckinKey, number | null>;
+
+const CHECKIN_SELECT =
+  "id, checkin_date, happiness, fulfillment, calm, energy, focus, stress, anxiety, mood_swings, bloating, cramps, mindfulness_minutes";
 
 export const CHECKIN_FIELDS: { key: CheckinKey; label: string; low: string; high: string }[] = [
   { key: "happiness", label: "Happiness", low: "Low", high: "Joyful" },
@@ -160,7 +164,7 @@ export const CHECKIN_FIELDS: { key: CheckinKey; label: string; low: string; high
 export async function fetchCheckin(date: string): Promise<DailyCheckin | null> {
   const { data, error } = await supabase
     .from("daily_checkins")
-    .select("id, checkin_date, happiness, fulfillment, calm, energy, focus, stress, anxiety, mood_swings, bloating, cramps")
+    .select(CHECKIN_SELECT)
     .eq("checkin_date", date)
     .maybeSingle();
   if (error) throw error;
@@ -170,7 +174,7 @@ export async function fetchCheckin(date: string): Promise<DailyCheckin | null> {
 export async function fetchCheckins(from: string, to: string): Promise<DailyCheckin[]> {
   const { data, error } = await supabase
     .from("daily_checkins")
-    .select("id, checkin_date, happiness, fulfillment, calm, energy, focus, stress, anxiety, mood_swings, bloating, cramps")
+    .select(CHECKIN_SELECT)
     .gte("checkin_date", from)
     .lte("checkin_date", to)
     .order("checkin_date", { ascending: true });

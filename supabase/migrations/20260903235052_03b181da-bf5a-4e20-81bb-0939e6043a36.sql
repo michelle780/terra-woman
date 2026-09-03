@@ -1,0 +1,1 @@
+ALTER TABLE public.daily_checkins ADD COLUMN IF NOT EXISTS mindfulness_minutes integer CHECK (mindfulness_minutes >= 0 AND mindfulness_minutes <= 1440);
