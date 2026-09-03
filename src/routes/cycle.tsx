@@ -10,6 +10,7 @@ import {
   FLOW_LEVELS,
   averageCycleLength,
   cycleStatus,
+  moonPhase,
   fetchCheckins,
   fetchPeriods,
   periodLength,
