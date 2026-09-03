@@ -90,7 +90,7 @@ function AuthPage() {
         <div className="rise mt-4 rounded-[28px] bg-paper p-6 ring-1 ring-line">
           <p className="eyebrow">{mode === "signin" ? "Welcome back" : "Get started"}</p>
           <h1 className="mt-1 text-3xl leading-tight">
-            {mode === "signin" ? "Sign in to your log" : "Create your wellness log"}
+            {mode === "signin" ? "Step back into your oasis" : "Create your wellness oasis"}
           </h1>
           <p className="mt-2 text-sm text-muted-foreground">
             Sleep, readiness, HRV, medications and how you actually felt — kept privately in one
