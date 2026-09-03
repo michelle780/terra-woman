@@ -35,31 +35,31 @@ export function InviteCard() {
   }
 
   return (
-    <div className="rise flex items-center gap-3 rounded-2xl bg-paper p-3 ring-1 ring-line">
-      <span className="grid size-9 shrink-0 place-items-center rounded-full bg-amber/15 ring-1 ring-amber/30">
-        <Share2 className="size-4 text-amber" aria-hidden />
+    <div className="rise flex items-center gap-2.5 rounded-2xl bg-paper px-3 py-1.5 ring-1 ring-line">
+      <span className="grid size-7 shrink-0 place-items-center rounded-full bg-amber/15 ring-1 ring-amber/30">
+        <Share2 className="size-3.5 text-amber" aria-hidden />
       </span>
       <div className="min-w-0 flex-1">
-        <p className="text-sm font-semibold leading-tight">Invite a friend to Pulse</p>
-        <p className="truncate text-[11px] text-muted-foreground">
+        <p className="text-xs font-semibold leading-tight">Invite a friend to Pulse</p>
+        <p className="truncate text-[10px] text-muted-foreground">
           Your entries stay private — nothing is shared between accounts.
         </p>
       </div>
       <button
         onClick={share}
-        className="shrink-0 rounded-full bg-primary px-3 py-1.5 text-xs font-bold text-primary-foreground transition-opacity hover:opacity-90"
+        className="shrink-0 rounded-full bg-primary px-2.5 py-1 text-[11px] font-bold text-primary-foreground transition-opacity hover:opacity-90"
       >
         Share
       </button>
       <button
         onClick={copy}
         aria-label="Copy invite link"
-        className="grid size-8 shrink-0 place-items-center rounded-full bg-background ring-1 ring-line transition-colors hover:bg-cream"
+        className="grid size-7 shrink-0 place-items-center rounded-full bg-background ring-1 ring-line transition-colors hover:bg-cream"
       >
         {copied ? (
-          <Check className="size-4 text-mint" aria-hidden />
+          <Check className="size-3.5 text-mint" aria-hidden />
         ) : (
-          <Copy className="size-4 text-muted-foreground" aria-hidden />
+          <Copy className="size-3.5 text-muted-foreground" aria-hidden />
         )}
       </button>
     </div>
