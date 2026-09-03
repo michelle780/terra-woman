@@ -94,7 +94,7 @@ function Gauge({ value }: { value: number | null }) {
 
 function Stat({ dot, label, value, sub }: { dot: string; label: string; value: string; sub: string }) {
   return (
-    <div className="rounded-2xl bg-background px-4 py-3">
+    <div className="rounded-2xl bg-background/70 px-4 py-3 backdrop-blur-sm">
       <div className="flex items-center gap-1.5 text-xs font-semibold text-muted-foreground">
         <span className={`size-2 rounded-full ${dot}`} />
         {label}
@@ -248,7 +248,7 @@ function Today() {
 
   return (
     <>
-      <section className="rise mt-4 rounded-[28px] bg-paper p-5 ring-1 ring-line sm:p-7">
+      <section className="rise mt-4 rounded-[28px] bg-paper/75 p-5 ring-1 ring-line backdrop-blur-md sm:p-7">
         <div className="flex flex-col gap-6 md:flex-row md:items-center">
           <Gauge value={metric?.readiness ?? null} />
           <div className="flex-1">
@@ -303,7 +303,7 @@ function Today() {
       </section>
 
       <div className="mt-4 grid gap-4 md:grid-cols-2">
-        <section className="rise rounded-[24px] bg-paper p-5 ring-1 ring-line">
+        <section className="rise rounded-[24px] bg-paper/75 p-5 ring-1 ring-line backdrop-blur-md">
           <div className="flex items-center justify-between">
             <div>
               <p className="eyebrow">Medications</p>
@@ -358,7 +358,7 @@ function Today() {
           </div>
         </section>
 
-        <section className="rise rounded-[24px] bg-paper p-5 ring-1 ring-line">
+        <section className="rise rounded-[24px] bg-paper/75 p-5 ring-1 ring-line backdrop-blur-md">
           <div className="flex items-center justify-between">
             <div>
               <p className="eyebrow">Journal</p>
@@ -433,7 +433,7 @@ function Today() {
 
       <InviteCard />
 
-      <section className="rise mt-4 rounded-[24px] bg-paper p-5 ring-1 ring-line">
+      <section className="rise mt-4 rounded-[24px] bg-paper/75 p-5 ring-1 ring-line backdrop-blur-md">
         <div className="flex items-center justify-between">
           <div>
             <p className="eyebrow">Trends</p>
