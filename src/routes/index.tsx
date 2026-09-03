@@ -7,7 +7,7 @@ import { AppShell } from "@/components/AppShell";
 
 import { CheckInCard } from "@/components/CheckInCard";
 import { InviteCard } from "@/components/InviteCard";
-import { Landing } from "@/components/Landing";
+
 import { useAuth } from "@/lib/auth";
 import {
   fetchJournal,
