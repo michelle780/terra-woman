@@ -79,13 +79,13 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "The Bigger Picture — your calm wellness oasis" },
+      { title: "Terra Woman — your calm wellness oasis" },
       {
         name: "description",
         content:
           "A calm, empowering oasis to track sleep, energy, cycle, symptoms and medications — and see your bigger picture.",
       },
-      { property: "og:title", content: "The Bigger Picture — your calm wellness oasis" },
+      { property: "og:title", content: "Terra Woman — your calm wellness oasis" },
       {
         property: "og:description",
         content:

@@ -10,17 +10,17 @@ import {
 export const Route = createFileRoute("/terms")({
   head: () => ({
     meta: [
-      { title: "Terms of Service — The Bigger Picture wellness tracker" },
+      { title: "Terms of Service — Terra Woman wellness tracker" },
       {
         name: "description",
         content:
-          "The terms that govern your use of The Bigger Picture, a personal wellness log for sleep, medication and symptom tracking.",
+          "The terms that govern your use of Terra Woman, a personal wellness log for sleep, medication and symptom tracking.",
       },
-      { property: "og:title", content: "Terms of Service — The Bigger Picture wellness tracker" },
+      { property: "og:title", content: "Terms of Service — Terra Woman wellness tracker" },
       {
         property: "og:description",
         content:
-          "The terms that govern your use of The Bigger Picture, your personal wellness log.",
+          "The terms that govern your use of Terra Woman, your personal wellness log.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -36,11 +36,11 @@ function TermsPage() {
     <LegalLayout
       title="Terms of Service"
       updated={UPDATED}
-      intro="These terms govern your use of The Bigger Picture. By creating an account or using The Bigger Picture, you agree to them. The Bigger Picture is a personal wellness log and is not a medical device or a substitute for professional medical care."
+      intro="These terms govern your use of Terra Woman. By creating an account or using Terra Woman, you agree to them. Terra Woman is a personal wellness log and is not a medical device or a substitute for professional medical care."
     >
       <LegalSection n={1} title="Your account">
         <LegalP>
-          You must be at least 16 years old to use The Bigger Picture. You agree to provide
+          You must be at least 16 years old to use Terra Woman. You agree to provide
           accurate information and to keep your password and account secure. You
           are responsible for activity that happens through your account.
         </LegalP>
@@ -48,9 +48,9 @@ function TermsPage() {
 
       <LegalSection n={2} title="Not medical advice">
         <LegalP>
-          The Bigger Picture displays wellness metrics, medication check-ins, and
-          self-reported notes for your own awareness only. Nothing in The Bigger Picture is
-          medical advice, diagnosis, or treatment. Do not use The Bigger Picture to make
+          Terra Woman displays wellness metrics, medication check-ins, and
+          self-reported notes for your own awareness only. Nothing in Terra Woman is
+          medical advice, diagnosis, or treatment. Do not use Terra Woman to make
           medical decisions or to replace guidance from a qualified health
           professional. If you have a medical concern, contact a licensed
           provider.
@@ -59,8 +59,8 @@ function TermsPage() {
 
       <LegalSection n={3} title="Your content">
         <LegalP>
-          You retain ownership of the information you enter or sync into The Bigger Picture,
-          including metrics, medications, and journal entries. You grant The Bigger Picture
+          You retain ownership of the information you enter or sync into Terra Woman,
+          including metrics, medications, and journal entries. You grant Terra Woman
           a limited license to host, store, and display that information back to
           you as part of the service.
         </LegalP>
@@ -73,12 +73,12 @@ function TermsPage() {
       <LegalSection n={4} title="Acceptable use">
         <LegalP>You agree not to:</LegalP>
         <LegalUl>
-          <li>Use The Bigger Picture in a way that violates applicable law.</li>
+          <li>Use Terra Woman in a way that violates applicable law.</li>
           <li>
             Attempt to access another user's data or circumvent access controls.
           </li>
           <li>
-            Interfere with, overload, or reverse-engineer The Bigger Picture or its
+            Interfere with, overload, or reverse-engineer Terra Woman or its
             infrastructure.
           </li>
           <li>Enter information you know to be false or misleading.</li>
@@ -89,7 +89,7 @@ function TermsPage() {
         <LegalP>
           When you link a device (such as an Oura ring or Apple Watch), you do
           so through the provider's own authorization and under that
-          provider's terms. The Bigger Picture imports only the metrics you authorize, and
+          provider's terms. Terra Woman imports only the metrics you authorize, and
           we are not responsible for the accuracy or availability of
           third-party device data.
         </LegalP>
@@ -97,7 +97,7 @@ function TermsPage() {
 
       <LegalSection n={6} title="Service availability">
         <LegalP>
-          We strive to keep The Bigger Picture available but do not guarantee uninterrupted
+          We strive to keep Terra Woman available but do not guarantee uninterrupted
           or error-free operation. We may modify, suspend, or discontinue
           features at any time. Where required by law, we will give reasonable
           notice of material changes.
@@ -107,15 +107,15 @@ function TermsPage() {
       <LegalSection n={7} title="Accounts and termination">
         <LegalP>
           You can delete your account at any time. We may suspend or terminate
-          your access if you violate these terms or create a risk to The Bigger Picture or
+          your access if you violate these terms or create a risk to Terra Woman or
           its users.
         </LegalP>
       </LegalSection>
 
       <LegalSection n={8} title="Intellectual property">
         <LegalP>
-          The Bigger Picture, including its design, branding, and software, is owned by or
-          licensed to us. These terms do not grant you any right to use The Bigger Picture's
+          Terra Woman, including its design, branding, and software, is owned by or
+          licensed to us. These terms do not grant you any right to use Terra Woman's
           names, logos, or underlying software except as needed to use the
           service.
         </LegalP>
@@ -123,8 +123,8 @@ function TermsPage() {
 
       <LegalSection n={9} title="Disclaimer of warranties">
         <LegalP>
-          The Bigger Picture is provided "as is" and "as available," without warranties of
-          any kind, whether express or implied. We do not warrant that The Bigger Picture
+          Terra Woman is provided "as is" and "as available," without warranties of
+          any kind, whether express or implied. We do not warrant that Terra Woman
           will be accurate, reliable, timely, or fit for any particular
           purpose, including medical purposes.
         </LegalP>
@@ -132,21 +132,21 @@ function TermsPage() {
 
       <LegalSection n={10} title="Limitation of liability">
         <LegalP>
-          To the fullest extent permitted by law, The Bigger Picture and its providers are
+          To the fullest extent permitted by law, Terra Woman and its providers are
           not liable for any indirect, incidental, special, consequential, or
           punitive damages, or for loss of data, arising from your use of or
-          inability to use The Bigger Picture.
+          inability to use Terra Woman.
         </LegalP>
         <LegalP>
-          Because The Bigger Picture is not a medical device, we are not liable for
-          decisions you make based on information shown in The Bigger Picture.
+          Because Terra Woman is not a medical device, we are not liable for
+          decisions you make based on information shown in Terra Woman.
         </LegalP>
       </LegalSection>
 
       <LegalSection n={11} title="Governing law">
         <LegalP>
           These terms are governed by the laws of the jurisdiction in which
-          The Bigger Picture operates, without regard to conflict-of-law principles. You and
+          Terra Woman operates, without regard to conflict-of-law principles. You and
           we agree to resolve disputes in the courts of that jurisdiction,
           except where mandatory consumer rights require otherwise.
         </LegalP>

@@ -33,7 +33,7 @@ export function Landing({ invitedBy }: { invitedBy?: string | null }) {
             <div className="grid size-9 place-items-center rounded-full bg-copper/15 ring-1 ring-copper/30">
               <span className="size-2.5 rounded-full bg-copper" />
             </div>
-            <span className="font-display text-lg font-semibold">The Bigger Picture</span>
+            <span className="font-display text-lg font-semibold">Terra Woman</span>
           </div>
           <Link
             to="/auth"
@@ -45,7 +45,7 @@ export function Landing({ invitedBy }: { invitedBy?: string | null }) {
 
         <section className="rise mt-6 rounded-[28px] bg-paper p-7 ring-1 ring-line sm:p-10">
           {invitedBy ? (
-            <p className="eyebrow">{invitedBy} invited you to The Bigger Picture</p>
+            <p className="eyebrow">{invitedBy} invited you to Terra Woman</p>
           ) : (
             <p className="eyebrow">A calm oasis for your wellbeing</p>
           )}
@@ -53,7 +53,7 @@ export function Landing({ invitedBy }: { invitedBy?: string | null }) {
             See your bigger picture — body, mood and all.
           </h1>
           <p className="mt-4 max-w-xl text-sm text-muted-foreground sm:text-base">
-            The Bigger Picture is a happy, empowering place to notice how your sleep, energy,
+            Terra Woman is a happy, empowering place to notice how your sleep, energy,
             symptoms, cycle and mood move together. Everything stays private to your own account.
           </p>
           <div className="mt-6 flex flex-wrap items-center gap-3">
@@ -90,7 +90,7 @@ export function Landing({ invitedBy }: { invitedBy?: string | null }) {
         </div>
 
         <footer className="mt-6 flex flex-wrap items-center justify-between gap-3 border-t border-line pt-5 text-xs text-muted-foreground">
-          <span>The Bigger Picture is your personal wellness oasis — not medical advice.</span>
+          <span>Terra Woman is your personal wellness oasis — not medical advice.</span>
           <span className="flex gap-4">
             <Link to="/privacy" className="font-semibold hover:text-foreground">
               Privacy

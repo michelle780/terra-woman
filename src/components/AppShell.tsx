@@ -77,7 +77,7 @@ export function AppShell({ children }: { children: ReactNode }) {
             </div>
             <div className="leading-none">
               <div className="font-display text-lg font-semibold leading-none text-foreground">
-                The Bigger Picture
+                Terra Woman
               </div>
               <div className="mt-1 text-[11px] font-medium tracking-wide text-muted-foreground">
                 your calm, empowering oasis · {today}
@@ -120,7 +120,7 @@ export function AppShell({ children }: { children: ReactNode }) {
         <main>{children}</main>
 
         <p className="mt-6 pb-4 text-center text-[11px] text-muted-foreground">
-          The Bigger Picture is your personal wellness oasis · not medical advice ·{" "}
+          Terra Woman is your personal wellness oasis · not medical advice ·{" "}
           <Link to="/privacy" className="font-semibold hover:underline">Privacy</Link>{" "}
           ·{" "}
           <Link to="/terms" className="font-semibold hover:underline">Terms</Link>

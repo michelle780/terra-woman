@@ -8,13 +8,13 @@ import { useAuth } from "@/lib/auth";
 export const Route = createFileRoute("/auth")({
   head: () => ({
     meta: [
-      { title: "Sign in — The Bigger Picture wellness tracker" },
+      { title: "Sign in — Terra Woman wellness tracker" },
       {
         name: "description",
         content:
-          "Sign in to The Bigger Picture to track sleep, readiness, HRV, medications and daily symptoms in one private log.",
+          "Sign in to Terra Woman to track sleep, readiness, HRV, medications and daily symptoms in one private log.",
       },
-      { property: "og:title", content: "Sign in — The Bigger Picture wellness tracker" },
+      { property: "og:title", content: "Sign in — Terra Woman wellness tracker" },
       {
         property: "og:description",
         content: "Your private daily wellness log for ring, watch and medication data.",
@@ -84,7 +84,7 @@ function AuthPage() {
           <div className="grid size-9 place-items-center rounded-full bg-copper/15 ring-1 ring-copper/30">
             <span className="size-2.5 rounded-full bg-copper" />
           </div>
-          <span className="font-display text-lg font-semibold">The Bigger Picture</span>
+          <span className="font-display text-lg font-semibold">Terra Woman</span>
         </div>
 
         <div className="rise mt-4 rounded-[28px] bg-paper p-6 ring-1 ring-line">
