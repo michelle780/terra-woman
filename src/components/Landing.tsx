@@ -90,7 +90,7 @@ export function Landing({ invitedBy }: { invitedBy?: string | null }) {
         </div>
 
         <footer className="mt-6 flex flex-wrap items-center justify-between gap-3 border-t border-line pt-5 text-xs text-muted-foreground">
-          <span>The Bigger Picture is a personal wellness log — not medical advice.</span>
+          <span>The Bigger Picture is your personal wellness oasis — not medical advice.</span>
           <span className="flex gap-4">
             <Link to="/privacy" className="font-semibold hover:text-foreground">
               Privacy
