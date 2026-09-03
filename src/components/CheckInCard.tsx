@@ -154,6 +154,28 @@ export function CheckInCard() {
             onChange={(v) => setScores((s) => ({ ...s, [key]: v }))}
           />
         ))}
+        <div className="rounded-2xl bg-background px-4 py-3 ring-1 ring-line">
+          <div className="flex items-baseline justify-between gap-2">
+            <span className="text-sm font-semibold">Mindful minutes</span>
+            <span className="text-[10px] font-semibold tracking-wide text-muted-foreground uppercase">
+              Calm, meditation, breathwork
+            </span>
+          </div>
+          <div className="mt-2 flex items-center gap-2">
+            <input
+              type="number"
+              min={0}
+              max={1440}
+              inputMode="numeric"
+              value={mindfulMin}
+              onChange={(e) => setMindfulMin(e.target.value)}
+              placeholder="0"
+              aria-label="Mindful minutes"
+              className="w-20 rounded-lg bg-paper px-2 py-1.5 text-center font-display text-lg font-semibold text-primary ring-1 ring-line focus:ring-2 focus:ring-primary focus:outline-none"
+            />
+            <span className="text-xs text-muted-foreground">min today</span>
+          </div>
+        </div>
       </div>
       <p className="mt-4 text-[11px] text-muted-foreground">
         For personal reflection only — not medical advice. If something feels off, check in with a
