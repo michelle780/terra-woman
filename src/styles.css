@@ -5,7 +5,7 @@
 @custom-variant dark (&:is(.dark *));
 
 /*
- * Pulse design system — blush & sage, warm and cozy.
+ * Terra Woman design system — forest, sage, clay, cream & terracotta.
  * All colors are oklch semantic tokens. Never hardcode colors in components.
  */
 
@@ -51,55 +51,55 @@
   --color-chart-3: var(--chart-3);
   --color-chart-4: var(--chart-4);
   --color-chart-5: var(--chart-5);
-  --font-display: "Cormorant Garamond", ui-serif, serif;
-  --font-sans: "Karla", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Playfair Display", ui-serif, serif;
+  --font-sans: "Lato", ui-sans-serif, system-ui, sans-serif;
 }
 
 :root {
   --radius: 1.5rem;
 
-  /* Blush & Sage palette — warm, cozy, softly feminine */
-  --background: oklch(0.959 0.012 82.9); /* warm cream #FAF6F1 */
-  --foreground: oklch(0.35 0.025 55); /* warm espresso ink */
-  --paper: oklch(0.984 0.009 88);
-  --line: oklch(0.905 0.02 75);
+  /* Terra Woman brand palette — rooted in nature, wisdom within */
+  --background: oklch(0.955 0.012 85); /* cream #F6F2EB */
+  --foreground: oklch(0.28 0.03 135); /* forest #2F3A2E */
+  --paper: oklch(0.982 0.008 88); /* lifted cream for cards */
+  --line: oklch(0.885 0.025 80); /* soft clay-tinted hairline */
 
-  --card: oklch(0.984 0.009 88);
-  --card-foreground: oklch(0.35 0.025 55);
-  --popover: oklch(0.984 0.009 88);
-  --popover-foreground: oklch(0.35 0.025 55);
+  --card: oklch(0.982 0.008 88);
+  --card-foreground: oklch(0.28 0.03 135);
+  --popover: oklch(0.982 0.008 88);
+  --popover-foreground: oklch(0.28 0.03 135);
 
-  --primary: oklch(0.48 0.045 145); /* deep sage #5A6B5C */
-  --primary-foreground: oklch(0.97 0.012 82.9);
-  --secondary: oklch(0.94 0.022 70);
-  --secondary-foreground: oklch(0.35 0.025 55);
+  --primary: oklch(0.28 0.03 135); /* forest #2F3A2E */
+  --primary-foreground: oklch(0.955 0.012 85);
+  --secondary: oklch(0.92 0.025 85); /* pale clay */
+  --secondary-foreground: oklch(0.28 0.03 135);
 
-  --muted: oklch(0.94 0.022 70);
-  --muted-foreground: oklch(0.55 0.03 60); /* warm taupe */
-  --accent: oklch(0.83 0.05 15); /* blush */
-  --accent-foreground: oklch(0.35 0.025 55);
+  --muted: oklch(0.92 0.025 85);
+  --muted-foreground: oklch(0.5 0.03 100); /* sage-clay taupe */
+  --accent: oklch(0.77 0.045 75); /* clay #CDB8A2 */
+  --accent-foreground: oklch(0.28 0.03 135);
 
-  --destructive: oklch(0.58 0.14 25);
-  --destructive-foreground: oklch(0.984 0.009 88);
+  --destructive: oklch(0.5 0.13 35);
+  --destructive-foreground: oklch(0.982 0.008 88);
 
-  --border: oklch(0.905 0.02 75);
-  --input: oklch(0.905 0.02 75);
-  --ring: oklch(0.7 0.06 15);
+  --border: oklch(0.885 0.025 80);
+  --input: oklch(0.885 0.025 80);
+  --ring: oklch(0.52 0.045 140);
 
-  /* Metric accents: blush, rosewood, sage, honey */
-  --sky: oklch(0.83 0.05 15); /* blush #E8B4B8 */
-  --rose: oklch(0.62 0.1 12); /* rosewood */
-  --mint: oklch(0.72 0.06 140); /* sage #A8BFA0 */
-  --amber: oklch(0.8 0.08 75); /* honey */
-  --copper: oklch(0.7 0.06 55); /* rose-gold/copper editorial accent */
-  --copper-soft: oklch(0.82 0.05 55);
-  --copper-ink: oklch(0.5 0.07 55); /* darker copper for text contrast */
+  /* Metric accents: terracotta, deep terracotta, sage, clay */
+  --sky: oklch(0.65 0.09 45); /* soft terracotta */
+  --rose: oklch(0.5 0.11 42); /* terracotta #A25D44 */
+  --mint: oklch(0.52 0.045 140); /* sage #6C7A63 */
+  --amber: oklch(0.77 0.045 75); /* clay #CDB8A2 */
+  --copper: oklch(0.5 0.11 42); /* terracotta — brand accent */
+  --copper-soft: oklch(0.72 0.07 55); /* light terracotta for spine/rings */
+  --copper-ink: oklch(0.44 0.1 42); /* darker terracotta for text contrast */
 
-  --chart-1: oklch(0.62 0.1 12);
-  --chart-2: oklch(0.72 0.06 140);
-  --chart-3: oklch(0.83 0.05 15);
-  --chart-4: oklch(0.8 0.08 75);
-  --chart-5: oklch(0.48 0.045 145);
+  --chart-1: oklch(0.5 0.11 42);
+  --chart-2: oklch(0.52 0.045 140);
+  --chart-3: oklch(0.77 0.045 75);
+  --chart-4: oklch(0.28 0.03 135);
+  --chart-5: oklch(0.65 0.09 45);
 }
 
 @layer base {
