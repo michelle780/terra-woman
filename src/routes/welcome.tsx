@@ -228,7 +228,7 @@ function WelcomePage() {
                     className={`flex items-center justify-between rounded-2xl px-4 py-3 text-left ring-1 transition-colors ${
                       a.frequency === f.value
                         ? "bg-copper/12 ring-copper/40"
-                        : "bg-paper ring-line hover:bg-blush/20"
+                        : "bg-paper ring-line hover:bg-copper/10"
                     }`}
                   >
                     <span className="text-sm font-semibold">{f.label}</span>
@@ -264,7 +264,7 @@ function WelcomePage() {
                     className={`flex items-center justify-between rounded-2xl px-4 py-3 text-left ring-1 transition-colors ${
                       a.channel === c.value
                         ? "bg-copper/12 ring-copper/40"
-                        : "bg-paper ring-line hover:bg-blush/20"
+                        : "bg-paper ring-line hover:bg-copper/10"
                     }`}
                   >
                     <span className="text-sm font-semibold">{c.label}</span>
@@ -309,7 +309,7 @@ function WelcomePage() {
                     className={`rounded-full px-4 py-2 text-xs font-semibold ring-1 transition-colors ${
                       a.focus.includes(item)
                         ? "bg-copper/15 text-copper-ink ring-copper/40"
-                        : "bg-paper text-muted-foreground ring-line hover:bg-blush/20"
+                        : "bg-paper text-muted-foreground ring-line hover:bg-copper/10"
                     }`}
                   >
                     {item}
@@ -350,7 +350,7 @@ function WelcomePage() {
               type="button"
               disabled={saving}
               onClick={() => (last ? finish() : setStep(step + 1))}
-              className="rounded-full bg-copper px-6 py-2.5 text-xs font-bold text-copper-foreground transition-opacity hover:opacity-90 disabled:opacity-60"
+              className="rounded-full bg-primary px-6 py-2.5 text-xs font-bold text-primary-foreground transition-opacity hover:opacity-90 disabled:opacity-60"
             >
               {last ? (saving ? "Saving…" : "Enter my oasis") : "Continue"}
             </button>
