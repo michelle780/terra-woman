@@ -7,8 +7,10 @@ import { useAuth } from "@/lib/auth";
 const NAV = [
   { to: "/", label: "Today" },
   { to: "/trends", label: "Trends" },
+  { to: "/cycle", label: "Cycle" },
   { to: "/medications", label: "Meds" },
   { to: "/journal", label: "Journal" },
+  { to: "/devices", label: "Devices" },
 ] as const;
 
 function DeviceChip({ label }: { label: string }) {
