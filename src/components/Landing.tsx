@@ -73,6 +73,11 @@ export function Landing({ invitedBy }: { invitedBy?: string | null }) {
         </section>
 
         <div className="mt-4 grid gap-4 sm:grid-cols-2">
+          <LandingMoon />
+          <LandingAstrology />
+        </div>
+
+        <div className="mt-4 grid gap-4 sm:grid-cols-2">
           {FEATURES.map((f) => (
             <section key={f.title} className="rise rounded-[24px] bg-paper p-5 ring-1 ring-line">
               <div className="flex items-center gap-2 text-xs font-semibold text-muted-foreground">
