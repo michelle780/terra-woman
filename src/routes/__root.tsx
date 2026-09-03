@@ -79,17 +79,17 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "The Bigger Picture — personal wellness tracker" },
+      { title: "The Bigger Picture — your calm wellness oasis" },
       {
         name: "description",
         content:
-          "A private daily log for Oura and Apple Watch metrics, medications, symptoms and mood.",
+          "A calm, empowering oasis to track sleep, energy, cycle, symptoms and medications — and see your bigger picture.",
       },
-      { property: "og:title", content: "The Bigger Picture — personal wellness tracker" },
+      { property: "og:title", content: "The Bigger Picture — your calm wellness oasis" },
       {
         property: "og:description",
         content:
-          "A private daily log for Oura and Apple Watch metrics, medications, symptoms and mood.",
+          "A calm, empowering oasis to track sleep, energy, cycle, symptoms and medications — and see your bigger picture.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
