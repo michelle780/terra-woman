@@ -234,7 +234,9 @@ export function averageCycleLength(periods: CyclePeriod[]): number | null {
   const starts = periods.map((p) => p.start_date).sort();
   if (starts.length < 2) return null;
   let total = 0;
-  for (let i = 1; i < starts.length; i += 1) total += daysBetween(starts[i - 1], starts[i]);
+  for (let i = 1; i < starts.length; i += 1) {
+    total += daysBetween(starts[i - 1] as string, starts[i] as string);
+  }
   return Math.round(total / (starts.length - 1));
 }
 
