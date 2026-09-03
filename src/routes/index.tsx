@@ -402,6 +402,10 @@ function Today() {
         </section>
 
         <div className="md:col-span-2">
+          <CheckInCard />
+        </div>
+
+        <div className="md:col-span-2">
           <HoroscopeCard />
         </div>
       </div>
