@@ -410,12 +410,12 @@ function WelcomePage() {
             The women before us · Step {step + 1}
           </figcaption>
           <blockquote className="mt-3 font-display text-lg leading-snug font-medium sm:text-xl">
-            {HEALER_WISDOM[step].quote}
+            {wisdom.quote}
           </blockquote>
           <figcaption className="mt-3 text-xs text-muted-foreground">
-            <span className="font-semibold text-copper-ink">{HEALER_WISDOM[step].name}</span>
+            <span className="font-semibold text-copper-ink">{wisdom.name}</span>
             {" · "}
-            {HEALER_WISDOM[step].era}
+            {wisdom.era}
           </figcaption>
         </figure>
 
