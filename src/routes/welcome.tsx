@@ -219,7 +219,7 @@ function WelcomePage() {
         <div className="mt-3 grid items-start gap-4 md:grid-cols-[300px_1fr] md:gap-6">
           {/* Left: greeting, growing tree, progress */}
           <div>
-            <h1 className="font-display text-2xl font-semibold leading-tight sm:text-3xl">
+            <h1 className="font-display text-xl font-semibold leading-tight sm:text-3xl">
               Welcome{a.displayName ? `, ${a.displayName.split(" ")[0]}` : ""}.
             </h1>
             <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
@@ -247,7 +247,7 @@ function WelcomePage() {
           <div className="rounded-3xl bg-card p-4 ring-1 ring-line sm:p-5">
           {step === 0 && (
             <div>
-              <h2 className="font-display text-2xl font-semibold">What should we call you?</h2>
+              <h2 className="font-display text-xl font-semibold">What should we call you?</h2>
               <p className="mt-1 text-sm text-muted-foreground">
                 Just a first name is perfect — it's only ever shown to you.
               </p>
@@ -256,17 +256,17 @@ function WelcomePage() {
                 value={a.displayName}
                 onChange={(e) => set("displayName", e.target.value)}
                 placeholder="Your name"
-                className="mt-5 w-full rounded-2xl bg-paper px-4 py-3 text-sm ring-1 ring-line outline-none focus:ring-2 focus:ring-copper/40"
+                className="mt-3 w-full rounded-2xl bg-paper px-4 py-3 text-sm ring-1 ring-line outline-none focus:ring-2 focus:ring-copper/40"
               />
             </div>
           )}
 
           {step === 1 && (
             <div>
-              <h2 className="font-display text-2xl font-semibold">
+              <h2 className="font-display text-xl font-semibold">
                 How often would you like a nudge to check in?
               </h2>
-              <div className="mt-5 grid gap-2">
+              <div className="mt-3 grid gap-2">
                 {FREQUENCIES.map((f) => (
                   <button
                     key={f.value}
@@ -301,8 +301,8 @@ function WelcomePage() {
 
           {step === 2 && (
             <div>
-              <h2 className="font-display text-2xl font-semibold">Where do you like to be met?</h2>
-              <div className="mt-5 grid gap-2">
+              <h2 className="font-display text-xl font-semibold">Where do you like to be met?</h2>
+              <div className="mt-3 grid gap-2">
                 {CHANNELS.map((c) => (
                   <button
                     key={c.value}
@@ -341,13 +341,13 @@ function WelcomePage() {
 
           {step === 3 && (
             <div>
-              <h2 className="font-display text-2xl font-semibold">
+              <h2 className="font-display text-xl font-semibold">
                 What matters most right now?
               </h2>
               <p className="mt-1 text-sm text-muted-foreground">
                 Pick as many as you like — we'll lead with these.
               </p>
-              <div className="mt-5 flex flex-wrap gap-2">
+              <div className="mt-3 flex flex-wrap gap-2">
                 {FOCUS.map((item) => (
                   <button
                     key={item}
@@ -368,7 +368,7 @@ function WelcomePage() {
 
           {step === 4 && (
             <div>
-              <h2 className="font-display text-2xl font-semibold">
+              <h2 className="font-display text-xl font-semibold">
                 Anything else we should know?
               </h2>
               <p className="mt-1 text-sm text-muted-foreground">
@@ -378,7 +378,7 @@ function WelcomePage() {
               <textarea
                 value={a.notes}
                 onChange={(e) => set("notes", e.target.value)}
-                rows={5}
+                rows={3}
                 placeholder="I'm tracking perimenopause symptoms and want to feel steadier in the afternoons…"
                 className="mt-5 w-full resize-none rounded-2xl bg-paper px-4 py-3 text-sm ring-1 ring-line outline-none focus:ring-2 focus:ring-copper/40"
               />
