@@ -20,7 +20,8 @@ export function TreeGrowth({ step, total }: { step: number; total: number }) {
   const stage = Math.max(0, Math.min(STAGE_LABELS.length - 1, step));
   // Reveal the emblem bottom-up: roots first, then the woman/trunk,
   // then the branches and moon at the crown.
-  const reveal = [0.32, 0.52, 0.72, 0.88, 1][stage];
+  const REVEAL_STAGES = [0.32, 0.52, 0.72, 0.88, 1] as const;
+  const reveal = REVEAL_STAGES[stage] ?? 1;
   const hidden = (1 - reveal) * 100;
 
   return (
