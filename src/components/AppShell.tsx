@@ -4,7 +4,7 @@ import { LogOut } from "lucide-react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/lib/auth";
-import oakTree from "@/assets/oak-tree.png";
+import terraTree from "@/assets/terra-tree.png";
 
 const NAV = [
   { to: "/", label: "Today" },
@@ -95,11 +95,11 @@ export function AppShell({ children }: { children: ReactNode }) {
         className="pointer-events-none fixed inset-0 z-0 flex items-center justify-center overflow-hidden"
       >
         <img
-          src={oakTree}
+          src={terraTree}
           alt=""
-          width={1024}
-          height={1536}
-          className="h-[115vh] w-auto max-w-none opacity-[0.07] mix-blend-multiply"
+          width={1005}
+          height={1007}
+          className="h-[92vh] w-auto max-w-none opacity-[0.06]"
         />
       </div>
       <div className="relative z-10 mx-auto max-w-5xl px-4 py-5 sm:px-6">
