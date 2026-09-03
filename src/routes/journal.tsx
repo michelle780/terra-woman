@@ -156,7 +156,7 @@ function Journal() {
         <button
           onClick={() => save.mutate()}
           disabled={save.isPending}
-          className="mt-3 rounded-full bg-sky px-5 py-2 text-xs font-bold text-primary-foreground disabled:opacity-60"
+          className="mt-3 rounded-full bg-primary px-5 py-2 text-xs font-bold text-primary-foreground disabled:opacity-60"
         >
           {entry ? "Update entry" : "Save entry"}
         </button>

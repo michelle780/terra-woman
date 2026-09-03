@@ -155,7 +155,7 @@ function MetricsForm({ metric, onDone }: { metric?: DailyMetric | undefined; onD
         <button
           type="submit"
           disabled={save.isPending}
-          className="rounded-full bg-sky px-4 py-2 text-xs font-bold text-primary-foreground disabled:opacity-60"
+          className="rounded-full bg-primary px-4 py-2 text-xs font-bold text-primary-foreground disabled:opacity-60"
         >
           Save numbers
         </button>
