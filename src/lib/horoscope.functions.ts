@@ -1,6 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
+import { moonDetail, placements } from "@/lib/astro";
 
 export const ZODIAC_SIGNS = [
   "Aries",
@@ -41,6 +42,14 @@ export const getDailyHoroscope = createServerFn({ method: "GET" })
       .maybeSingle();
     if (existing?.text) return { text: existing.text as string, date: today };
 
+    // Real sky data for today, from the ephemeris — the reading is grounded in it.
+    const now = new Date();
+    const moon = moonDetail(now);
+    const sky = placements(now)
+      .map((p) => `${p.body} ${p.degree}° ${p.sign}${p.retrograde ? " retrograde" : ""}`)
+      .join(", ");
+    const skyLine = `${sky}. Moon phase: ${moon.name}, ${moon.illumination}% illuminated.`;
+
     const apiKey = process.env["LOVABLE_API_KEY"]!;
     const res = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
       method: "POST",
@@ -54,11 +63,11 @@ export const getDailyHoroscope = createServerFn({ method: "GET" })
           {
             role: "system",
             content:
-              "You write short daily horoscopes for a personal wellness app. Warm, grounded, non-deterministic tone — suggest tendencies and gentle prompts, never predictions of harm, never medical advice. 3-4 sentences, plain text, no lists, no emoji, no headers.",
+              "You write short daily horoscopes for a personal wellness app, using the real planetary positions supplied by the app. Reference at least one actual transit or the real moon phase by name. Warm, grounded, non-deterministic tone — suggest tendencies and gentle prompts, never predictions of harm, never medical advice. Do not invent positions that contradict the data given. 3-4 sentences, plain text, no lists, no emoji, no headers.",
           },
           {
             role: "user",
-            content: `Write today's horoscope for ${data.sign} for ${today}. Focus on energy, rest, and self-care.`,
+            content: `Write today's horoscope for a ${data.sign} sun on ${today}. Actual sky right now (geocentric ecliptic longitudes): ${skyLine} Focus on energy, rest, and self-care.`,
           },
         ],
         max_tokens: 200,

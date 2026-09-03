@@ -309,6 +309,8 @@ export type Database = {
       }
       profiles: {
         Row: {
+          birth_date: string | null
+          birth_time: string | null
           created_at: string
           display_name: string | null
           id: string
@@ -316,6 +318,8 @@ export type Database = {
           zodiac_sign: string | null
         }
         Insert: {
+          birth_date?: string | null
+          birth_time?: string | null
           created_at?: string
           display_name?: string | null
           id: string
@@ -323,6 +327,8 @@ export type Database = {
           zodiac_sign?: string | null
         }
         Update: {
+          birth_date?: string | null
+          birth_time?: string | null
           created_at?: string
           display_name?: string | null
           id?: string

@@ -1,0 +1,149 @@
+import * as Astronomy from "astronomy-engine";
+
+/**
+ * Real ephemeris-backed astrology helpers (astronomy-engine).
+ * Signs come from actual ecliptic longitudes, not date-range tables.
+ */
+
+export const ZODIAC = [
+  "Aries",
+  "Taurus",
+  "Gemini",
+  "Cancer",
+  "Leo",
+  "Virgo",
+  "Libra",
+  "Scorpio",
+  "Sagittarius",
+  "Capricorn",
+  "Aquarius",
+  "Pisces",
+] as const;
+
+export type ZodiacSign = (typeof ZODIAC)[number];
+
+export const SIGN_GLYPHS: Record<ZodiacSign, string> = {
+  Aries: "♈",
+  Taurus: "♉",
+  Gemini: "♊",
+  Cancer: "♋",
+  Leo: "♌",
+  Virgo: "♍",
+  Libra: "♎",
+  Scorpio: "♏",
+  Sagittarius: "♐",
+  Capricorn: "♑",
+  Aquarius: "♒",
+  Pisces: "♓",
+};
+
+export function signFromLongitude(lon: number): ZodiacSign {
+  const norm = ((lon % 360) + 360) % 360;
+  return ZODIAC[Math.floor(norm / 30)] ?? "Aries";
+}
+
+export function degreeInSign(lon: number): number {
+  const norm = ((lon % 360) + 360) % 360;
+  return norm % 30;
+}
+
+function geoLongitude(body: Astronomy.Body, date: Date): number {
+  if (body === Astronomy.Body.Moon) return Astronomy.EclipticGeoMoon(date).lon;
+  const vec = Astronomy.GeoVector(body, date, true);
+  return Astronomy.Ecliptic(vec).elon;
+}
+
+/** Parse a YYYY-MM-DD (plus optional HH:MM) as a UTC instant. */
+export function toUtcDate(dateKey: string, time?: string | null): Date {
+  const t = time && /^\d{2}:\d{2}/.test(time) ? time.slice(0, 5) : "12:00";
+  return new Date(`${dateKey}T${t}:00Z`);
+}
+
+/** True sun sign for a birth date, from the Sun's ecliptic longitude. */
+export function sunSignForBirth(birthDate: string, birthTime?: string | null): ZodiacSign {
+  return signFromLongitude(geoLongitude(Astronomy.Body.Sun, toUtcDate(birthDate, birthTime)));
+}
+
+export type Placement = { body: string; sign: ZodiacSign; degree: number; retrograde?: boolean };
+
+const TRANSIT_BODIES: { name: string; body: Astronomy.Body }[] = [
+  { name: "Sun", body: Astronomy.Body.Sun },
+  { name: "Moon", body: Astronomy.Body.Moon },
+  { name: "Mercury", body: Astronomy.Body.Mercury },
+  { name: "Venus", body: Astronomy.Body.Venus },
+  { name: "Mars", body: Astronomy.Body.Mars },
+  { name: "Jupiter", body: Astronomy.Body.Jupiter },
+  { name: "Saturn", body: Astronomy.Body.Saturn },
+];
+
+/** Real planetary placements for an instant (default: now). */
+export function placements(date: Date = new Date()): Placement[] {
+  return TRANSIT_BODIES.map(({ name, body }) => {
+    const lon = geoLongitude(body, date);
+    let retrograde: boolean | undefined;
+    if (body !== Astronomy.Body.Sun && body !== Astronomy.Body.Moon) {
+      const later = geoLongitude(body, new Date(date.getTime() + 86_400_000));
+      let delta = later - lon;
+      if (delta > 180) delta -= 360;
+      if (delta < -180) delta += 360;
+      retrograde = delta < 0;
+    }
+    return {
+      body: name,
+      sign: signFromLongitude(lon),
+      degree: Math.round(degreeInSign(lon) * 10) / 10,
+      ...(retrograde === undefined ? {} : { retrograde }),
+    };
+  });
+}
+
+/** Natal placements for a birth date (time optional; defaults to 12:00 UTC). */
+export function natalPlacements(birthDate: string, birthTime?: string | null): Placement[] {
+  return placements(toUtcDate(birthDate, birthTime));
+}
+
+export type MoonDetail = {
+  name: string;
+  icon: string;
+  illumination: number;
+  /** 0-360 sun-moon elongation */
+  angle: number;
+  sign: ZodiacSign;
+  degree: number;
+  age: number;
+};
+
+const PHASES: { name: string; icon: string }[] = [
+  { name: "New Moon", icon: "🌑" },
+  { name: "Waxing Crescent", icon: "🌒" },
+  { name: "First Quarter", icon: "🌓" },
+  { name: "Waxing Gibbous", icon: "🌔" },
+  { name: "Full Moon", icon: "🌕" },
+  { name: "Waning Gibbous", icon: "🌖" },
+  { name: "Last Quarter", icon: "🌗" },
+  { name: "Waning Crescent", icon: "🌘" },
+];
+
+/** Precise moon phase, illumination and zodiac position for an instant. */
+export function moonDetail(date: Date = new Date()): MoonDetail {
+  const angle = Astronomy.MoonPhase(date);
+  const illum = Astronomy.Illumination(Astronomy.Body.Moon, date);
+  const index = Math.round(angle / 45) % 8;
+  const phase = PHASES[index] ?? PHASES[0]!;
+  const lon = Astronomy.EclipticGeoMoon(date).lon;
+  return {
+    name: phase.name,
+    icon: phase.icon,
+    illumination: Math.round(illum.phase_fraction * 100),
+    angle: Math.round(angle * 10) / 10,
+    sign: signFromLongitude(lon),
+    degree: Math.round(degreeInSign(lon) * 10) / 10,
+    age: Math.round((angle / 360) * 29.530588 * 10) / 10,
+  };
+}
+
+/** Exact next occurrence of a quarter phase (0 new, 90 first, 180 full, 270 last). */
+export function nextPhase(targetAngle: 0 | 90 | 180 | 270, from: Date = new Date()): Date | null {
+  const t = Astronomy.SearchMoonPhase(targetAngle, from, 40);
+  return t ? t.date : null;
+}
