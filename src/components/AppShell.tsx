@@ -27,10 +27,30 @@ function DeviceChip({ label }: { label: string }) {
 export function AppShell({ children }: { children: ReactNode }) {
   const { user, loading } = useAuth();
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
+  const [signingOut, setSigningOut] = useState(false);
 
   useEffect(() => {
-    if (!loading && !user) navigate({ to: "/auth" });
+    if (!loading && !user) navigate({ to: "/auth", replace: true });
   }, [loading, user, navigate]);
+
+  async function handleSignOut() {
+    if (signingOut) return;
+    setSigningOut(true);
+    try {
+      await queryClient.cancelQueries();
+      queryClient.clear();
+      await supabase.auth.signOut();
+    } catch {
+      // Ignore: local session is cleared below regardless.
+    }
+    try {
+      await supabase.auth.signOut({ scope: "local" });
+    } catch {
+      // Already cleared.
+    }
+    navigate({ to: "/auth", replace: true });
+  }
 
   if (loading || !user) {
     return (
