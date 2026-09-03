@@ -41,6 +41,9 @@
   --color-rose: var(--rose);
   --color-mint: var(--mint);
   --color-amber: var(--amber);
+  --color-copper: var(--copper);
+  --color-copper-soft: var(--copper-soft);
+  --color-copper-ink: var(--copper-ink);
   --color-paper: var(--paper);
   --color-line: var(--line);
   --color-chart-1: var(--chart-1);
@@ -88,6 +91,9 @@
   --rose: oklch(0.62 0.1 12); /* rosewood */
   --mint: oklch(0.72 0.06 140); /* sage #A8BFA0 */
   --amber: oklch(0.8 0.08 75); /* honey */
+  --copper: oklch(0.7 0.06 55); /* rose-gold/copper editorial accent */
+  --copper-soft: oklch(0.82 0.05 55);
+  --copper-ink: oklch(0.5 0.07 55); /* darker copper for text contrast */
 
   --chart-1: oklch(0.62 0.1 12);
   --chart-2: oklch(0.72 0.06 140);

@@ -22,12 +22,12 @@ export function LegalLayout({
         <header className="flex items-center gap-3">
           <Link
             to="/auth"
-            className="grid size-9 place-items-center rounded-full bg-sky/15 ring-1 ring-sky/30"
+            className="grid size-9 place-items-center rounded-full bg-copper/15 ring-1 ring-copper/30"
             aria-label="Back to sign in"
           >
-            <span className="size-2.5 rounded-full bg-sky" />
+            <span className="size-2.5 rounded-full bg-copper" />
           </Link>
-          <span className="text-base font-bold">Pulse</span>
+          <span className="font-display text-lg font-semibold">The Bigger Picture</span>
         </header>
 
         <article className="rise mt-6 rounded-[28px] bg-paper p-6 ring-1 ring-line sm:p-9">
@@ -44,7 +44,7 @@ export function LegalLayout({
         </article>
 
         <p className="mt-6 text-center text-[11px] text-muted-foreground">
-          Pulse is a personal wellness log · not medical advice
+          The Bigger Picture is your personal wellness oasis · not medical advice
         </p>
       </div>
     </div>

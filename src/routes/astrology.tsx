@@ -8,13 +8,13 @@ import { moonPhase, todayKey } from "@/lib/wellness";
 export const Route = createFileRoute("/astrology")({
   head: () => ({
     meta: [
-      { title: "Astrology & Moon — Pulse wellness tracker" },
+      { title: "Astrology & Moon — The Bigger Picture wellness tracker" },
       {
         name: "description",
         content:
           "Today's moon phase and your daily horoscope in one place — a gentle reading for reflection, not advice.",
       },
-      { property: "og:title", content: "Astrology & Moon — Pulse wellness tracker" },
+      { property: "og:title", content: "Astrology & Moon — The Bigger Picture wellness tracker" },
       {
         property: "og:description",
         content: "Tonight's moon phase and a daily zodiac horoscope for rest, energy and self-care.",

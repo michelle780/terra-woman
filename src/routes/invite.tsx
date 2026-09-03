@@ -4,13 +4,13 @@ import { Landing } from "@/components/Landing";
 export const Route = createFileRoute("/invite")({
   head: () => ({
     meta: [
-      { title: "You're invited to Pulse — a private wellness log" },
+      { title: "You're invited to The Bigger Picture — a private wellness log" },
       {
         name: "description",
         content:
-          "A friend invited you to Pulse. Set up your own private log for sleep, energy, symptoms, medications and daily mood.",
+          "A friend invited you to The Bigger Picture. Set up your own private log for sleep, energy, symptoms, medications and daily mood.",
       },
-      { property: "og:title", content: "You're invited to Pulse" },
+      { property: "og:title", content: "You're invited to The Bigger Picture" },
       {
         property: "og:description",
         content: "Set up your own private daily wellness log — sleep, mood, symptoms and meds.",

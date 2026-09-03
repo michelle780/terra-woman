@@ -72,12 +72,16 @@ export function AppShell({ children }: { children: ReactNode }) {
       <div className="mx-auto max-w-5xl px-4 py-5 sm:px-6">
         <header className="flex items-center justify-between gap-4">
           <div className="flex items-center gap-3">
-            <div className="grid size-9 place-items-center rounded-full bg-sky/15 ring-1 ring-sky/30">
-              <span className="size-2.5 rounded-full bg-sky" />
+            <div className="grid size-9 shrink-0 place-items-center rounded-full bg-copper/15 ring-1 ring-copper/30">
+              <span className="size-2.5 rounded-full bg-copper" />
             </div>
-            <div>
-              <div className="text-base font-bold leading-none">Pulse</div>
-              <div className="text-xs text-muted-foreground">{today}</div>
+            <div className="leading-none">
+              <div className="font-display text-lg font-semibold leading-none text-foreground">
+                The Bigger Picture
+              </div>
+              <div className="mt-1 text-[11px] font-medium tracking-wide text-muted-foreground">
+                your calm, empowering oasis · {today}
+              </div>
             </div>
           </div>
           <div className="flex items-center gap-2">
@@ -116,7 +120,7 @@ export function AppShell({ children }: { children: ReactNode }) {
         <main>{children}</main>
 
         <p className="mt-6 pb-4 text-center text-[11px] text-muted-foreground">
-          Pulse is a personal wellness log · not medical advice ·{" "}
+          The Bigger Picture is your personal wellness oasis · not medical advice ·{" "}
           <Link to="/privacy" className="font-semibold hover:underline">Privacy</Link>{" "}
           ·{" "}
           <Link to="/terms" className="font-semibold hover:underline">Terms</Link>

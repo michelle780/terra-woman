@@ -8,13 +8,13 @@ import { useAuth } from "@/lib/auth";
 export const Route = createFileRoute("/auth")({
   head: () => ({
     meta: [
-      { title: "Sign in — Pulse wellness tracker" },
+      { title: "Sign in — The Bigger Picture wellness tracker" },
       {
         name: "description",
         content:
-          "Sign in to Pulse to track sleep, readiness, HRV, medications and daily symptoms in one private log.",
+          "Sign in to The Bigger Picture to track sleep, readiness, HRV, medications and daily symptoms in one private log.",
       },
-      { property: "og:title", content: "Sign in — Pulse wellness tracker" },
+      { property: "og:title", content: "Sign in — The Bigger Picture wellness tracker" },
       {
         property: "og:description",
         content: "Your private daily wellness log for ring, watch and medication data.",
@@ -81,16 +81,16 @@ function AuthPage() {
     <div className="grid min-h-screen place-items-center bg-background px-4 py-10">
       <div className="w-full max-w-md">
         <div className="flex items-center gap-3">
-          <div className="grid size-9 place-items-center rounded-full bg-sky/15 ring-1 ring-sky/30">
-            <span className="size-2.5 rounded-full bg-sky" />
+          <div className="grid size-9 place-items-center rounded-full bg-copper/15 ring-1 ring-copper/30">
+            <span className="size-2.5 rounded-full bg-copper" />
           </div>
-          <span className="text-base font-bold">Pulse</span>
+          <span className="font-display text-lg font-semibold">The Bigger Picture</span>
         </div>
 
         <div className="rise mt-4 rounded-[28px] bg-paper p-6 ring-1 ring-line">
           <p className="eyebrow">{mode === "signin" ? "Welcome back" : "Get started"}</p>
           <h1 className="mt-1 text-3xl leading-tight">
-            {mode === "signin" ? "Sign in to your log" : "Create your wellness log"}
+            {mode === "signin" ? "Step back into your oasis" : "Create your wellness oasis"}
           </h1>
           <p className="mt-2 text-sm text-muted-foreground">
             Sleep, readiness, HRV, medications and how you actually felt — kept privately in one

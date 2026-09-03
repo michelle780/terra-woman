@@ -30,10 +30,10 @@ export function Landing({ invitedBy }: { invitedBy?: string | null }) {
       <div className="mx-auto max-w-5xl px-4 py-6 sm:px-6">
         <header className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="grid size-9 place-items-center rounded-full bg-sky/15 ring-1 ring-sky/30">
-              <span className="size-2.5 rounded-full bg-sky" />
+            <div className="grid size-9 place-items-center rounded-full bg-copper/15 ring-1 ring-copper/30">
+              <span className="size-2.5 rounded-full bg-copper" />
             </div>
-            <span className="text-base font-bold">Pulse</span>
+            <span className="font-display text-lg font-semibold">The Bigger Picture</span>
           </div>
           <Link
             to="/auth"
@@ -45,16 +45,16 @@ export function Landing({ invitedBy }: { invitedBy?: string | null }) {
 
         <section className="rise mt-6 rounded-[28px] bg-paper p-7 ring-1 ring-line sm:p-10">
           {invitedBy ? (
-            <p className="eyebrow">{invitedBy} invited you to Pulse</p>
+            <p className="eyebrow">{invitedBy} invited you to The Bigger Picture</p>
           ) : (
-            <p className="eyebrow">A private wellness log</p>
+            <p className="eyebrow">A calm oasis for your wellbeing</p>
           )}
           <h1 className="mt-2 max-w-2xl text-4xl leading-[1.05] sm:text-6xl">
-            Notice how your body and your mood move together.
+            See your bigger picture — body, mood and all.
           </h1>
           <p className="mt-4 max-w-xl text-sm text-muted-foreground sm:text-base">
-            Pulse is a calm daily log for sleep, energy, symptoms, medications and how you actually
-            felt. Everything stays private to your own account.
+            The Bigger Picture is a happy, empowering place to notice how your sleep, energy,
+            symptoms, cycle and mood move together. Everything stays private to your own account.
           </p>
           <div className="mt-6 flex flex-wrap items-center gap-3">
             <Link
@@ -90,7 +90,7 @@ export function Landing({ invitedBy }: { invitedBy?: string | null }) {
         </div>
 
         <footer className="mt-6 flex flex-wrap items-center justify-between gap-3 border-t border-line pt-5 text-xs text-muted-foreground">
-          <span>Pulse is a personal wellness log — not medical advice.</span>
+          <span>The Bigger Picture is your personal wellness oasis — not medical advice.</span>
           <span className="flex gap-4">
             <Link to="/privacy" className="font-semibold hover:text-foreground">
               Privacy
