@@ -105,7 +105,7 @@ function AuthPage() {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="mt-1 w-full rounded-2xl bg-background px-4 py-2.5 text-sm ring-1 ring-line outline-none focus:ring-2 focus:ring-sky"
+                className="mt-1 w-full rounded-2xl bg-background px-4 py-2.5 text-sm ring-1 ring-line outline-none focus:ring-2 focus:ring-primary"
                 placeholder="you@example.com"
               />
             </label>
@@ -117,7 +117,7 @@ function AuthPage() {
                 minLength={6}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="mt-1 w-full rounded-2xl bg-background px-4 py-2.5 text-sm ring-1 ring-line outline-none focus:ring-2 focus:ring-sky"
+                className="mt-1 w-full rounded-2xl bg-background px-4 py-2.5 text-sm ring-1 ring-line outline-none focus:ring-2 focus:ring-primary"
                 placeholder="••••••••"
               />
             </label>
@@ -148,11 +148,11 @@ function AuthPage() {
 
           <p className="mt-4 text-center text-[11px] text-muted-foreground">
             By continuing you agree to our{" "}
-            <Link to="/terms" className="font-semibold text-sky hover:underline">
+            <Link to="/terms" className="font-semibold text-primary hover:underline">
               Terms
             </Link>{" "}
             and{" "}
-            <Link to="/privacy" className="font-semibold text-sky hover:underline">
+            <Link to="/privacy" className="font-semibold text-primary hover:underline">
               Privacy Policy
             </Link>
             .

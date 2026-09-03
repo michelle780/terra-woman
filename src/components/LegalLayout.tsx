@@ -78,14 +78,14 @@ export function LegalP({ children }: { children: ReactNode }) {
 }
 
 export function LegalUl({ children }: { children: ReactNode }) {
-  return <ul className="list-disc space-y-1.5 pl-5 marker:text-sky">{children}</ul>;
+  return <ul className="list-disc space-y-1.5 pl-5 marker:text-primary">{children}</ul>;
 }
 
 export function LegalContact({ email }: { email: string }) {
   return (
     <p className="rounded-2xl bg-cream px-4 py-3 text-sm ring-1 ring-line">
       Questions about this notice? Email{" "}
-      <a className="font-semibold text-sky underline-offset-2 hover:underline" href={`mailto:${email}`}>
+      <a className="font-semibold text-primary underline-offset-2 hover:underline" href={`mailto:${email}`}>
         {email}
       </a>
       .

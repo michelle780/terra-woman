@@ -101,7 +101,7 @@ function Medications() {
               value={form.name}
               onChange={(e) => setForm({ ...form, name: e.target.value })}
               placeholder="Levothyroxine"
-              className="mt-1 w-full rounded-xl bg-background px-3 py-2 text-sm ring-1 ring-line outline-none focus:ring-2 focus:ring-sky"
+              className="mt-1 w-full rounded-xl bg-background px-3 py-2 text-sm ring-1 ring-line outline-none focus:ring-2 focus:ring-primary"
             />
           </label>
           <label className="block">
@@ -110,7 +110,7 @@ function Medications() {
               value={form.dose}
               onChange={(e) => setForm({ ...form, dose: e.target.value })}
               placeholder="75 mcg"
-              className="mt-1 w-full rounded-xl bg-background px-3 py-2 text-sm ring-1 ring-line outline-none focus:ring-2 focus:ring-sky"
+              className="mt-1 w-full rounded-xl bg-background px-3 py-2 text-sm ring-1 ring-line outline-none focus:ring-2 focus:ring-primary"
             />
           </label>
           <label className="block">
@@ -119,7 +119,7 @@ function Medications() {
               type="time"
               value={form.time_of_day}
               onChange={(e) => setForm({ ...form, time_of_day: e.target.value })}
-              className="mt-1 w-full rounded-xl bg-background px-3 py-2 text-sm ring-1 ring-line outline-none focus:ring-2 focus:ring-sky"
+              className="mt-1 w-full rounded-xl bg-background px-3 py-2 text-sm ring-1 ring-line outline-none focus:ring-2 focus:ring-primary"
             />
           </label>
           <button

@@ -150,7 +150,7 @@ function Journal() {
           onChange={(e) => setNote(e.target.value)}
           rows={3}
           placeholder="Anything worth remembering about today…"
-          className="mt-4 w-full rounded-2xl bg-background px-4 py-3 text-sm ring-1 ring-line outline-none focus:ring-2 focus:ring-sky"
+          className="mt-4 w-full rounded-2xl bg-background px-4 py-3 text-sm ring-1 ring-line outline-none focus:ring-2 focus:ring-primary"
         />
 
         <button
