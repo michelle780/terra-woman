@@ -53,7 +53,7 @@ export function DailyQuoteCard() {
               href={q.url}
               target="_blank"
               rel="noreferrer"
-              className="text-xs font-semibold uppercase tracking-[0.18em] text-copper underline-offset-4 hover:underline"
+              className="text-xs font-semibold uppercase tracking-[0.18em] text-copper-ink underline-offset-4 hover:underline"
             >
               {q.source}
             </a>
