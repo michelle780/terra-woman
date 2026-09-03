@@ -197,6 +197,7 @@ function WelcomePage() {
   }
 
   const last = step === STEPS.length - 1;
+  const wisdom = HEALER_WISDOM[step] ?? HEALER_WISDOM[0]!;
 
   return (
     <div className="min-h-screen bg-background text-foreground">
