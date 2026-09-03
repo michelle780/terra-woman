@@ -150,13 +150,13 @@ function Journal() {
           onChange={(e) => setNote(e.target.value)}
           rows={3}
           placeholder="Anything worth remembering about today…"
-          className="mt-4 w-full rounded-2xl bg-background px-4 py-3 text-sm ring-1 ring-line outline-none focus:ring-2 focus:ring-sky"
+          className="mt-4 w-full rounded-2xl bg-background px-4 py-3 text-sm ring-1 ring-line outline-none focus:ring-2 focus:ring-primary"
         />
 
         <button
           onClick={() => save.mutate()}
           disabled={save.isPending}
-          className="mt-3 rounded-full bg-sky px-5 py-2 text-xs font-bold text-primary-foreground disabled:opacity-60"
+          className="mt-3 rounded-full bg-primary px-5 py-2 text-xs font-bold text-primary-foreground disabled:opacity-60"
         >
           {entry ? "Update entry" : "Save entry"}
         </button>

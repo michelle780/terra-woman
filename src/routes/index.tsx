@@ -147,7 +147,7 @@ function MetricsForm({ metric, onDone }: { metric?: DailyMetric | undefined; onD
             inputMode="numeric"
             value={form[key]}
             onChange={(e) => setForm({ ...form, [key]: e.target.value })}
-            className="mt-1 w-full rounded-xl bg-background px-3 py-2 text-sm ring-1 ring-line outline-none focus:ring-2 focus:ring-sky"
+            className="mt-1 w-full rounded-xl bg-background px-3 py-2 text-sm ring-1 ring-line outline-none focus:ring-2 focus:ring-primary"
           />
         </label>
       ))}
@@ -155,7 +155,7 @@ function MetricsForm({ metric, onDone }: { metric?: DailyMetric | undefined; onD
         <button
           type="submit"
           disabled={save.isPending}
-          className="rounded-full bg-sky px-4 py-2 text-xs font-bold text-primary-foreground disabled:opacity-60"
+          className="rounded-full bg-primary px-4 py-2 text-xs font-bold text-primary-foreground disabled:opacity-60"
         >
           Save numbers
         </button>
