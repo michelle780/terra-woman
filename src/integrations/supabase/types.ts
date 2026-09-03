@@ -89,6 +89,30 @@ export type Database = {
         }
         Relationships: []
       }
+      horoscopes: {
+        Row: {
+          created_at: string
+          horoscope_date: string
+          id: string
+          sign: string
+          text: string
+        }
+        Insert: {
+          created_at?: string
+          horoscope_date: string
+          id?: string
+          sign: string
+          text: string
+        }
+        Update: {
+          created_at?: string
+          horoscope_date?: string
+          id?: string
+          sign?: string
+          text?: string
+        }
+        Relationships: []
+      }
       journal_entries: {
         Row: {
           created_at: string
@@ -199,18 +223,21 @@ export type Database = {
           display_name: string | null
           id: string
           updated_at: string
+          zodiac_sign: string | null
         }
         Insert: {
           created_at?: string
           display_name?: string | null
           id: string
           updated_at?: string
+          zodiac_sign?: string | null
         }
         Update: {
           created_at?: string
           display_name?: string | null
           id?: string
           updated_at?: string
+          zodiac_sign?: string | null
         }
         Relationships: []
       }
