@@ -1,4 +1,5 @@
 import { supabase } from "@/integrations/supabase/client";
+import { moonDetail } from "@/lib/astro";
 
 export type Medication = {
   id: string;
