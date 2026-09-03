@@ -5,6 +5,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/lib/auth";
 import terraTree from "@/assets/terra-tree.png";
+import { fetchIsEditor } from "@/lib/roots";
 
 const NAV = [
   { to: "/", label: "Today" },
@@ -47,6 +48,12 @@ export function AppShell({ children }: { children: ReactNode }) {
       if (error) throw error;
       return data;
     },
+  });
+
+  const { data: isEditor } = useQuery({
+    queryKey: ["is-editor", user?.id],
+    enabled: !!user,
+    queryFn: () => fetchIsEditor(user!.id),
   });
 
   useEffect(() => {
@@ -148,6 +155,15 @@ export function AppShell({ children }: { children: ReactNode }) {
               {item.label}
             </Link>
           ))}
+          {isEditor && (
+            <Link
+              to="/admin/roots"
+              className="rounded-full bg-copper/10 px-4 py-1.5 text-xs font-semibold text-copper-ink ring-1 ring-copper/30 transition-colors"
+              activeProps={{ className: "bg-copper/25 text-foreground" }}
+            >
+              ROOTS
+            </Link>
+          )}
         </nav>
 
         <main className="tree-spine md:pl-8">{children}</main>
