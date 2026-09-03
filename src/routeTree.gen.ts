@@ -17,7 +17,6 @@ import { Route as DevicesRouteImport } from './routes/devices'
 import { Route as InviteRouteImport } from './routes/invite'
 import { Route as JournalRouteImport } from './routes/journal'
 import { Route as MedicationsRouteImport } from './routes/medications'
-import { Route as MoonRouteImport } from './routes/moon'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as TrendsRouteImport } from './routes/trends'
@@ -62,11 +61,6 @@ const MedicationsRoute = MedicationsRouteImport.update({
   path: '/medications',
   getParentRoute: () => rootRouteImport,
 } as any)
-const MoonRoute = MoonRouteImport.update({
-  id: '/moon',
-  path: '/moon',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const PrivacyRoute = PrivacyRouteImport.update({
   id: '/privacy',
   path: '/privacy',
@@ -92,7 +86,6 @@ export interface FileRoutesByFullPath {
   '/invite': typeof InviteRoute
   '/journal': typeof JournalRoute
   '/medications': typeof MedicationsRoute
-  '/moon': typeof MoonRoute
   '/privacy': typeof PrivacyRoute
   '/terms': typeof TermsRoute
   '/trends': typeof TrendsRoute
@@ -106,7 +99,6 @@ export interface FileRoutesByTo {
   '/invite': typeof InviteRoute
   '/journal': typeof JournalRoute
   '/medications': typeof MedicationsRoute
-  '/moon': typeof MoonRoute
   '/privacy': typeof PrivacyRoute
   '/terms': typeof TermsRoute
   '/trends': typeof TrendsRoute
@@ -121,7 +113,6 @@ export interface FileRoutesById {
   '/invite': typeof InviteRoute
   '/journal': typeof JournalRoute
   '/medications': typeof MedicationsRoute
-  '/moon': typeof MoonRoute
   '/privacy': typeof PrivacyRoute
   '/terms': typeof TermsRoute
   '/trends': typeof TrendsRoute
@@ -137,7 +128,6 @@ export interface FileRouteTypes {
     | '/invite'
     | '/journal'
     | '/medications'
-    | '/moon'
     | '/privacy'
     | '/terms'
     | '/trends'
@@ -151,7 +141,6 @@ export interface FileRouteTypes {
     | '/invite'
     | '/journal'
     | '/medications'
-    | '/moon'
     | '/privacy'
     | '/terms'
     | '/trends'
@@ -165,7 +154,6 @@ export interface FileRouteTypes {
     | '/invite'
     | '/journal'
     | '/medications'
-    | '/moon'
     | '/privacy'
     | '/terms'
     | '/trends'
@@ -180,7 +168,6 @@ export interface RootRouteChildren {
   InviteRoute: typeof InviteRoute
   JournalRoute: typeof JournalRoute
   MedicationsRoute: typeof MedicationsRoute
-  MoonRoute: typeof MoonRoute
   PrivacyRoute: typeof PrivacyRoute
   TermsRoute: typeof TermsRoute
   TrendsRoute: typeof TrendsRoute
@@ -244,13 +231,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MedicationsRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/moon': {
-      id: '/moon'
-      path: '/moon'
-      fullPath: '/moon'
-      preLoaderRoute: typeof MoonRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/privacy': {
       id: '/privacy'
       path: '/privacy'
@@ -284,7 +264,6 @@ const rootRouteChildren: RootRouteChildren = {
   InviteRoute: InviteRoute,
   JournalRoute: JournalRoute,
   MedicationsRoute: MedicationsRoute,
-  MoonRoute: MoonRoute,
   PrivacyRoute: PrivacyRoute,
   TermsRoute: TermsRoute,
   TrendsRoute: TrendsRoute,
