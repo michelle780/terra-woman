@@ -245,6 +245,12 @@ export type CycleStatus = {
   phase: string;
   bleeding: boolean;
   nextPredicted: string | null;
+  /** Estimated ovulation day (assumes a ~14-day luteal phase). */
+  ovulationDay: number;
+  /** First day of the estimated luteal window. */
+  lutealStart: number;
+  /** Estimated cycle length, used as the luteal window end. */
+  cycleLength: number;
 };
 
 export function cycleStatus(periods: CyclePeriod[], date = todayKey()): CycleStatus | null {
@@ -256,13 +262,42 @@ export function cycleStatus(periods: CyclePeriod[], date = todayKey()): CycleSta
   const day = daysBetween(current.start_date, date) + 1;
   const bleeding = current.end_date ? date <= current.end_date : day <= 5;
   const avg = averageCycleLength(periods) ?? 28;
+  const ovulationDay = Math.max(6, avg - 14);
+  const lutealStart = ovulationDay + 2;
   let phase = "Luteal";
   if (bleeding) phase = "Menstrual";
-  else if (day <= Math.round(avg / 2) - 2) phase = "Follicular";
-  else if (day <= Math.round(avg / 2) + 1) phase = "Ovulatory";
+  else if (day < ovulationDay) phase = "Follicular";
+  else if (day <= ovulationDay + 1) phase = "Ovulatory";
   const next = new Date(`${current.start_date}T00:00:00`);
   next.setDate(next.getDate() + avg);
-  return { day, phase, bleeding, nextPredicted: toDateKey(next) };
+  return { day, phase, bleeding, nextPredicted: toDateKey(next), ovulationDay, lutealStart, cycleLength: avg };
+}
+
+// ─── Moon phase ──────────────────────────────────────────────────────────────
+
+export type MoonPhase = { name: string; icon: string; illumination: number };
+
+const MOON_PHASES: { name: string; icon: string }[] = [
+  { name: "New Moon", icon: "🌑" },
+  { name: "Waxing Crescent", icon: "🌒" },
+  { name: "First Quarter", icon: "🌓" },
+  { name: "Waxing Gibbous", icon: "🌔" },
+  { name: "Full Moon", icon: "🌕" },
+  { name: "Waning Gibbous", icon: "🌖" },
+  { name: "Last Quarter", icon: "🌗" },
+  { name: "Waning Crescent", icon: "🌘" },
+];
+
+/** Astronomical moon phase for a date, from the Jan 6, 2000 18:14 UTC new moon. */
+export function moonPhase(date = todayKey()): MoonPhase {
+  const SYNODIC = 29.53058867;
+  const refDays = Date.UTC(2000, 0, 6, 18, 14) / 86_400_000;
+  const nowDays = new Date(`${date}T00:00:00Z`).getTime() / 86_400_000;
+  const age = (((nowDays - refDays) % SYNODIC) + SYNODIC) % SYNODIC;
+  const index = Math.round((age / SYNODIC) * 8) % 8;
+  const illumination = Math.round(((1 - Math.cos((age / SYNODIC) * 2 * Math.PI)) / 2) * 100);
+  const phase = MOON_PHASES[index] ?? MOON_PHASES[0]!;
+  return { ...phase, illumination };
 }
 
 export type DeviceConnection = {
