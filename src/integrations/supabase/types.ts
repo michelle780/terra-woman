@@ -387,6 +387,12 @@ export type Database = {
           title: string
           topic: string | null
           updated_at: string
+          visual_asset_credit: string | null
+          visual_asset_rights_status: string
+          visual_asset_source: string | null
+          visual_asset_type: string | null
+          visual_asset_url: string | null
+          visual_template: string | null
           why_it_matters: string | null
           woman_lifespan: string | null
           woman_name: string | null
@@ -419,6 +425,12 @@ export type Database = {
           title: string
           topic?: string | null
           updated_at?: string
+          visual_asset_credit?: string | null
+          visual_asset_rights_status?: string
+          visual_asset_source?: string | null
+          visual_asset_type?: string | null
+          visual_asset_url?: string | null
+          visual_template?: string | null
           why_it_matters?: string | null
           woman_lifespan?: string | null
           woman_name?: string | null
@@ -451,6 +463,12 @@ export type Database = {
           title?: string
           topic?: string | null
           updated_at?: string
+          visual_asset_credit?: string | null
+          visual_asset_rights_status?: string
+          visual_asset_source?: string | null
+          visual_asset_type?: string | null
+          visual_asset_url?: string | null
+          visual_template?: string | null
           why_it_matters?: string | null
           woman_lifespan?: string | null
           woman_name?: string | null
@@ -483,13 +501,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      has_role: {
-        Args: {
-          _role: Database["public"]["Enums"]["app_role"]
-          _user_id: string
-        }
-        Returns: boolean
-      }
+      [_ in never]: never
     }
     Enums: {
       app_role: "admin" | "editor" | "user"
