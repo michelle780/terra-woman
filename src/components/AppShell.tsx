@@ -107,7 +107,7 @@ export function AppShell({ children }: { children: ReactNode }) {
           alt=""
           width={1005}
           height={1007}
-          className="h-[92vh] w-auto max-w-none opacity-[0.06]"
+          className="h-[92vh] w-auto max-w-none opacity-[0.14]"
         />
       </div>
       <div className="relative z-10 mx-auto max-w-5xl px-4 py-5 sm:px-6">
