@@ -1,6 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useServerFn } from "@tanstack/react-start";
+import { getOuraStatus, syncOura } from "@/lib/oura.functions";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { AppShell } from "@/components/AppShell";
@@ -206,6 +208,28 @@ function Today() {
     queryKey: ["metrics", from, today],
     queryFn: () => fetchMetrics(from, today),
   });
+  const ouraStatusQ = useQuery({ queryKey: ["oura-status"], queryFn: () => getOuraStatus() });
+  const runSync = useServerFn(syncOura);
+  const sync = useMutation({
+    mutationFn: () => runSync({ data: { days: 14 } }),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["metrics"] });
+      toast.success("Ring data updated");
+    },
+    onError: (e: Error) => toast.error(e.message),
+  });
+  const autoSynced = useRef(false);
+  const ouraConnected = ouraStatusQ.data?.connected ?? false;
+  useEffect(() => {
+    if (!ouraConnected || autoSynced.current) return;
+    const stamp = `terra-oura-sync-${today}`;
+    if (localStorage.getItem(stamp)) return;
+    autoSynced.current = true;
+    localStorage.setItem(stamp, "1");
+    sync.mutate();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ouraConnected, today]);
+
   const medsQ = useQuery({ queryKey: ["medications"], queryFn: fetchMedications });
   const logsQ = useQuery({
     queryKey: ["medication-logs", today],
@@ -216,9 +240,20 @@ function Today() {
     queryFn: () => fetchJournal(today, today),
   });
 
-  const metric = metricsQ.data?.find((m) => m.metric_date === today);
+  const sorted = [...(metricsQ.data ?? [])].sort((a, b) =>
+    a.metric_date < b.metric_date ? 1 : -1,
+  );
+  const todayMetric = sorted.find((m) => m.metric_date === today);
+  const metric = todayMetric ?? sorted[0];
+  const isToday = !!todayMetric;
+  const readingLabel = metric
+    ? isToday
+      ? "This morning"
+      : `Last reading · ${new Date(`${metric.metric_date}T12:00:00`).toLocaleDateString(undefined, { weekday: "short", month: "short", day: "numeric" })}`
+    : "This morning";
   const allMeds = (medsQ.data ?? []).filter((m) => m.active);
   const meds = allMeds.filter((m) => isScheduledOn(m, today));
+
   const asNeededMeds = allMeds.filter((m) => m.frequency === "as_needed");
   const takenIds = new Set((logsQ.data ?? []).map((l) => l.medication_id));
   const dueNow = meds.filter((m) => !takenIds.has(m.id));
@@ -272,7 +307,7 @@ function Today() {
         <div className="flex flex-col gap-6 md:flex-row md:items-center">
           <Gauge value={metric?.readiness ?? null} />
           <div className="flex-1">
-            <p className="eyebrow">This morning</p>
+            <p className="eyebrow">{readingLabel}</p>
             <h1 className="mt-1 text-3xl leading-tight text-balance sm:text-4xl">
               {metric?.readiness
                 ? metric.readiness >= 80
@@ -282,15 +317,36 @@ function Today() {
             </h1>
             <p className="mt-2 max-w-[52ch] text-base text-pretty text-muted-foreground">
               {metric
-                ? "Ring and watch numbers for today are recorded. Live syncing with Oura and Apple Watch can be switched on later."
-                : "Nothing recorded yet today. Add your ring and watch numbers manually until live syncing is connected."}
+                ? isToday
+                  ? "Today's ring and watch numbers are in."
+                  : "Your ring hasn't posted today's numbers yet, so these are your most recent ones."
+                : "Nothing recorded yet. Connect your ring or add your numbers by hand."}
             </p>
-            <button
-              onClick={() => setEditing((v) => !v)}
-              className="mt-3 rounded-full bg-sky/20 px-4 py-1.5 text-xs font-bold ring-1 ring-sky/30"
-            >
-              {metric ? "Edit today's numbers" : "Add today's numbers"}
-            </button>
+            <div className="mt-3 flex flex-wrap gap-2">
+              <button
+                onClick={() => setEditing((v) => !v)}
+                className="rounded-full bg-sky/20 px-4 py-1.5 text-xs font-bold ring-1 ring-sky/30"
+              >
+                {todayMetric ? "Edit today's numbers" : "Add today's numbers"}
+              </button>
+              {ouraConnected ? (
+                <button
+                  onClick={() => sync.mutate()}
+                  disabled={sync.isPending}
+                  className="rounded-full bg-clay/20 px-4 py-1.5 text-xs font-bold ring-1 ring-clay/30 disabled:opacity-60"
+                >
+                  {sync.isPending ? "Syncing…" : "Sync Oura now"}
+                </button>
+              ) : (
+                <Link
+                  to="/devices"
+                  className="rounded-full bg-clay/20 px-4 py-1.5 text-xs font-bold ring-1 ring-clay/30"
+                >
+                  Connect your ring
+                </Link>
+              )}
+            </div>
+
           </div>
           <div className="grid grid-cols-2 gap-3 md:grid-cols-1 lg:grid-cols-2">
             <Stat
@@ -319,7 +375,7 @@ function Today() {
             />
           </div>
         </div>
-        {editing && <MetricsForm metric={metric} onDone={() => setEditing(false)} />}
+        {editing && <MetricsForm metric={todayMetric} onDone={() => setEditing(false)} />}
       </section>
 
       <section className="rise mt-4 rounded-[24px] bg-paper/55 p-5 ring-1 ring-line backdrop-blur-md sm:p-6">
