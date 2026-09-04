@@ -68,6 +68,53 @@ export const getEmailActivity = createServerFn({ method: "POST" })
     };
   });
 
+export type EmailInboxEvent = {
+  timestamp: string;
+  event_type: string;
+  recipient: string | null;
+  status?: string | null;
+};
+
+export type EmailInbox = {
+  events: EmailInboxEvent[];
+  history_starts_at: string | null;
+};
+
+/** Project-wide email activity across all recipients. Admin only. */
+export const getEmailInbox = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((data) =>
+    z
+      .object({
+        eventType: z
+          .enum(["sent", "rejected", "bounced", "complained", "unsubscribed", "suppressed", "rate_limited"])
+          .optional(),
+      })
+      .parse(data)
+  )
+  .handler(async ({ context, data }): Promise<EmailInbox> => {
+    await assertAdmin(context.supabase, context.userId);
+
+    const apiKey = process.env["LOVABLE_API_KEY"];
+    if (!apiKey) throw new Error("Email API key is not configured");
+
+    const { listEmailLogs } = await import("@lovable.dev/email-js");
+    const logs = await listEmailLogs(
+      { limit: 100, ...(data.eventType ? { event_type: data.eventType } : {}) },
+      { apiKey }
+    );
+
+    return {
+      events: (logs.data ?? []).map((e: any) => ({
+        timestamp: e.timestamp,
+        event_type: e.event_type,
+        recipient: e.recipient ?? null,
+        status: e.status ?? null,
+      })),
+      history_starts_at: logs.history_starts_at ?? null,
+    };
+  });
+
 /** Sends a real email to a member for testing. Never deduped, so repeats work. */
 export const sendMemberEmail = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])

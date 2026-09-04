@@ -6,14 +6,14 @@ import { AppShell } from "@/components/AppShell";
 import { useAuth } from "@/lib/auth";
 import { fetchIsEditor } from "@/lib/roots";
 import { listMembers, sendCheckinNudge, type MemberSummary } from "@/lib/members.functions";
-import { getEmailActivity, sendMemberEmail } from "@/lib/email-admin.functions";
+import { getEmailActivity, getEmailInbox, sendMemberEmail } from "@/lib/email-admin.functions";
 import {
   createAnnouncement,
   deleteAnnouncement,
   listAnnouncements,
   setAnnouncementPublished,
 } from "@/lib/announcements.functions";
-import { Users, UserCheck, UserPlus, Activity, Megaphone, Trash2, Mail, MessageCircleHeart, Check } from "lucide-react";
+import { Users, UserCheck, UserPlus, Activity, Megaphone, Trash2, Mail, Inbox, RefreshCw, MessageCircleHeart, Check } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/admin/members")({
@@ -196,6 +196,12 @@ function MembersAdmin() {
         </table>
       </div>
 
+      <EmailInboxPanel onCheckRecipient={(email) => {
+        setEmailCheck(email);
+        document
+          .getElementById("email-delivery")
+          ?.scrollIntoView({ behavior: "smooth", block: "start" });
+      }} />
       <EmailDeliveryPanel email={emailCheck} onEmailChange={setEmailCheck} />
       <AnnouncementsPanel />
       <FeedbackPanel members={members} />
@@ -212,6 +218,107 @@ const EVENT_LABELS: Record<string, string> = {
   suppressed: "Blocked (do-not-send list)",
   rate_limited: "Delayed (sending limit)",
 };
+
+const INBOX_FILTERS: { value: string; label: string }[] = [
+  { value: "", label: "All" },
+  { value: "sent", label: "Sent" },
+  { value: "bounced", label: "Bounced" },
+  { value: "rejected", label: "Refused" },
+  { value: "suppressed", label: "Blocked" },
+  { value: "complained", label: "Spam reports" },
+  { value: "unsubscribed", label: "Unsubscribes" },
+];
+
+function EmailInboxPanel({ onCheckRecipient }: { onCheckRecipient: (email: string) => void }) {
+  const [filter, setFilter] = useState("");
+  const { data, isLoading, refetch, isFetching } = useQuery({
+    queryKey: ["admin-email-inbox", filter],
+    queryFn: () =>
+      getEmailInbox({
+        data: filter ? { eventType: filter as any } : {},
+      }),
+  });
+  const events = data?.events ?? [];
+
+  return (
+    <section className="space-y-4 rounded-2xl bg-paper/70 p-5 ring-1 ring-line backdrop-blur-md">
+      <div className="flex flex-wrap items-center gap-2">
+        <Inbox className="size-4 text-copper-ink" />
+        <h2 className="font-display text-lg font-semibold">Email inbox</h2>
+        <span className="rounded-full bg-copper/15 px-2.5 py-0.5 text-[11px] font-semibold text-copper-ink">
+          {events.length} recent
+        </span>
+        <button
+          onClick={() => refetch()}
+          disabled={isFetching}
+          aria-label="Refresh inbox"
+          className="ml-auto rounded-full bg-paper p-2 ring-1 ring-line transition-colors hover:bg-background disabled:opacity-50"
+        >
+          <RefreshCw className={`size-3.5 ${isFetching ? "animate-spin" : ""}`} />
+        </button>
+      </div>
+      <p className="text-xs text-muted-foreground">
+        Every email the app has sent across all members — newest first. Tap an address to see its
+        full history below. Opens and delivery confirmations aren't tracked.
+        {data?.history_starts_at && (
+          <> History visible from {new Date(data.history_starts_at).toLocaleDateString()}.</>
+        )}
+      </p>
+
+      <div className="flex flex-wrap gap-1.5">
+        {INBOX_FILTERS.map((f) => (
+          <button
+            key={f.value}
+            onClick={() => setFilter(f.value)}
+            className={`rounded-full px-3 py-1 text-[11px] font-semibold ring-1 transition-colors ${
+              filter === f.value
+                ? "bg-copper text-paper ring-copper"
+                : "bg-paper text-foreground ring-line hover:bg-background"
+            }`}
+          >
+            {f.label}
+          </button>
+        ))}
+      </div>
+
+      {isLoading ? (
+        <p className="text-sm text-muted-foreground">Loading email activity…</p>
+      ) : events.length === 0 ? (
+        <p className="rounded-xl bg-paper p-3 text-xs text-muted-foreground ring-1 ring-line">
+          No email events in this view yet.
+        </p>
+      ) : (
+        <ul className="divide-y divide-line/60 overflow-hidden rounded-xl bg-paper ring-1 ring-line">
+          {events.map((e, i) => (
+            <li key={`${e.timestamp}-${i}`} className="flex flex-wrap items-center gap-2 px-3 py-2 text-xs">
+              <span
+                className={`rounded-full px-2 py-0.5 font-semibold ${
+                  e.event_type === "sent"
+                    ? "bg-sage/20 text-foreground"
+                    : e.event_type === "bounced" || e.event_type === "complained"
+                      ? "bg-clay/40 text-foreground"
+                      : "bg-sky/15 text-sky-ink"
+                }`}
+              >
+                {EVENT_LABELS[e.event_type] ?? e.event_type}
+              </span>
+              {e.recipient && (
+                <button
+                  onClick={() => onCheckRecipient(e.recipient!)}
+                  className="font-semibold text-copper-ink underline-offset-2 hover:underline"
+                >
+                  {e.recipient}
+                </button>
+              )}
+              <span className="text-muted-foreground">{new Date(e.timestamp).toLocaleString()}</span>
+              {e.status && <span className="text-muted-foreground/80">· {e.status}</span>}
+            </li>
+          ))}
+        </ul>
+      )}
+    </section>
+  );
+}
 
 function EmailDeliveryPanel({
   email,
