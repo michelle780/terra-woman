@@ -302,6 +302,34 @@ function Medications() {
           >
             Add
           </button>
+          <div className="sm:col-span-4">
+            <span className="text-[11px] font-semibold text-muted-foreground">How often</span>
+            <div className="mt-1 flex flex-wrap items-center gap-1.5">
+              {FREQUENCIES.map((f) => (
+                <button
+                  key={f.value}
+                  type="button"
+                  aria-pressed={form.frequency === f.value}
+                  onClick={() => setForm({ ...form, frequency: f.value })}
+                  className={`rounded-full px-3 py-1 text-[11px] font-bold ring-1 ${
+                    form.frequency === f.value
+                      ? "bg-sky/25 ring-sky/40"
+                      : "bg-background ring-line text-muted-foreground"
+                  }`}
+                >
+                  {f.label}
+                </button>
+              ))}
+            </div>
+            {form.frequency === "specific_days" && (
+              <div className="mt-2">
+                <DayPicker
+                  value={form.days_of_week}
+                  onChange={(days_of_week) => setForm({ ...form, days_of_week })}
+                />
+              </div>
+            )}
+          </div>
         </form>
 
         <div className="mt-5 border-t border-line pt-4">
@@ -386,6 +414,72 @@ function Medications() {
       </section>
 
       <section className="rise mt-4 rounded-[24px] bg-paper p-5 ring-1 ring-line">
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <div>
+            <p className="eyebrow">Today</p>
+            <h2 className="mt-0.5 text-xl">Confirm what you took</h2>
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="rounded-full bg-mint/15 px-3 py-1 text-xs font-bold">
+              {dueToday.length - remaining.length}/{dueToday.length} done
+            </span>
+            {remaining.length > 0 && (
+              <button
+                type="button"
+                onClick={() => confirmAll.mutate()}
+                disabled={confirmAll.isPending}
+                className="rounded-full bg-primary px-4 py-1.5 text-xs font-bold text-primary-foreground disabled:opacity-60"
+              >
+                Confirm all {remaining.length}
+              </button>
+            )}
+          </div>
+        </div>
+        <div className="mt-4 space-y-2">
+          {dueToday.length === 0 && (
+            <p className="text-sm text-muted-foreground">
+              Nothing scheduled today. Add a medication above, or log an as-needed dose below.
+            </p>
+          )}
+          {[...dueToday, ...asNeeded].map((med) => {
+            const taken = takenToday.has(med.id);
+            return (
+              <button
+                key={med.id}
+                type="button"
+                onClick={() => toggleToday.mutate({ id: med.id, taken })}
+                className="flex w-full items-center gap-3 rounded-2xl bg-background px-3 py-2.5 text-left ring-1 ring-line transition-colors hover:bg-cream"
+              >
+                <span
+                  className={`grid size-5 shrink-0 place-items-center rounded-full text-paper ${
+                    taken ? "bg-mint" : "ring-1 ring-line"
+                  }`}
+                  aria-hidden
+                >
+                  {taken ? "✓" : ""}
+                </span>
+                <span className="flex-1">
+                  <span className="block text-sm font-semibold">{med.name}</span>
+                  <span className="block text-[11px] text-muted-foreground">
+                    {[med.dose, formatTime(med.time_of_day), scheduleLabel(med)]
+                      .filter(Boolean)
+                      .join(" · ")}
+                  </span>
+                </span>
+                <span
+                  className={`rounded-full px-2.5 py-1 text-xs font-bold ${
+                    taken ? "text-mint" : "bg-amber/20"
+                  }`}
+                >
+                  {taken ? "Taken" : med.frequency === "as_needed" ? "Log dose" : "Confirm"}
+                </span>
+              </button>
+            );
+          })}
+        </div>
+      </section>
+
+      <section className="rise mt-4 rounded-[24px] bg-paper p-5 ring-1 ring-line">
         <div className="flex items-center justify-between">
           <div>
             <p className="eyebrow">Adherence</p>
@@ -402,20 +496,31 @@ function Medications() {
             const taken = new Set(
               logs.filter((l) => l.medication_id === med.id).map((l) => l.taken_on),
             );
-            const rate = Math.round((taken.size / days.length) * 100);
+            const sched = scheduledDays(med);
+            const takenScheduled = sched.filter((d) => taken.has(d)).length;
+            const rate = sched.length ? Math.round((takenScheduled / sched.length) * 100) : null;
             return (
               <div key={med.id} className="rounded-2xl bg-background px-4 py-3 ring-1 ring-line">
                 <div className="flex items-center justify-between gap-3">
                   <div>
                     <div className="text-sm font-semibold">{med.name}</div>
                     <div className="text-[11px] text-muted-foreground">
-                      {[med.dose, formatTime(med.time_of_day)].filter(Boolean).join(" · ")}
+                      {[med.dose, formatTime(med.time_of_day), scheduleLabel(med)]
+                        .filter(Boolean)
+                        .join(" · ")}
                     </div>
                   </div>
                   <div className="flex items-center gap-2">
                     <span className="rounded-full bg-mint/15 px-3 py-1 text-xs font-bold">
-                      {rate}%
+                      {rate === null ? "As needed" : `${rate}%`}
                     </span>
+                    <button
+                      type="button"
+                      onClick={() => setScheduleFor(scheduleFor === med.id ? null : med.id)}
+                      className="rounded-full px-3 py-1 text-[11px] font-bold ring-1 ring-line hover:bg-muted"
+                    >
+                      {scheduleFor === med.id ? "Close" : "Schedule"}
+                    </button>
                     <button
                       onClick={() => remove.mutate(med.id)}
                       aria-label={`Remove ${med.name}`}
@@ -425,16 +530,60 @@ function Medications() {
                     </button>
                   </div>
                 </div>
+                {scheduleFor === med.id && (
+                  <div className="mt-3 rounded-2xl bg-paper p-3 ring-1 ring-line">
+                    <div className="flex flex-wrap items-center gap-1.5">
+                      {FREQUENCIES.map((f) => (
+                        <button
+                          key={f.value}
+                          type="button"
+                          aria-pressed={med.frequency === f.value}
+                          onClick={() =>
+                            updateSchedule.mutate({
+                              id: med.id,
+                              frequency: f.value,
+                              days_of_week: med.days_of_week ?? [],
+                            })
+                          }
+                          className={`rounded-full px-3 py-1 text-[11px] font-bold ring-1 ${
+                            med.frequency === f.value
+                              ? "bg-sky/25 ring-sky/40"
+                              : "bg-background ring-line text-muted-foreground"
+                          }`}
+                        >
+                          {f.label}
+                        </button>
+                      ))}
+                    </div>
+                    {med.frequency === "specific_days" && (
+                      <div className="mt-2">
+                        <DayPicker
+                          value={med.days_of_week ?? []}
+                          onChange={(days_of_week) =>
+                            updateSchedule.mutate({
+                              id: med.id,
+                              frequency: "specific_days",
+                              days_of_week,
+                            })
+                          }
+                        />
+                      </div>
+                    )}
+                  </div>
+                )}
                 <div className="mt-3 flex gap-1.5">
-                  {days.map((d) => (
-                    <span
-                      key={d}
-                      title={d}
-                      className={`h-2.5 flex-1 rounded-full ${
-                        taken.has(d) ? "bg-mint" : "bg-line"
-                      }`}
-                    />
-                  ))}
+                  {days.map((d) => {
+                    const scheduled = isScheduledOn(med, d);
+                    return (
+                      <span
+                        key={d}
+                        title={`${d}${scheduled ? "" : " · not scheduled"}`}
+                        className={`h-2.5 flex-1 rounded-full ${
+                          taken.has(d) ? "bg-mint" : scheduled ? "bg-line" : "bg-line/40"
+                        }`}
+                      />
+                    );
+                  })}
                 </div>
               </div>
             );
