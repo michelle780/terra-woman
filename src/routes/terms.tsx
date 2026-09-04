@@ -162,7 +162,7 @@ function TermsPage() {
       </LegalSection>
 
       <LegalSection n={13} title="Contact us">
-        <LegalContact email="support@pulse.app" />
+        <LegalContact email="michelle@thedigitalfuture.xyz" />
       </LegalSection>
     </LegalLayout>
   );

@@ -209,7 +209,7 @@ function PrivacyPage() {
       </LegalSection>
 
       <LegalSection n={12} title="Contact us">
-        <LegalContact email="privacy@pulse.app" />
+        <LegalContact email="michelle@thedigitalfuture.xyz" />
       </LegalSection>
     </LegalLayout>
   );
