@@ -665,12 +665,6 @@ function VisualTreatmentPanel({ records, onSaved }: { records: RootsRecord[]; on
               >
                 {busy ? "Saving…" : "Save visual treatment"}
               </button>
-              <Link
-                to="/admin/lab"
-                className="rounded-full bg-background px-4 py-2 text-xs font-semibold ring-1 ring-line"
-              >
-                Open Visual Lab
-              </Link>
             </div>
             {message && (
               <p className="mt-3 rounded-xl bg-mint/20 px-3 py-2 text-xs font-semibold">{message}</p>
