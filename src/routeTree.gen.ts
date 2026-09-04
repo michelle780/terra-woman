@@ -20,6 +20,7 @@ import { Route as InviteRouteImport } from './routes/invite'
 import { Route as JournalRouteImport } from './routes/journal'
 import { Route as MedicationsRouteImport } from './routes/medications'
 import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as ShareRouteImport } from './routes/share'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as TrendsRouteImport } from './routes/trends'
 import { Route as WelcomeRouteImport } from './routes/welcome'
@@ -27,6 +28,7 @@ import { Route as AdminMembersRouteImport } from './routes/admin/members'
 import { Route as AdminRootsRouteImport } from './routes/admin/roots'
 import { Route as RootsIndexRouteImport } from './routes/roots.index'
 import { Route as RootsIdRouteImport } from './routes/roots.$id'
+import { Route as SharedTokenRouteImport } from './routes/shared.$token'
 import { Route as OauthOuraReturnRouteImport } from './routes/oauth.oura.return'
 import { Route as RootsBranchBranchRouteImport } from './routes/roots.branch.$branch'
 import { Route as LovableEmailAuthPreviewRouteImport } from './routes/lovable/email/auth/preview'
@@ -88,6 +90,11 @@ const PrivacyRoute = PrivacyRouteImport.update({
   path: '/privacy',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ShareRoute = ShareRouteImport.update({
+  id: '/share',
+  path: '/share',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const TermsRoute = TermsRouteImport.update({
   id: '/terms',
   path: '/terms',
@@ -121,6 +128,11 @@ const RootsIndexRoute = RootsIndexRouteImport.update({
 const RootsIdRoute = RootsIdRouteImport.update({
   id: '/roots/$id',
   path: '/roots/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SharedTokenRoute = SharedTokenRouteImport.update({
+  id: '/shared/$token',
+  path: '/shared/$token',
   getParentRoute: () => rootRouteImport,
 } as any)
 const OauthOuraReturnRoute = OauthOuraReturnRouteImport.update({
@@ -162,12 +174,14 @@ export interface FileRoutesByFullPath {
   '/journal': typeof JournalRoute
   '/medications': typeof MedicationsRoute
   '/privacy': typeof PrivacyRoute
+  '/share': typeof ShareRoute
   '/terms': typeof TermsRoute
   '/trends': typeof TrendsRoute
   '/welcome': typeof WelcomeRoute
   '/admin/members': typeof AdminMembersRoute
   '/admin/roots': typeof AdminRootsRoute
   '/roots/$id': typeof RootsIdRoute
+  '/shared/$token': typeof SharedTokenRoute
   '/roots/': typeof RootsIndexRoute
   '/oauth/oura/return': typeof OauthOuraReturnRoute
   '/roots/branch/$branch': typeof RootsBranchBranchRoute
@@ -187,12 +201,14 @@ export interface FileRoutesByTo {
   '/journal': typeof JournalRoute
   '/medications': typeof MedicationsRoute
   '/privacy': typeof PrivacyRoute
+  '/share': typeof ShareRoute
   '/terms': typeof TermsRoute
   '/trends': typeof TrendsRoute
   '/welcome': typeof WelcomeRoute
   '/admin/members': typeof AdminMembersRoute
   '/admin/roots': typeof AdminRootsRoute
   '/roots/$id': typeof RootsIdRoute
+  '/shared/$token': typeof SharedTokenRoute
   '/roots': typeof RootsIndexRoute
   '/oauth/oura/return': typeof OauthOuraReturnRoute
   '/roots/branch/$branch': typeof RootsBranchBranchRoute
@@ -213,12 +229,14 @@ export interface FileRoutesById {
   '/journal': typeof JournalRoute
   '/medications': typeof MedicationsRoute
   '/privacy': typeof PrivacyRoute
+  '/share': typeof ShareRoute
   '/terms': typeof TermsRoute
   '/trends': typeof TrendsRoute
   '/welcome': typeof WelcomeRoute
   '/admin/members': typeof AdminMembersRoute
   '/admin/roots': typeof AdminRootsRoute
   '/roots/$id': typeof RootsIdRoute
+  '/shared/$token': typeof SharedTokenRoute
   '/roots/': typeof RootsIndexRoute
   '/oauth/oura/return': typeof OauthOuraReturnRoute
   '/roots/branch/$branch': typeof RootsBranchBranchRoute
@@ -240,12 +258,14 @@ export interface FileRouteTypes {
     | '/journal'
     | '/medications'
     | '/privacy'
+    | '/share'
     | '/terms'
     | '/trends'
     | '/welcome'
     | '/admin/members'
     | '/admin/roots'
     | '/roots/$id'
+    | '/shared/$token'
     | '/roots/'
     | '/oauth/oura/return'
     | '/roots/branch/$branch'
@@ -265,12 +285,14 @@ export interface FileRouteTypes {
     | '/journal'
     | '/medications'
     | '/privacy'
+    | '/share'
     | '/terms'
     | '/trends'
     | '/welcome'
     | '/admin/members'
     | '/admin/roots'
     | '/roots/$id'
+    | '/shared/$token'
     | '/roots'
     | '/oauth/oura/return'
     | '/roots/branch/$branch'
@@ -290,12 +312,14 @@ export interface FileRouteTypes {
     | '/journal'
     | '/medications'
     | '/privacy'
+    | '/share'
     | '/terms'
     | '/trends'
     | '/welcome'
     | '/admin/members'
     | '/admin/roots'
     | '/roots/$id'
+    | '/shared/$token'
     | '/roots/'
     | '/oauth/oura/return'
     | '/roots/branch/$branch'
@@ -316,12 +340,14 @@ export interface RootRouteChildren {
   JournalRoute: typeof JournalRoute
   MedicationsRoute: typeof MedicationsRoute
   PrivacyRoute: typeof PrivacyRoute
+  ShareRoute: typeof ShareRoute
   TermsRoute: typeof TermsRoute
   TrendsRoute: typeof TrendsRoute
   WelcomeRoute: typeof WelcomeRoute
   AdminMembersRoute: typeof AdminMembersRoute
   AdminRootsRoute: typeof AdminRootsRoute
   RootsIdRoute: typeof RootsIdRoute
+  SharedTokenRoute: typeof SharedTokenRoute
   RootsIndexRoute: typeof RootsIndexRoute
   OauthOuraReturnRoute: typeof OauthOuraReturnRoute
   RootsBranchBranchRoute: typeof RootsBranchBranchRoute
@@ -409,6 +435,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PrivacyRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/share': {
+      id: '/share'
+      path: '/share'
+      fullPath: '/share'
+      preLoaderRoute: typeof ShareRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/terms': {
       id: '/terms'
       path: '/terms'
@@ -456,6 +489,13 @@ declare module '@tanstack/react-router' {
       path: '/roots/$id'
       fullPath: '/roots/$id'
       preLoaderRoute: typeof RootsIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/shared/$token': {
+      id: '/shared/$token'
+      path: '/shared/$token'
+      fullPath: '/shared/$token'
+      preLoaderRoute: typeof SharedTokenRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/oauth/oura/return': {
@@ -508,12 +548,14 @@ const rootRouteChildren: RootRouteChildren = {
   JournalRoute: JournalRoute,
   MedicationsRoute: MedicationsRoute,
   PrivacyRoute: PrivacyRoute,
+  ShareRoute: ShareRoute,
   TermsRoute: TermsRoute,
   TrendsRoute: TrendsRoute,
   WelcomeRoute: WelcomeRoute,
   AdminMembersRoute: AdminMembersRoute,
   AdminRootsRoute: AdminRootsRoute,
   RootsIdRoute: RootsIdRoute,
+  SharedTokenRoute: SharedTokenRoute,
   RootsIndexRoute: RootsIndexRoute,
   OauthOuraReturnRoute: OauthOuraReturnRoute,
   RootsBranchBranchRoute: RootsBranchBranchRoute,

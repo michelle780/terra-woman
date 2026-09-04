@@ -20,6 +20,8 @@ const NAV = [
   { to: "/journal", label: "Journal" },
   { to: "/roots", label: "Roots" },
   { to: "/devices", label: "Devices" },
+  { to: "/share", label: "Share" },
+
 ] as const;
 
 function DeviceChip({ label }: { label: string }) {

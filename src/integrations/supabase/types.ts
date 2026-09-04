@@ -621,6 +621,98 @@ export type Database = {
           },
         ]
       }
+      share_access_log: {
+        Row: {
+          grant_id: string
+          id: string
+          owner_id: string
+          user_agent: string | null
+          viewed_at: string
+        }
+        Insert: {
+          grant_id: string
+          id?: string
+          owner_id: string
+          user_agent?: string | null
+          viewed_at?: string
+        }
+        Update: {
+          grant_id?: string
+          id?: string
+          owner_id?: string
+          user_agent?: string | null
+          viewed_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "share_access_log_grant_id_fkey"
+            columns: ["grant_id"]
+            isOneToOne: false
+            referencedRelation: "share_grants"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      share_grants: {
+        Row: {
+          consent_signature: string
+          consent_signed_at: string
+          consent_statement: string
+          consent_version: string
+          created_at: string
+          expires_at: string | null
+          id: string
+          last_viewed_at: string | null
+          owner_id: string
+          recipient_email: string | null
+          recipient_name: string
+          relationship: string
+          revoked_at: string | null
+          scopes: string[]
+          token: string
+          updated_at: string
+          view_count: number
+        }
+        Insert: {
+          consent_signature: string
+          consent_signed_at?: string
+          consent_statement: string
+          consent_version?: string
+          created_at?: string
+          expires_at?: string | null
+          id?: string
+          last_viewed_at?: string | null
+          owner_id: string
+          recipient_email?: string | null
+          recipient_name: string
+          relationship?: string
+          revoked_at?: string | null
+          scopes?: string[]
+          token: string
+          updated_at?: string
+          view_count?: number
+        }
+        Update: {
+          consent_signature?: string
+          consent_signed_at?: string
+          consent_statement?: string
+          consent_version?: string
+          created_at?: string
+          expires_at?: string | null
+          id?: string
+          last_viewed_at?: string | null
+          owner_id?: string
+          recipient_email?: string | null
+          recipient_name?: string
+          relationship?: string
+          revoked_at?: string | null
+          scopes?: string[]
+          token?: string
+          updated_at?: string
+          view_count?: number
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           created_at: string
