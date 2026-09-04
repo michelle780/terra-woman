@@ -7,12 +7,42 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/lib/auth";
 import { getDailyHoroscope, ZODIAC_SIGNS } from "@/lib/horoscope.functions";
 import {
+  birthLocalToUtcIso,
+  birthUtcIsoToLocal,
   natalPlacements,
   placements,
   SIGN_GLYPHS,
   sunSignForBirth,
   type ZodiacSign,
 } from "@/lib/astro";
+
+const FALLBACK_ZONES = [
+  "America/Los_Angeles",
+  "America/Denver",
+  "America/Chicago",
+  "America/New_York",
+  "America/Anchorage",
+  "Pacific/Honolulu",
+  "Europe/London",
+  "Europe/Paris",
+  "Europe/Berlin",
+  "Asia/Dubai",
+  "Asia/Kolkata",
+  "Asia/Tokyo",
+  "Australia/Sydney",
+  "Pacific/Auckland",
+];
+
+const TIMEZONES: string[] =
+  typeof Intl.supportedValuesOf === "function"
+    ? Intl.supportedValuesOf("timeZone")
+    : FALLBACK_ZONES;
+
+const LOCAL_TZ = Intl.DateTimeFormat().resolvedOptions().timeZone || "America/Los_Angeles";
+
+function tzLabel(tz: string): string {
+  return tz.replace(/_/g, " ").replace("/", " — ");
+}
 
 export function HoroscopeCard() {
   const { user } = useAuth();
@@ -21,6 +51,7 @@ export function HoroscopeCard() {
   const [editing, setEditing] = useState(false);
   const [draftDate, setDraftDate] = useState("");
   const [draftTime, setDraftTime] = useState("");
+  const [draftTz, setDraftTz] = useState(LOCAL_TZ);
 
   const profileQ = useQuery({
     queryKey: ["profile", user!.id, "birth"],
@@ -46,13 +77,14 @@ export function HoroscopeCard() {
     : ((profileQ.data?.zodiac_sign as ZodiacSign) ?? null);
 
   const saveBirth = useMutation({
-    mutationFn: async ({ date, time }: { date: string; time: string }) => {
-      const computed = sunSignForBirth(date, time || null);
+    mutationFn: async ({ date, time, tz }: { date: string; time: string; tz: string }) => {
+      const storedTime = time ? birthLocalToUtcIso(date, time, tz) : null;
+      const computed = sunSignForBirth(date, storedTime);
       const { error } = await supabase
         .from("profiles")
         .update({
           birth_date: date,
-          birth_time: time || null,
+          birth_time: storedTime,
           zodiac_sign: computed,
         })
         .eq("id", user!.id);
@@ -93,8 +125,13 @@ export function HoroscopeCard() {
         {birthDate && !showForm && (
           <button
             onClick={() => {
-              setDraftDate(birthDate);
-              setDraftTime(birthTime ?? "");
+              const local =
+                birthTime && birthTime.includes("T")
+                  ? birthUtcIsoToLocal(birthTime, LOCAL_TZ)
+                  : null;
+              setDraftDate(local?.date ?? birthDate);
+              setDraftTime(local?.time ?? (birthTime && !birthTime.includes("T") ? birthTime : ""));
+              setDraftTz(LOCAL_TZ);
               setEditing(true);
             }}
             className="text-xs font-semibold text-muted-foreground underline"
@@ -110,12 +147,13 @@ export function HoroscopeCard() {
           onSubmit={(e) => {
             e.preventDefault();
             if (!draftDate) return;
-            saveBirth.mutate({ date: draftDate, time: draftTime });
+            saveBirth.mutate({ date: draftDate, time: draftTime, tz: draftTz });
           }}
         >
           <p className="text-sm text-muted-foreground sm:col-span-2">
             Enter your birth date and we'll calculate your real sun sign and planetary placements
-            from the ephemeris. Birth time is optional — it sharpens the moon placement.
+            from the ephemeris. Birth time is optional — it sharpens the moon placement. Enter it in
+            your local time and pick your timezone; we handle the conversion.
           </p>
           <label className="grid gap-1 text-xs font-semibold">
             Birth date
@@ -128,13 +166,27 @@ export function HoroscopeCard() {
             />
           </label>
           <label className="grid gap-1 text-xs font-semibold">
-            Birth time (optional, UTC)
+            Birth time (optional, your local time)
             <input
               type="time"
               value={draftTime}
               onChange={(e) => setDraftTime(e.target.value)}
               className="rounded-2xl bg-background px-3 py-2 text-sm font-normal ring-1 ring-line"
             />
+          </label>
+          <label className="grid gap-1 text-xs font-semibold sm:col-span-2">
+            Timezone
+            <select
+              value={draftTz}
+              onChange={(e) => setDraftTz(e.target.value)}
+              className="rounded-2xl bg-background px-3 py-2 text-sm font-normal ring-1 ring-line"
+            >
+              {(TIMEZONES.includes(draftTz) ? TIMEZONES : [draftTz, ...TIMEZONES]).map((tz) => (
+                <option key={tz} value={tz}>
+                  {tzLabel(tz)}
+                </option>
+              ))}
+            </select>
           </label>
           <div className="flex gap-2 sm:col-span-2">
             <button

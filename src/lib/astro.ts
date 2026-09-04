@@ -53,10 +53,70 @@ function geoLongitude(body: Astronomy.Body, date: Date): number {
   return Astronomy.Ecliptic(vec).elon;
 }
 
-/** Parse a YYYY-MM-DD (plus optional HH:MM) as a UTC instant. */
+/** Parse a YYYY-MM-DD (plus optional HH:MM or full UTC ISO) as a UTC instant. */
 export function toUtcDate(dateKey: string, time?: string | null): Date {
+  if (time && time.includes("T")) {
+    const iso = new Date(time);
+    if (!Number.isNaN(iso.getTime())) return iso;
+  }
   const t = time && /^\d{2}:\d{2}/.test(time) ? time.slice(0, 5) : "12:00";
   return new Date(`${dateKey}T${t}:00Z`);
+}
+
+/** Milliseconds the given IANA zone is ahead of UTC at the given instant. */
+function tzOffsetMs(tz: string, utc: Date): number {
+  const dtf = new Intl.DateTimeFormat("en-US", {
+    timeZone: tz,
+    hourCycle: "h23",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+  });
+  const p = Object.fromEntries(dtf.formatToParts(utc).map((x) => [x.type, x.value])) as Record<
+    string,
+    string
+  >;
+  const asUtc = Date.UTC(
+    Number(p["year"]),
+    Number(p["month"]) - 1,
+    Number(p["day"]),
+    Number(p["hour"]),
+    Number(p["minute"]),
+    Number(p["second"]),
+  );
+  return asUtc - utc.getTime();
+}
+
+/** Convert a local birth date + time in an IANA zone to a UTC ISO string. */
+export function birthLocalToUtcIso(date: string, time: string, tz: string): string {
+  const guess = new Date(`${date}T${time}:00Z`);
+  let utc = new Date(guess.getTime() - tzOffsetMs(tz, guess));
+  // Second pass catches DST boundaries.
+  utc = new Date(guess.getTime() - tzOffsetMs(tz, utc));
+  return utc.toISOString().slice(0, 16) + "Z";
+}
+
+/** Convert a stored UTC ISO back to local date/time parts in the given zone (for editing). */
+export function birthUtcIsoToLocal(iso: string, tz: string): { date: string; time: string } {
+  const dtf = new Intl.DateTimeFormat("en-US", {
+    timeZone: tz,
+    hourCycle: "h23",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+  const p = Object.fromEntries(
+    dtf.formatToParts(new Date(iso)).map((x) => [x.type, x.value]),
+  ) as Record<string, string>;
+  return {
+    date: `${p["year"]}-${p["month"]}-${p["day"]}`,
+    time: `${p["hour"]}:${p["minute"]}`,
+  };
 }
 
 /** True sun sign for a birth date, from the Sun's ecliptic longitude. */
