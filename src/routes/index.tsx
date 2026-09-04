@@ -10,6 +10,7 @@ import { AppShell } from "@/components/AppShell";
 import { CheckInCard } from "@/components/CheckInCard";
 import { DailyQuoteCard } from "@/components/DailyQuoteCard";
 import { InviteCard } from "@/components/InviteCard";
+import { RootsTodayCard } from "@/components/RootsTodayCard";
 
 import { useAuth } from "@/lib/auth";
 import {
@@ -571,7 +572,8 @@ function Today() {
         </div>
       </div>
 
-      <div className="mt-4">
+      <div className="mt-4 grid gap-4">
+        <RootsTodayCard />
         <DailyQuoteCard />
       </div>
 
