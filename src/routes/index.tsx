@@ -375,7 +375,7 @@ function Today() {
             />
           </div>
         </div>
-        {editing && <MetricsForm metric={metric} onDone={() => setEditing(false)} />}
+        {editing && <MetricsForm metric={todayMetric} onDone={() => setEditing(false)} />}
       </section>
 
       <section className="rise mt-4 rounded-[24px] bg-paper/55 p-5 ring-1 ring-line backdrop-blur-md sm:p-6">
