@@ -51,6 +51,7 @@ export function HoroscopeCard() {
   const [editing, setEditing] = useState(false);
   const [draftDate, setDraftDate] = useState("");
   const [draftTime, setDraftTime] = useState("");
+  const [draftTz, setDraftTz] = useState(LOCAL_TZ);
 
   const profileQ = useQuery({
     queryKey: ["profile", user!.id, "birth"],
@@ -76,13 +77,14 @@ export function HoroscopeCard() {
     : ((profileQ.data?.zodiac_sign as ZodiacSign) ?? null);
 
   const saveBirth = useMutation({
-    mutationFn: async ({ date, time }: { date: string; time: string }) => {
-      const computed = sunSignForBirth(date, time || null);
+    mutationFn: async ({ date, time, tz }: { date: string; time: string; tz: string }) => {
+      const storedTime = time ? birthLocalToUtcIso(date, time, tz) : null;
+      const computed = sunSignForBirth(date, storedTime);
       const { error } = await supabase
         .from("profiles")
         .update({
           birth_date: date,
-          birth_time: time || null,
+          birth_time: storedTime,
           zodiac_sign: computed,
         })
         .eq("id", user!.id);
