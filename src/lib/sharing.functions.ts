@@ -151,7 +151,19 @@ export type SharedView = {
     resting_hr: number | null;
     steps: number | null;
   }[];
-  checkins?: ({ checkin_date: string } & Record<string, number | null>)[];
+  checkins?: {
+    checkin_date: string;
+    happiness: number | null;
+    fulfillment: number | null;
+    calm: number | null;
+    energy: number | null;
+    focus: number | null;
+    stress: number | null;
+    anxiety: number | null;
+    mood_swings: number | null;
+    bloating: number | null;
+    cramps: number | null;
+  }[];
   medications?: { name: string; dose: string | null; frequency: string; active: boolean }[];
   cycle?: { start_date: string; end_date: string | null; flow: string | null; symptoms: string[] }[];
   journal?: { entry_date: string; mood: string | null; energy: number | null; symptoms: string[]; note: string | null }[];

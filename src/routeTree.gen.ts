@@ -20,6 +20,7 @@ import { Route as InviteRouteImport } from './routes/invite'
 import { Route as JournalRouteImport } from './routes/journal'
 import { Route as MedicationsRouteImport } from './routes/medications'
 import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as ShareRouteImport } from './routes/share'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as TrendsRouteImport } from './routes/trends'
 import { Route as WelcomeRouteImport } from './routes/welcome'
@@ -86,6 +87,11 @@ const MedicationsRoute = MedicationsRouteImport.update({
 const PrivacyRoute = PrivacyRouteImport.update({
   id: '/privacy',
   path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ShareRoute = ShareRouteImport.update({
+  id: '/share',
+  path: '/share',
   getParentRoute: () => rootRouteImport,
 } as any)
 const TermsRoute = TermsRouteImport.update({
@@ -162,6 +168,7 @@ export interface FileRoutesByFullPath {
   '/journal': typeof JournalRoute
   '/medications': typeof MedicationsRoute
   '/privacy': typeof PrivacyRoute
+  '/share': typeof ShareRoute
   '/terms': typeof TermsRoute
   '/trends': typeof TrendsRoute
   '/welcome': typeof WelcomeRoute
@@ -187,6 +194,7 @@ export interface FileRoutesByTo {
   '/journal': typeof JournalRoute
   '/medications': typeof MedicationsRoute
   '/privacy': typeof PrivacyRoute
+  '/share': typeof ShareRoute
   '/terms': typeof TermsRoute
   '/trends': typeof TrendsRoute
   '/welcome': typeof WelcomeRoute
@@ -213,6 +221,7 @@ export interface FileRoutesById {
   '/journal': typeof JournalRoute
   '/medications': typeof MedicationsRoute
   '/privacy': typeof PrivacyRoute
+  '/share': typeof ShareRoute
   '/terms': typeof TermsRoute
   '/trends': typeof TrendsRoute
   '/welcome': typeof WelcomeRoute
@@ -240,6 +249,7 @@ export interface FileRouteTypes {
     | '/journal'
     | '/medications'
     | '/privacy'
+    | '/share'
     | '/terms'
     | '/trends'
     | '/welcome'
@@ -265,6 +275,7 @@ export interface FileRouteTypes {
     | '/journal'
     | '/medications'
     | '/privacy'
+    | '/share'
     | '/terms'
     | '/trends'
     | '/welcome'
@@ -290,6 +301,7 @@ export interface FileRouteTypes {
     | '/journal'
     | '/medications'
     | '/privacy'
+    | '/share'
     | '/terms'
     | '/trends'
     | '/welcome'
@@ -316,6 +328,7 @@ export interface RootRouteChildren {
   JournalRoute: typeof JournalRoute
   MedicationsRoute: typeof MedicationsRoute
   PrivacyRoute: typeof PrivacyRoute
+  ShareRoute: typeof ShareRoute
   TermsRoute: typeof TermsRoute
   TrendsRoute: typeof TrendsRoute
   WelcomeRoute: typeof WelcomeRoute
@@ -407,6 +420,13 @@ declare module '@tanstack/react-router' {
       path: '/privacy'
       fullPath: '/privacy'
       preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/share': {
+      id: '/share'
+      path: '/share'
+      fullPath: '/share'
+      preLoaderRoute: typeof ShareRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/terms': {
@@ -508,6 +528,7 @@ const rootRouteChildren: RootRouteChildren = {
   JournalRoute: JournalRoute,
   MedicationsRoute: MedicationsRoute,
   PrivacyRoute: PrivacyRoute,
+  ShareRoute: ShareRoute,
   TermsRoute: TermsRoute,
   TrendsRoute: TrendsRoute,
   WelcomeRoute: WelcomeRoute,
