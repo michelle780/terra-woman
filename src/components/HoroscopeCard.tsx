@@ -147,7 +147,7 @@ export function HoroscopeCard() {
           onSubmit={(e) => {
             e.preventDefault();
             if (!draftDate) return;
-            saveBirth.mutate({ date: draftDate, time: draftTime });
+            saveBirth.mutate({ date: draftDate, time: draftTime, tz: draftTz });
           }}
         >
           <p className="text-sm text-muted-foreground sm:col-span-2">
