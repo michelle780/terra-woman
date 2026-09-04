@@ -21,6 +21,7 @@ import { Route as JournalRouteImport } from './routes/journal'
 import { Route as MedicationsRouteImport } from './routes/medications'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as ShareRouteImport } from './routes/share'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as TrendsRouteImport } from './routes/trends'
 import { Route as WelcomeRouteImport } from './routes/welcome'
@@ -93,6 +94,11 @@ const PrivacyRoute = PrivacyRouteImport.update({
 const ShareRoute = ShareRouteImport.update({
   id: '/share',
   path: '/share',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
 const TermsRoute = TermsRouteImport.update({
@@ -175,6 +181,7 @@ export interface FileRoutesByFullPath {
   '/medications': typeof MedicationsRoute
   '/privacy': typeof PrivacyRoute
   '/share': typeof ShareRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
   '/trends': typeof TrendsRoute
   '/welcome': typeof WelcomeRoute
@@ -202,6 +209,7 @@ export interface FileRoutesByTo {
   '/medications': typeof MedicationsRoute
   '/privacy': typeof PrivacyRoute
   '/share': typeof ShareRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
   '/trends': typeof TrendsRoute
   '/welcome': typeof WelcomeRoute
@@ -230,6 +238,7 @@ export interface FileRoutesById {
   '/medications': typeof MedicationsRoute
   '/privacy': typeof PrivacyRoute
   '/share': typeof ShareRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
   '/trends': typeof TrendsRoute
   '/welcome': typeof WelcomeRoute
@@ -259,6 +268,7 @@ export interface FileRouteTypes {
     | '/medications'
     | '/privacy'
     | '/share'
+    | '/sitemap.xml'
     | '/terms'
     | '/trends'
     | '/welcome'
@@ -286,6 +296,7 @@ export interface FileRouteTypes {
     | '/medications'
     | '/privacy'
     | '/share'
+    | '/sitemap.xml'
     | '/terms'
     | '/trends'
     | '/welcome'
@@ -313,6 +324,7 @@ export interface FileRouteTypes {
     | '/medications'
     | '/privacy'
     | '/share'
+    | '/sitemap.xml'
     | '/terms'
     | '/trends'
     | '/welcome'
@@ -341,6 +353,7 @@ export interface RootRouteChildren {
   MedicationsRoute: typeof MedicationsRoute
   PrivacyRoute: typeof PrivacyRoute
   ShareRoute: typeof ShareRoute
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TermsRoute: typeof TermsRoute
   TrendsRoute: typeof TrendsRoute
   WelcomeRoute: typeof WelcomeRoute
@@ -440,6 +453,13 @@ declare module '@tanstack/react-router' {
       path: '/share'
       fullPath: '/share'
       preLoaderRoute: typeof ShareRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/terms': {
@@ -549,6 +569,7 @@ const rootRouteChildren: RootRouteChildren = {
   MedicationsRoute: MedicationsRoute,
   PrivacyRoute: PrivacyRoute,
   ShareRoute: ShareRoute,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
   TermsRoute: TermsRoute,
   TrendsRoute: TrendsRoute,
   WelcomeRoute: WelcomeRoute,
