@@ -5,7 +5,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/lib/auth";
 import terraTree from "@/assets/terra-tree.png";
-import { fetchIsEditor } from "@/lib/roots";
+import { fetchIsAdmin, fetchIsEditor } from "@/lib/roots";
 
 const NAV = [
   { to: "/", label: "Today" },
