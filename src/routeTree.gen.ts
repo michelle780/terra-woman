@@ -28,6 +28,7 @@ import { Route as AdminMembersRouteImport } from './routes/admin/members'
 import { Route as AdminRootsRouteImport } from './routes/admin/roots'
 import { Route as RootsIndexRouteImport } from './routes/roots.index'
 import { Route as RootsIdRouteImport } from './routes/roots.$id'
+import { Route as SharedTokenRouteImport } from './routes/shared.$token'
 import { Route as OauthOuraReturnRouteImport } from './routes/oauth.oura.return'
 import { Route as RootsBranchBranchRouteImport } from './routes/roots.branch.$branch'
 import { Route as LovableEmailAuthPreviewRouteImport } from './routes/lovable/email/auth/preview'
@@ -129,6 +130,11 @@ const RootsIdRoute = RootsIdRouteImport.update({
   path: '/roots/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SharedTokenRoute = SharedTokenRouteImport.update({
+  id: '/shared/$token',
+  path: '/shared/$token',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const OauthOuraReturnRoute = OauthOuraReturnRouteImport.update({
   id: '/oauth/oura/return',
   path: '/oauth/oura/return',
@@ -175,6 +181,7 @@ export interface FileRoutesByFullPath {
   '/admin/members': typeof AdminMembersRoute
   '/admin/roots': typeof AdminRootsRoute
   '/roots/$id': typeof RootsIdRoute
+  '/shared/$token': typeof SharedTokenRoute
   '/roots/': typeof RootsIndexRoute
   '/oauth/oura/return': typeof OauthOuraReturnRoute
   '/roots/branch/$branch': typeof RootsBranchBranchRoute
@@ -201,6 +208,7 @@ export interface FileRoutesByTo {
   '/admin/members': typeof AdminMembersRoute
   '/admin/roots': typeof AdminRootsRoute
   '/roots/$id': typeof RootsIdRoute
+  '/shared/$token': typeof SharedTokenRoute
   '/roots': typeof RootsIndexRoute
   '/oauth/oura/return': typeof OauthOuraReturnRoute
   '/roots/branch/$branch': typeof RootsBranchBranchRoute
@@ -228,6 +236,7 @@ export interface FileRoutesById {
   '/admin/members': typeof AdminMembersRoute
   '/admin/roots': typeof AdminRootsRoute
   '/roots/$id': typeof RootsIdRoute
+  '/shared/$token': typeof SharedTokenRoute
   '/roots/': typeof RootsIndexRoute
   '/oauth/oura/return': typeof OauthOuraReturnRoute
   '/roots/branch/$branch': typeof RootsBranchBranchRoute
@@ -256,6 +265,7 @@ export interface FileRouteTypes {
     | '/admin/members'
     | '/admin/roots'
     | '/roots/$id'
+    | '/shared/$token'
     | '/roots/'
     | '/oauth/oura/return'
     | '/roots/branch/$branch'
@@ -282,6 +292,7 @@ export interface FileRouteTypes {
     | '/admin/members'
     | '/admin/roots'
     | '/roots/$id'
+    | '/shared/$token'
     | '/roots'
     | '/oauth/oura/return'
     | '/roots/branch/$branch'
@@ -308,6 +319,7 @@ export interface FileRouteTypes {
     | '/admin/members'
     | '/admin/roots'
     | '/roots/$id'
+    | '/shared/$token'
     | '/roots/'
     | '/oauth/oura/return'
     | '/roots/branch/$branch'
@@ -335,6 +347,7 @@ export interface RootRouteChildren {
   AdminMembersRoute: typeof AdminMembersRoute
   AdminRootsRoute: typeof AdminRootsRoute
   RootsIdRoute: typeof RootsIdRoute
+  SharedTokenRoute: typeof SharedTokenRoute
   RootsIndexRoute: typeof RootsIndexRoute
   OauthOuraReturnRoute: typeof OauthOuraReturnRoute
   RootsBranchBranchRoute: typeof RootsBranchBranchRoute
@@ -478,6 +491,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RootsIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/shared/$token': {
+      id: '/shared/$token'
+      path: '/shared/$token'
+      fullPath: '/shared/$token'
+      preLoaderRoute: typeof SharedTokenRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/oauth/oura/return': {
       id: '/oauth/oura/return'
       path: '/oauth/oura/return'
@@ -535,6 +555,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminMembersRoute: AdminMembersRoute,
   AdminRootsRoute: AdminRootsRoute,
   RootsIdRoute: RootsIdRoute,
+  SharedTokenRoute: SharedTokenRoute,
   RootsIndexRoute: RootsIndexRoute,
   OauthOuraReturnRoute: OauthOuraReturnRoute,
   RootsBranchBranchRoute: RootsBranchBranchRoute,
