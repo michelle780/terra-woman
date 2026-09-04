@@ -5,6 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable/index";
 import { useAuth } from "@/lib/auth";
 import { ProductPreview } from "@/components/ProductPreview";
+import { FounderPreview } from "@/components/FounderPreview";
 
 
 export const Route = createFileRoute("/auth")({

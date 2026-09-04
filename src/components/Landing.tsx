@@ -2,6 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { moonPhase, todayKey } from "@/lib/wellness";
 import { QUOTES } from "@/lib/quotes";
 import { ProductPreview } from "@/components/ProductPreview";
+import { FounderPreview } from "@/components/FounderPreview";
 import terraTree from "@/assets/terra-tree.png";
 
 const FEATURES = [
