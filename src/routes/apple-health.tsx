@@ -254,6 +254,8 @@ function AppleHealth() {
         </div>
       </section>
 
+      <AppleCycleImport />
+
       <section className="rise rounded-[24px] bg-paper/70 p-5 ring-1 ring-line backdrop-blur-md">
         <h2 className="text-xl">Last 14 days</h2>
         {recent.length === 0 ? (
