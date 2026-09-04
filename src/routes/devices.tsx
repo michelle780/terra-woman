@@ -47,7 +47,7 @@ function label(id: string): string {
   return PROVIDERS.find((p) => p.id === id)?.name ?? id;
 }
 
-function Devices() {
+export function Devices() {
   const { user } = useAuth();
   const qc = useQueryClient();
   const [custom, setCustom] = useState("");

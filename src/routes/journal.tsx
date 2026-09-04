@@ -32,7 +32,7 @@ export const Route = createFileRoute("/journal")({
   ),
 });
 
-function Journal() {
+export function Journal() {
   const { user } = useAuth();
   const qc = useQueryClient();
   const today = todayKey();
