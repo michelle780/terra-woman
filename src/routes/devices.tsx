@@ -5,6 +5,7 @@ import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { AppShell } from "@/components/AppShell";
 import { OuraConnect, useOuraStatus } from "@/components/OuraConnect";
+import { WearableConnect } from "@/components/WearableConnect";
 import { useAuth } from "@/lib/auth";
 import { fetchDeviceConnections } from "@/lib/wellness";
 
@@ -123,6 +124,7 @@ export function Devices() {
           const conn = byProvider.get(p.id);
           const isOura = p.id === "oura";
           const isApple = p.id === "apple_health";
+          const isWearable = p.id === "whoop" || p.id === "fitbit";
           const connected = isOura ? ouraConnected : conn?.status === "connected";
           return (
             <div key={p.id} className="rise rounded-[24px] bg-paper p-5 ring-1 ring-line">
@@ -157,6 +159,10 @@ export function Devices() {
               {isOura ? (
                 <div className="mt-4">
                   <OuraConnect compact />
+                </div>
+              ) : isWearable ? (
+                <div className="mt-4">
+                  <WearableConnect provider={p.id as "whoop" | "fitbit"} compact />
                 </div>
               ) : isApple ? (
                 <div className="mt-4 flex flex-wrap gap-2">
