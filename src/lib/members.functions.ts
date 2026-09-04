@@ -32,13 +32,7 @@ export const listMembers = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
     // Admin-only: verify the caller's role as the authenticated user (RLS applies).
-    const { data: roleRows, error: roleError } = await context.supabase
-      .from("user_roles")
-      .select("role")
-      .eq("user_id", context.userId);
-    if (roleError) throw roleError;
-    const isAdmin = (roleRows ?? []).some((r) => r.role === "admin");
-    if (!isAdmin) throw new Response("Forbidden", { status: 403 });
+    await assertAdmin(context.supabase, context.userId);
 
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
 
@@ -56,7 +50,7 @@ export const listMembers = createServerFn({ method: "GET" })
 
     const [{ data: profiles }, { data: roles }, { data: checkins }, { data: metrics }, { data: devices }] =
       await Promise.all([
-        supabaseAdmin.from("profiles").select("id, display_name, onboarded_at"),
+        supabaseAdmin.from("profiles").select("id, display_name, onboarded_at, preferred_channel, checkin_frequency"),
         supabaseAdmin.from("user_roles").select("user_id, role"),
         supabaseAdmin.from("daily_checkins").select("user_id").limit(20000),
         supabaseAdmin.from("daily_metrics").select("user_id").limit(20000),
