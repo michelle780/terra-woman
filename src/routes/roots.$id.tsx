@@ -10,6 +10,7 @@ import { StoryHero, Eyebrow, RootChipCard, BotanicalDivider } from "@/components
 import { TerraMark } from "@/components/roots/primitives";
 import {
   branchOf,
+  consumerContext,
   relatedTo,
   rotate,
   seriesLabel,
@@ -174,11 +175,11 @@ function RootStory() {
         </div>
       )}
 
-      {record.modern_context && (
+      {consumerContext(record.modern_context) && (
         <div className="mx-auto max-w-[38rem] rounded-2xl bg-paper p-6 ring-1 ring-line/70 sm:p-8">
           <Eyebrow className="text-copper-ink">Then / now</Eyebrow>
           <p className="mt-4 text-[0.98rem] leading-relaxed text-foreground/85">
-            {record.modern_context}
+            {consumerContext(record.modern_context)}
           </p>
         </div>
       )}

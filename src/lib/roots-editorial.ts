@@ -290,3 +290,14 @@ export function relatedTo(r: RootsRecord, all: RootsRecord[], limit = 4): RootsR
     .slice(0, limit)
     .map((s) => s.c);
 }
+
+/** Internal editorial handling notes — never consumer-facing copy. */
+const INTERNAL_NOTE =
+  /\b(historical (educational |institutional |medical |herbal |practice|belief|description|profile|context)|not medical advice|never be surfaced|do not imply|no protective claim|short quot|editorial positioning|modern safety context|checking the scan|in product ui)\b/i;
+
+/** Returns the text only if it is real story copy; null for internal notes. */
+export function consumerContext(text: string | null | undefined): string | null {
+  const t = text?.trim();
+  if (!t) return null;
+  return INTERNAL_NOTE.test(t) ? null : t;
+}
