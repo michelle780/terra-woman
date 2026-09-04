@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { AppShell } from "@/components/AppShell";
+import { AppleCycleImport } from "@/components/AppleCycleImport";
 import { useAuth } from "@/lib/auth";
 import { fetchMetrics, formatSleep, lastNDays, todayKey } from "@/lib/wellness";
 
@@ -252,6 +253,8 @@ function AppleHealth() {
           </Link>
         </div>
       </section>
+
+      <AppleCycleImport />
 
       <section className="rise rounded-[24px] bg-paper/70 p-5 ring-1 ring-line backdrop-blur-md">
         <h2 className="text-xl">Last 14 days</h2>
