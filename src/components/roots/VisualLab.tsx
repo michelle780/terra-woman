@@ -106,6 +106,31 @@ export function VisualLab() {
     return out;
   }, [records]);
 
+  const [filter, setFilter] = useState<VisualTemplate | "all">("all");
+
+  const rendered = useMemo(
+    () => records.map((r) => ({ record: r, template: resolveTemplate(r) })),
+    [records],
+  );
+
+  const gallery = useMemo(
+    () => (filter === "all" ? rendered : rendered.filter((x) => x.template === filter)),
+    [rendered, filter],
+  );
+
+  const quotes = useMemo(
+    () => records.filter((r) => r.quote && r.quote_attribution),
+    [records],
+  );
+
+  const templateCounts = useMemo(() => {
+    const out: Partial<Record<VisualTemplate, number>> = {};
+    for (const x of rendered) out[x.template] = (out[x.template] ?? 0) + 1;
+    return out;
+  }, [rendered]);
+
+
+
 
   return (
     <div className="space-y-16 pb-20">
