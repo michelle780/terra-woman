@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AppleHealthRouteImport } from './routes/apple-health'
 import { Route as AstrologyRouteImport } from './routes/astrology'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as CycleRouteImport } from './routes/cycle'
@@ -30,6 +31,11 @@ import { Route as OauthOuraReturnRouteImport } from './routes/oauth.oura.return'
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AppleHealthRoute = AppleHealthRouteImport.update({
+  id: '/apple-health',
+  path: '/apple-health',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AstrologyRoute = AstrologyRouteImport.update({
@@ -115,6 +121,7 @@ const OauthOuraReturnRoute = OauthOuraReturnRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/apple-health': typeof AppleHealthRoute
   '/astrology': typeof AstrologyRoute
   '/auth': typeof AuthRoute
   '/cycle': typeof CycleRoute
@@ -134,6 +141,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/apple-health': typeof AppleHealthRoute
   '/astrology': typeof AstrologyRoute
   '/auth': typeof AuthRoute
   '/cycle': typeof CycleRoute
@@ -154,6 +162,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/apple-health': typeof AppleHealthRoute
   '/astrology': typeof AstrologyRoute
   '/auth': typeof AuthRoute
   '/cycle': typeof CycleRoute
@@ -175,6 +184,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/apple-health'
     | '/astrology'
     | '/auth'
     | '/cycle'
@@ -194,6 +204,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/apple-health'
     | '/astrology'
     | '/auth'
     | '/cycle'
@@ -213,6 +224,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/apple-health'
     | '/astrology'
     | '/auth'
     | '/cycle'
@@ -233,6 +245,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AppleHealthRoute: typeof AppleHealthRoute
   AstrologyRoute: typeof AstrologyRoute
   AuthRoute: typeof AuthRoute
   CycleRoute: typeof CycleRoute
@@ -257,6 +270,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/apple-health': {
+      id: '/apple-health'
+      path: '/apple-health'
+      fullPath: '/apple-health'
+      preLoaderRoute: typeof AppleHealthRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/astrology': {
@@ -386,6 +406,7 @@ const RootsRouteWithChildren = RootsRoute._addFileChildren(RootsRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AppleHealthRoute: AppleHealthRoute,
   AstrologyRoute: AstrologyRoute,
   AuthRoute: AuthRoute,
   CycleRoute: CycleRoute,
