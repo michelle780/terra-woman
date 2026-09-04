@@ -7,7 +7,5 @@
 - [x] Compact /welcome onboarding so each step + progress fits one viewport (no scrolling)
 - [ ] Verify admin Visual Treatment panel in browser (needs onboarded admin session)
 - [x] Make Today tiles translucent so the tree-of-life backdrop shows through
-- [ ] Real Oura OAuth via App User Connector (each member connects her own ring)
-      - blocked: needs user approval on the Oura connector client card
+- [x] Real Oura OAuth via App User Connector (each member connects her own ring, 30-day sync into daily_metrics)
 - [ ] Add "Connect your health items" step to /welcome sign-up flow
-- [ ] Devices page: replace placeholder "Mark synced" with real connect/sync for Oura
