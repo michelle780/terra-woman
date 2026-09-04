@@ -14,6 +14,8 @@ import {
   fetchJournal,
   fetchMedicationLogs,
   fetchMedications,
+  isScheduledOn,
+  scheduleLabel,
   fetchMetrics,
   formatSleep,
   formatTime,
@@ -215,8 +217,11 @@ function Today() {
   });
 
   const metric = metricsQ.data?.find((m) => m.metric_date === today);
-  const meds = (medsQ.data ?? []).filter((m) => m.active);
+  const allMeds = (medsQ.data ?? []).filter((m) => m.active);
+  const meds = allMeds.filter((m) => isScheduledOn(m, today));
+  const asNeededMeds = allMeds.filter((m) => m.frequency === "as_needed");
   const takenIds = new Set((logsQ.data ?? []).map((l) => l.medication_id));
+  const dueNow = meds.filter((m) => !takenIds.has(m.id));
   const entry = journalQ.data?.[0];
 
   const toggle = useMutation({
@@ -236,6 +241,21 @@ function Today() {
       }
     },
     onSuccess: () => qc.invalidateQueries({ queryKey: ["medication-logs"] }),
+    onError: (e: Error) => toast.error(e.message),
+  });
+
+  const confirmAll = useMutation({
+    mutationFn: async () => {
+      if (dueNow.length === 0) return;
+      const { error } = await supabase.from("medication_logs").insert(
+        dueNow.map((m) => ({ user_id: user!.id, medication_id: m.id, taken_on: today })),
+      );
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["medication-logs"] });
+      toast.success("Today's medications confirmed");
+    },
     onError: (e: Error) => toast.error(e.message),
   });
 
@@ -310,18 +330,27 @@ function Today() {
               <h2 className="mt-0.5 text-xl">Today's check-in</h2>
             </div>
             <span className="rounded-full bg-mint/15 px-3 py-1 text-xs font-bold">
-              {takenIds.size}/{meds.length} taken
+              {meds.filter((m) => takenIds.has(m.id)).length}/{meds.length} taken
             </span>
           </div>
           <div className="mt-4 space-y-2.5">
             {meds.length === 0 && (
               <p className="text-sm text-muted-foreground">
-                No medications yet.{" "}
+                Nothing scheduled today.{" "}
                 <Link to="/medications" className="font-semibold underline">
-                  Add your first one
+                  Set up your list
                 </Link>
                 .
               </p>
+            )}
+            {dueNow.length > 1 && (
+              <button
+                onClick={() => confirmAll.mutate()}
+                disabled={confirmAll.isPending}
+                className="w-full rounded-full bg-mint/25 px-4 py-2 text-xs font-bold ring-1 ring-mint/40 disabled:opacity-60"
+              >
+                Confirm all {dueNow.length} as taken
+              </button>
             )}
             {meds.map((med) => {
               const taken = takenIds.has(med.id);
@@ -342,7 +371,9 @@ function Today() {
                   <span className="flex-1">
                     <span className="block text-sm font-semibold">{med.name}</span>
                     <span className="block text-[11px] text-muted-foreground">
-                      {[med.dose, formatTime(med.time_of_day)].filter(Boolean).join(" · ")}
+                      {[med.dose, formatTime(med.time_of_day), scheduleLabel(med)]
+                        .filter(Boolean)
+                        .join(" · ")}
                     </span>
                   </span>
                   <span
@@ -355,6 +386,32 @@ function Today() {
                 </button>
               );
             })}
+            {asNeededMeds.length > 0 && (
+              <div className="pt-2">
+                <p className="text-[11px] font-semibold text-muted-foreground">As needed</p>
+                <div className="mt-1.5 space-y-2">
+                  {asNeededMeds.map((med) => {
+                    const taken = takenIds.has(med.id);
+                    return (
+                      <button
+                        key={med.id}
+                        onClick={() => toggle.mutate(med.id)}
+                        className="flex w-full items-center gap-3 rounded-2xl bg-background px-3 py-2 text-left transition-colors hover:bg-cream"
+                      >
+                        <span className="flex-1 text-sm font-semibold">{med.name}</span>
+                        <span
+                          className={`rounded-full px-2.5 py-1 text-xs font-bold ${
+                            taken ? "text-mint" : "bg-amber/20"
+                          }`}
+                        >
+                          {taken ? "Taken" : "Log dose"}
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
           </div>
         </section>
 
