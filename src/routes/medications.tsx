@@ -7,12 +7,53 @@ import { supabase } from "@/integrations/supabase/client";
 import { AppShell } from "@/components/AppShell";
 import { useAuth } from "@/lib/auth";
 import {
+  DAY_LABELS,
   fetchMedicationLogs,
   fetchMedications,
   formatTime,
+  isScheduledOn,
   lastNDays,
+  scheduleLabel,
   todayKey,
+  type MedFrequency,
+  type Medication,
 } from "@/lib/wellness";
+
+const FREQUENCIES: { value: MedFrequency; label: string }[] = [
+  { value: "daily", label: "Every day" },
+  { value: "weekdays", label: "Weekdays" },
+  { value: "specific_days", label: "Certain days" },
+  { value: "as_needed", label: "As needed" },
+];
+
+function DayPicker({
+  value,
+  onChange,
+}: {
+  value: number[];
+  onChange: (days: number[]) => void;
+}) {
+  return (
+    <div className="flex flex-wrap gap-1.5">
+      {DAY_LABELS.map((label, i) => {
+        const on = value.includes(i);
+        return (
+          <button
+            key={label}
+            type="button"
+            aria-pressed={on}
+            onClick={() => onChange(on ? value.filter((d) => d !== i) : [...value, i])}
+            className={`rounded-full px-3 py-1 text-[11px] font-bold ring-1 ${
+              on ? "bg-mint/30 ring-mint/50" : "bg-background ring-line text-muted-foreground"
+            }`}
+          >
+            {label}
+          </button>
+        );
+      })}
+    </div>
+  );
+}
 
 export const Route = createFileRoute("/medications")({
   head: () => ({
@@ -72,7 +113,14 @@ function Medications() {
   const qc = useQueryClient();
   const days = lastNDays(14);
   const today = todayKey();
-  const [form, setForm] = useState({ name: "", dose: "", time_of_day: "" });
+  const [form, setForm] = useState<{
+    name: string;
+    dose: string;
+    time_of_day: string;
+    frequency: MedFrequency;
+    days_of_week: number[];
+  }>({ name: "", dose: "", time_of_day: "", frequency: "daily", days_of_week: [] });
+  const [scheduleFor, setScheduleFor] = useState<string | null>(null);
   const [showImport, setShowImport] = useState(false);
   const [importText, setImportText] = useState("");
   const [preview, setPreview] = useState<ParsedMed[] | null>(null);
@@ -90,11 +138,13 @@ function Medications() {
         name: form.name.trim(),
         dose: form.dose.trim() || null,
         time_of_day: form.time_of_day || null,
+        frequency: form.frequency,
+        days_of_week: form.frequency === "specific_days" ? form.days_of_week : [],
       });
       if (error) throw error;
     },
     onSuccess: () => {
-      setForm({ name: "", dose: "", time_of_day: "" });
+      setForm({ name: "", dose: "", time_of_day: "", frequency: "daily", days_of_week: [] });
       qc.invalidateQueries({ queryKey: ["medications"] });
       toast.success("Medication added");
     },
@@ -142,8 +192,68 @@ function Medications() {
     onError: (e: Error) => toast.error(e.message),
   });
 
+  const updateSchedule = useMutation({
+    mutationFn: async (vars: { id: string; frequency: MedFrequency; days_of_week: number[] }) => {
+      const { error } = await supabase
+        .from("medications")
+        .update({
+          frequency: vars.frequency,
+          days_of_week: vars.frequency === "specific_days" ? vars.days_of_week : [],
+        })
+        .eq("id", vars.id);
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["medications"] });
+      toast.success("Schedule updated");
+    },
+    onError: (e: Error) => toast.error(e.message),
+  });
+
+  const toggleToday = useMutation({
+    mutationFn: async (vars: { id: string; taken: boolean }) => {
+      if (vars.taken) {
+        const { error } = await supabase
+          .from("medication_logs")
+          .delete()
+          .eq("medication_id", vars.id)
+          .eq("taken_on", today);
+        if (error) throw error;
+      } else {
+        const { error } = await supabase
+          .from("medication_logs")
+          .insert({ user_id: user!.id, medication_id: vars.id, taken_on: today });
+        if (error) throw error;
+      }
+    },
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["medication-logs"] }),
+    onError: (e: Error) => toast.error(e.message),
+  });
+
   const meds = medsQ.data ?? [];
   const logs = logsQ.data ?? [];
+  const takenToday = new Set(logs.filter((l) => l.taken_on === today).map((l) => l.medication_id));
+  const activeMeds = meds.filter((m) => m.active);
+  const dueToday = activeMeds.filter((m) => isScheduledOn(m, today));
+  const asNeeded = activeMeds.filter((m) => m.frequency === "as_needed");
+  const remaining = dueToday.filter((m) => !takenToday.has(m.id));
+
+  const confirmAll = useMutation({
+    mutationFn: async () => {
+      if (remaining.length === 0) return;
+      const { error } = await supabase.from("medication_logs").insert(
+        remaining.map((m) => ({ user_id: user!.id, medication_id: m.id, taken_on: today })),
+      );
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["medication-logs"] });
+      toast.success("Confirmed for today");
+    },
+    onError: (e: Error) => toast.error(e.message),
+  });
+
+  const scheduledDays = (med: Medication) => days.filter((d) => isScheduledOn(med, d));
 
   return (
     <>
@@ -192,6 +302,34 @@ function Medications() {
           >
             Add
           </button>
+          <div className="sm:col-span-4">
+            <span className="text-[11px] font-semibold text-muted-foreground">How often</span>
+            <div className="mt-1 flex flex-wrap items-center gap-1.5">
+              {FREQUENCIES.map((f) => (
+                <button
+                  key={f.value}
+                  type="button"
+                  aria-pressed={form.frequency === f.value}
+                  onClick={() => setForm({ ...form, frequency: f.value })}
+                  className={`rounded-full px-3 py-1 text-[11px] font-bold ring-1 ${
+                    form.frequency === f.value
+                      ? "bg-sky/25 ring-sky/40"
+                      : "bg-background ring-line text-muted-foreground"
+                  }`}
+                >
+                  {f.label}
+                </button>
+              ))}
+            </div>
+            {form.frequency === "specific_days" && (
+              <div className="mt-2">
+                <DayPicker
+                  value={form.days_of_week}
+                  onChange={(days_of_week) => setForm({ ...form, days_of_week })}
+                />
+              </div>
+            )}
+          </div>
         </form>
 
         <div className="mt-5 border-t border-line pt-4">
@@ -276,6 +414,72 @@ function Medications() {
       </section>
 
       <section className="rise mt-4 rounded-[24px] bg-paper p-5 ring-1 ring-line">
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <div>
+            <p className="eyebrow">Today</p>
+            <h2 className="mt-0.5 text-xl">Confirm what you took</h2>
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="rounded-full bg-mint/15 px-3 py-1 text-xs font-bold">
+              {dueToday.length - remaining.length}/{dueToday.length} done
+            </span>
+            {remaining.length > 0 && (
+              <button
+                type="button"
+                onClick={() => confirmAll.mutate()}
+                disabled={confirmAll.isPending}
+                className="rounded-full bg-primary px-4 py-1.5 text-xs font-bold text-primary-foreground disabled:opacity-60"
+              >
+                Confirm all {remaining.length}
+              </button>
+            )}
+          </div>
+        </div>
+        <div className="mt-4 space-y-2">
+          {dueToday.length === 0 && (
+            <p className="text-sm text-muted-foreground">
+              Nothing scheduled today. Add a medication above, or log an as-needed dose below.
+            </p>
+          )}
+          {[...dueToday, ...asNeeded].map((med) => {
+            const taken = takenToday.has(med.id);
+            return (
+              <button
+                key={med.id}
+                type="button"
+                onClick={() => toggleToday.mutate({ id: med.id, taken })}
+                className="flex w-full items-center gap-3 rounded-2xl bg-background px-3 py-2.5 text-left ring-1 ring-line transition-colors hover:bg-cream"
+              >
+                <span
+                  className={`grid size-5 shrink-0 place-items-center rounded-full text-paper ${
+                    taken ? "bg-mint" : "ring-1 ring-line"
+                  }`}
+                  aria-hidden
+                >
+                  {taken ? "✓" : ""}
+                </span>
+                <span className="flex-1">
+                  <span className="block text-sm font-semibold">{med.name}</span>
+                  <span className="block text-[11px] text-muted-foreground">
+                    {[med.dose, formatTime(med.time_of_day), scheduleLabel(med)]
+                      .filter(Boolean)
+                      .join(" · ")}
+                  </span>
+                </span>
+                <span
+                  className={`rounded-full px-2.5 py-1 text-xs font-bold ${
+                    taken ? "text-mint" : "bg-amber/20"
+                  }`}
+                >
+                  {taken ? "Taken" : med.frequency === "as_needed" ? "Log dose" : "Confirm"}
+                </span>
+              </button>
+            );
+          })}
+        </div>
+      </section>
+
+      <section className="rise mt-4 rounded-[24px] bg-paper p-5 ring-1 ring-line">
         <div className="flex items-center justify-between">
           <div>
             <p className="eyebrow">Adherence</p>
@@ -292,20 +496,31 @@ function Medications() {
             const taken = new Set(
               logs.filter((l) => l.medication_id === med.id).map((l) => l.taken_on),
             );
-            const rate = Math.round((taken.size / days.length) * 100);
+            const sched = scheduledDays(med);
+            const takenScheduled = sched.filter((d) => taken.has(d)).length;
+            const rate = sched.length ? Math.round((takenScheduled / sched.length) * 100) : null;
             return (
               <div key={med.id} className="rounded-2xl bg-background px-4 py-3 ring-1 ring-line">
                 <div className="flex items-center justify-between gap-3">
                   <div>
                     <div className="text-sm font-semibold">{med.name}</div>
                     <div className="text-[11px] text-muted-foreground">
-                      {[med.dose, formatTime(med.time_of_day)].filter(Boolean).join(" · ")}
+                      {[med.dose, formatTime(med.time_of_day), scheduleLabel(med)]
+                        .filter(Boolean)
+                        .join(" · ")}
                     </div>
                   </div>
                   <div className="flex items-center gap-2">
                     <span className="rounded-full bg-mint/15 px-3 py-1 text-xs font-bold">
-                      {rate}%
+                      {rate === null ? "As needed" : `${rate}%`}
                     </span>
+                    <button
+                      type="button"
+                      onClick={() => setScheduleFor(scheduleFor === med.id ? null : med.id)}
+                      className="rounded-full px-3 py-1 text-[11px] font-bold ring-1 ring-line hover:bg-muted"
+                    >
+                      {scheduleFor === med.id ? "Close" : "Schedule"}
+                    </button>
                     <button
                       onClick={() => remove.mutate(med.id)}
                       aria-label={`Remove ${med.name}`}
@@ -315,16 +530,60 @@ function Medications() {
                     </button>
                   </div>
                 </div>
+                {scheduleFor === med.id && (
+                  <div className="mt-3 rounded-2xl bg-paper p-3 ring-1 ring-line">
+                    <div className="flex flex-wrap items-center gap-1.5">
+                      {FREQUENCIES.map((f) => (
+                        <button
+                          key={f.value}
+                          type="button"
+                          aria-pressed={med.frequency === f.value}
+                          onClick={() =>
+                            updateSchedule.mutate({
+                              id: med.id,
+                              frequency: f.value,
+                              days_of_week: med.days_of_week ?? [],
+                            })
+                          }
+                          className={`rounded-full px-3 py-1 text-[11px] font-bold ring-1 ${
+                            med.frequency === f.value
+                              ? "bg-sky/25 ring-sky/40"
+                              : "bg-background ring-line text-muted-foreground"
+                          }`}
+                        >
+                          {f.label}
+                        </button>
+                      ))}
+                    </div>
+                    {med.frequency === "specific_days" && (
+                      <div className="mt-2">
+                        <DayPicker
+                          value={med.days_of_week ?? []}
+                          onChange={(days_of_week) =>
+                            updateSchedule.mutate({
+                              id: med.id,
+                              frequency: "specific_days",
+                              days_of_week,
+                            })
+                          }
+                        />
+                      </div>
+                    )}
+                  </div>
+                )}
                 <div className="mt-3 flex gap-1.5">
-                  {days.map((d) => (
-                    <span
-                      key={d}
-                      title={d}
-                      className={`h-2.5 flex-1 rounded-full ${
-                        taken.has(d) ? "bg-mint" : "bg-line"
-                      }`}
-                    />
-                  ))}
+                  {days.map((d) => {
+                    const scheduled = isScheduledOn(med, d);
+                    return (
+                      <span
+                        key={d}
+                        title={`${d}${scheduled ? "" : " · not scheduled"}`}
+                        className={`h-2.5 flex-1 rounded-full ${
+                          taken.has(d) ? "bg-mint" : scheduled ? "bg-line" : "bg-line/40"
+                        }`}
+                      />
+                    );
+                  })}
                 </div>
               </div>
             );

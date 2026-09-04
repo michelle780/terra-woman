@@ -371,7 +371,9 @@ export type Database = {
         Row: {
           active: boolean
           created_at: string
+          days_of_week: number[]
           dose: string | null
+          frequency: string
           id: string
           name: string
           schedule_note: string | null
@@ -382,7 +384,9 @@ export type Database = {
         Insert: {
           active?: boolean
           created_at?: string
+          days_of_week?: number[]
           dose?: string | null
+          frequency?: string
           id?: string
           name: string
           schedule_note?: string | null
@@ -393,7 +397,9 @@ export type Database = {
         Update: {
           active?: boolean
           created_at?: string
+          days_of_week?: number[]
           dose?: string | null
+          frequency?: string
           id?: string
           name?: string
           schedule_note?: string | null

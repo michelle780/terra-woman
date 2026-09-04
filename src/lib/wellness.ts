@@ -1,6 +1,8 @@
 import { supabase } from "@/integrations/supabase/client";
 import { moonDetail } from "@/lib/astro";
 
+export type MedFrequency = "daily" | "weekdays" | "specific_days" | "as_needed";
+
 export type Medication = {
   id: string;
   name: string;
@@ -8,7 +10,44 @@ export type Medication = {
   time_of_day: string | null;
   schedule_note: string | null;
   active: boolean;
+  frequency: MedFrequency;
+  days_of_week: number[];
 };
+
+/** Is this medication scheduled on the given YYYY-MM-DD date? */
+export function isScheduledOn(med: Medication, dateKey: string): boolean {
+  const dow = new Date(`${dateKey}T12:00:00`).getDay(); // 0 = Sunday
+  switch (med.frequency) {
+    case "daily":
+      return true;
+    case "weekdays":
+      return dow >= 1 && dow <= 5;
+    case "specific_days":
+      return (med.days_of_week ?? []).includes(dow);
+    case "as_needed":
+      return false;
+    default:
+      return true;
+  }
+}
+
+export const DAY_LABELS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+
+export function scheduleLabel(med: Medication): string {
+  switch (med.frequency) {
+    case "weekdays":
+      return "Weekdays";
+    case "specific_days":
+      return (med.days_of_week ?? []).length
+        ? [...(med.days_of_week ?? [])].sort((a, b) => a - b).map((d) => DAY_LABELS[d]).join(", ")
+        : "No days set";
+    case "as_needed":
+      return "As needed";
+    default:
+      return "Every day";
+  }
+}
+
 
 export type MedicationLog = {
   id: string;
@@ -88,7 +127,7 @@ export function formatTime(value: string | null): string {
 export async function fetchMedications(): Promise<Medication[]> {
   const { data, error } = await supabase
     .from("medications")
-    .select("id, name, dose, time_of_day, schedule_note, active")
+    .select("id, name, dose, time_of_day, schedule_note, active, frequency, days_of_week")
     .order("time_of_day", { ascending: true, nullsFirst: false })
     .order("created_at", { ascending: true });
   if (error) throw error;
