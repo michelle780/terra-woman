@@ -151,6 +151,8 @@ export function AppShell({ children }: { children: ReactNode }) {
           </div>
         </header>
 
+        {user && <AnnouncementBanner />}
+
         <nav className="mt-4 flex gap-1.5 overflow-x-auto">
           {NAV.map((item) => (
             <Link
