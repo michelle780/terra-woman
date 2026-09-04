@@ -1,9 +1,16 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { fetchRoots, type RootsRecord } from "@/lib/roots";
 import { RootsCard } from "@/components/roots/templates";
 import { TerraWomanTree, PRIMARY_BRANCHES, type BranchName } from "@/components/roots/TerraWomanTree";
-import { recommendTemplate, VISUAL_TEMPLATES, type VisualTemplate } from "@/lib/roots-visual";
+import {
+  recommendTemplate,
+  resolveTemplate,
+  canUseInHerWords,
+  VISUAL_TEMPLATES,
+  type VisualTemplate,
+} from "@/lib/roots-visual";
+
 
 
 /* A fully-populated fallback story so the lab renders even before content loads. */
@@ -99,6 +106,31 @@ export function VisualLab() {
     return out;
   }, [records]);
 
+  const [filter, setFilter] = useState<VisualTemplate | "all">("all");
+
+  const rendered = useMemo(
+    () => records.map((r) => ({ record: r, template: resolveTemplate(r) })),
+    [records],
+  );
+
+  const gallery = useMemo(
+    () => (filter === "all" ? rendered : rendered.filter((x) => x.template === filter)),
+    [rendered, filter],
+  );
+
+  const quotes = useMemo(
+    () => records.filter((r) => r.quote && r.quote_attribution),
+    [records],
+  );
+
+  const templateCounts = useMemo(() => {
+    const out: Partial<Record<VisualTemplate, number>> = {};
+    for (const x of rendered) out[x.template] = (out[x.template] ?? 0) + 1;
+    return out;
+  }, [rendered]);
+
+
+
 
   return (
     <div className="space-y-16 pb-20">
@@ -165,6 +197,84 @@ export function VisualLab() {
           <RootsCard record={sample} template="living_tree" format="share" />
         </div>
       </section>
+
+      {/* The quote wall */}
+      <section>
+        <SectionHeading
+          eyebrow="In her words"
+          title={`The quote wall — ${quotes.length} voices`}
+          note="Every quote in the archive, set as a share-ready card with its attribution and source."
+        />
+        {quotes.length === 0 ? (
+          <p className="text-sm text-muted-foreground">No quotes in the archive yet.</p>
+        ) : (
+          <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+            {quotes.map((r) => (
+              <figure key={`q-${r.id}`} className="grid gap-3">
+                <RootsCard record={r} template="in_her_words" format="share" />
+                <figcaption className="flex items-baseline justify-between gap-3">
+                  <span className="roots-meta text-copper-ink">
+                    {r.quote_attribution}
+                  </span>
+                  <span className="text-xs text-muted-foreground">
+                    {canUseInHerWords(r) ? "verified" : "needs verification"}
+                  </span>
+                </figcaption>
+              </figure>
+            ))}
+          </div>
+        )}
+      </section>
+
+      {/* Whole archive rendered */}
+      <section>
+        <SectionHeading
+          eyebrow="The full archive"
+          title={`Every root, rendered — ${records.length} stories`}
+          note="All uploaded ROOTS records in their assigned treatment. Filter by template to compare how the archive looks in each visual language."
+        />
+        <div className="mb-6 flex flex-wrap gap-2">
+          {(["all", ...VISUAL_TEMPLATES.map((t) => t.key)] as const).map((key) => {
+            const active = filter === key;
+            const count = key === "all" ? rendered.length : (templateCounts[key] ?? 0);
+            return (
+              <button
+                key={key}
+                type="button"
+                onClick={() => setFilter(key)}
+                className={`rounded-full border px-4 py-1.5 text-xs uppercase tracking-[0.14em] transition-colors ${
+                  active
+                    ? "border-transparent bg-foreground text-background"
+                    : "border-border text-muted-foreground hover:text-foreground"
+                }`}
+              >
+                {key === "all" ? "All" : key.replaceAll("_", " ")} · {count}
+              </button>
+            );
+          })}
+        </div>
+        {gallery.length === 0 ? (
+          <p className="text-sm text-muted-foreground">Nothing in this treatment yet.</p>
+        ) : (
+          <div className="grid gap-8 lg:grid-cols-2">
+            {gallery.map(({ record, template }) => (
+              <figure key={record.id} className="grid gap-3">
+                <RootsCard record={record} template={template} />
+                <figcaption className="flex items-baseline justify-between gap-4">
+                  <span className="roots-label text-foreground">
+                    {record.short_title || record.title}
+                  </span>
+                  <span className="roots-meta text-copper-ink">
+                    {template.replaceAll("_", " ")}
+                  </span>
+                </figcaption>
+              </figure>
+            ))}
+          </div>
+        )}
+      </section>
+
+
 
       {/* The Terra Woman Tree */}
       <section>
