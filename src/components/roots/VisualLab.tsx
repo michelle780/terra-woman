@@ -1,9 +1,16 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { fetchRoots, type RootsRecord } from "@/lib/roots";
 import { RootsCard } from "@/components/roots/templates";
 import { TerraWomanTree, PRIMARY_BRANCHES, type BranchName } from "@/components/roots/TerraWomanTree";
-import { recommendTemplate, VISUAL_TEMPLATES, type VisualTemplate } from "@/lib/roots-visual";
+import {
+  recommendTemplate,
+  resolveTemplate,
+  canUseInHerWords,
+  VISUAL_TEMPLATES,
+  type VisualTemplate,
+} from "@/lib/roots-visual";
+
 
 
 /* A fully-populated fallback story so the lab renders even before content loads. */
