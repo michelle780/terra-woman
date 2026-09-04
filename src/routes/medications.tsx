@@ -193,6 +193,86 @@ function Medications() {
             Add
           </button>
         </form>
+
+        <div className="mt-5 border-t border-line pt-4">
+          <button
+            type="button"
+            onClick={() => setShowImport((v) => !v)}
+            className="text-xs font-bold text-primary underline-offset-2 hover:underline"
+          >
+            {showImport ? "Hide import" : "Import a list instead"}
+          </button>
+          {showImport && (
+            <div className="mt-3 rounded-2xl bg-background/70 p-4 ring-1 ring-line">
+              <p className="text-xs text-muted-foreground">
+                Paste or upload your medication list — one per line as{" "}
+                <span className="font-semibold">Name, dose, time</span> (dose and time optional).
+                Nothing is saved until you confirm below.
+              </p>
+              <textarea
+                value={importText}
+                onChange={(e) => setImportText(e.target.value)}
+                rows={5}
+                placeholder={"Levothyroxine, 75 mcg, 07:30\nMagnesium, 200 mg, 9:00 pm\nVitamin D3"}
+                className="mt-3 w-full rounded-xl bg-background px-3 py-2 font-mono text-xs ring-1 ring-line outline-none focus:ring-2 focus:ring-primary"
+              />
+              <div className="mt-3 flex flex-wrap items-center gap-3">
+                <label className="cursor-pointer rounded-full bg-paper px-4 py-1.5 text-xs font-semibold ring-1 ring-line hover:bg-muted">
+                  Upload .csv / .txt
+                  <input
+                    type="file"
+                    accept=".csv,.txt,text/csv,text/plain"
+                    className="hidden"
+                    onChange={(e) => onImportFile(e.target.files?.[0])}
+                  />
+                </label>
+                <button
+                  type="button"
+                  onClick={() => setPreview(parseMedLines(importText))}
+                  className="rounded-full bg-sky px-4 py-1.5 text-xs font-bold text-primary-foreground"
+                >
+                  Preview import
+                </button>
+              </div>
+
+              {preview && (
+                <div className="mt-4">
+                  <p className="text-xs font-semibold">
+                    {newMeds.length} to import
+                    {skipped > 0 && ` · ${skipped} skipped (already on your list)`}
+                    {preview.length === 0 && " — nothing recognized"}
+                  </p>
+                  {newMeds.length > 0 && (
+                    <ul className="mt-2 space-y-1.5">
+                      {newMeds.map((m, i) => (
+                        <li
+                          key={`${m.name}-${i}`}
+                          className="flex items-center justify-between rounded-xl bg-paper px-3 py-2 text-xs ring-1 ring-line"
+                        >
+                          <span className="font-semibold">{m.name}</span>
+                          <span className="text-muted-foreground">
+                            {[m.dose, formatTime(m.time_of_day)].filter(Boolean).join(" · ") ||
+                              "no dose/time"}
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                  {newMeds.length > 0 && (
+                    <button
+                      type="button"
+                      disabled={importAll.isPending}
+                      onClick={() => importAll.mutate()}
+                      className="mt-3 rounded-full bg-primary px-5 py-2 text-xs font-bold text-primary-foreground disabled:opacity-60"
+                    >
+                      {importAll.isPending ? "Importing…" : `Confirm import (${newMeds.length})`}
+                    </button>
+                  )}
+                </div>
+              )}
+            </div>
+          )}
+        </div>
       </section>
 
       <section className="rise mt-4 rounded-[24px] bg-paper p-5 ring-1 ring-line">
