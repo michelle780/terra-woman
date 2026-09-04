@@ -177,7 +177,7 @@ function AboutPage() {
             <p className="font-display text-xs font-semibold uppercase tracking-[0.3em] text-copper-ink">
               Terra Woman
             </p>
-            <p className="mt-2 font-display text-3xl sm:text-4xl">See yourself whole.</p>
+            <p className="mt-2 font-display text-3xl sm:text-4xl">See your WHOLE self.</p>
             <Link
               to="/auth"
               className="mt-5 inline-block rounded-2xl bg-primary px-5 py-3 text-sm font-bold text-primary-foreground transition-opacity hover:opacity-90"
