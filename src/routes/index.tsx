@@ -208,6 +208,28 @@ function Today() {
     queryKey: ["metrics", from, today],
     queryFn: () => fetchMetrics(from, today),
   });
+  const ouraStatusQ = useQuery({ queryKey: ["oura-status"], queryFn: () => getOuraStatus() });
+  const runSync = useServerFn(syncOura);
+  const sync = useMutation({
+    mutationFn: () => runSync({ data: { days: 14 } }),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["metrics"] });
+      toast.success("Ring data updated");
+    },
+    onError: (e: Error) => toast.error(e.message),
+  });
+  const autoSynced = useRef(false);
+  const ouraConnected = ouraStatusQ.data?.connected ?? false;
+  useEffect(() => {
+    if (!ouraConnected || autoSynced.current) return;
+    const stamp = `terra-oura-sync-${today}`;
+    if (localStorage.getItem(stamp)) return;
+    autoSynced.current = true;
+    localStorage.setItem(stamp, "1");
+    sync.mutate();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ouraConnected, today]);
+
   const medsQ = useQuery({ queryKey: ["medications"], queryFn: fetchMedications });
   const logsQ = useQuery({
     queryKey: ["medication-logs", today],
@@ -218,9 +240,20 @@ function Today() {
     queryFn: () => fetchJournal(today, today),
   });
 
-  const metric = metricsQ.data?.find((m) => m.metric_date === today);
+  const sorted = [...(metricsQ.data ?? [])].sort((a, b) =>
+    a.metric_date < b.metric_date ? 1 : -1,
+  );
+  const todayMetric = sorted.find((m) => m.metric_date === today);
+  const metric = todayMetric ?? sorted[0];
+  const isToday = !!todayMetric;
+  const readingLabel = metric
+    ? isToday
+      ? "This morning"
+      : `Last reading · ${new Date(`${metric.metric_date}T12:00:00`).toLocaleDateString(undefined, { weekday: "short", month: "short", day: "numeric" })}`
+    : "This morning";
   const allMeds = (medsQ.data ?? []).filter((m) => m.active);
   const meds = allMeds.filter((m) => isScheduledOn(m, today));
+
   const asNeededMeds = allMeds.filter((m) => m.frequency === "as_needed");
   const takenIds = new Set((logsQ.data ?? []).map((l) => l.medication_id));
   const dueNow = meds.filter((m) => !takenIds.has(m.id));
