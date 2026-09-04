@@ -38,8 +38,8 @@ const FREQUENCIES = [
 const CHANNELS = [
   { value: "app", label: "In the app", hint: "A quiet card waiting for me" },
   { value: "email", label: "Email", hint: "A short note in my inbox" },
-  { value: "sms", label: "Text message", hint: "A nudge on my phone" },
 ] as const;
+
 
 const FOCUS = [
   "Sleep & recovery",
@@ -57,7 +57,6 @@ type Answers = {
   frequency: string;
   reminderTime: string;
   channel: string;
-  phone: string;
   focus: string[];
   notes: string;
 };
@@ -109,7 +108,6 @@ function WelcomePage() {
     frequency: "daily",
     reminderTime: "08:00",
     channel: "app",
-    phone: "",
     focus: [],
     notes: "",
   });
@@ -140,7 +138,6 @@ function WelcomePage() {
       frequency: profile.checkin_frequency ?? prev.frequency,
       reminderTime: (profile.reminder_time ?? prev.reminderTime).slice(0, 5),
       channel: profile.preferred_channel ?? prev.channel,
-      phone: profile.contact_phone ?? prev.phone,
       focus: profile.focus_areas?.length ? profile.focus_areas : prev.focus,
       notes: profile.onboarding_notes ?? prev.notes,
     }));
@@ -170,7 +167,7 @@ function WelcomePage() {
         checkin_frequency: a.frequency,
         reminder_time: a.frequency === "none" ? null : `${a.reminderTime}:00`,
         preferred_channel: a.channel,
-        contact_phone: a.channel === "sms" ? a.phone.trim() || null : null,
+        contact_phone: null,
         focus_areas: a.focus,
         onboarding_notes: a.notes.trim() || null,
         onboarded_at: onboardedAt,
@@ -324,23 +321,11 @@ function WelcomePage() {
                   </button>
                 ))}
               </div>
-              {a.channel === "sms" && (
-                <label className="mt-3 block">
-                  <span className="text-[11px] font-semibold tracking-[0.14em] text-muted-foreground uppercase">
-                    Mobile number
-                  </span>
-                  <input
-                    value={a.phone}
-                    onChange={(e) => set("phone", e.target.value)}
-                    placeholder="+1 555 123 4567"
-                    className="mt-1.5 w-full rounded-2xl bg-paper px-4 py-2 text-sm ring-1 ring-line outline-none focus:ring-2 focus:ring-copper/40"
-                  />
-                </label>
-              )}
               <p className="mt-4 text-xs text-muted-foreground">
-                We save your preference now; email and text delivery turn on once messaging is
-                connected. Nothing is shared with anyone else.
+                Email nudges are sent to the address you signed up with. Nothing is shared with
+                anyone else.
               </p>
+
             </div>
           )}
 
