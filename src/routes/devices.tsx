@@ -4,8 +4,10 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { AppShell } from "@/components/AppShell";
+import { OuraConnect, useOuraStatus } from "@/components/OuraConnect";
 import { useAuth } from "@/lib/auth";
 import { fetchDeviceConnections } from "@/lib/wellness";
+
 
 export const Route = createFileRoute("/devices")({
   head: () => ({
