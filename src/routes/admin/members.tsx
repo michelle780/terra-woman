@@ -203,6 +203,157 @@ function MembersAdmin() {
   );
 }
 
+const EVENT_LABELS: Record<string, string> = {
+  sent: "Sent",
+  rejected: "Refused by mail provider",
+  bounced: "Bounced",
+  complained: "Marked as spam",
+  unsubscribed: "Unsubscribed",
+  suppressed: "Blocked (do-not-send list)",
+  rate_limited: "Delayed (sending limit)",
+};
+
+function EmailDeliveryPanel({
+  email,
+  onEmailChange,
+}: {
+  email: string;
+  onEmailChange: (value: string) => void;
+}) {
+  const [checked, setChecked] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [activity, setActivity] = useState<Awaited<ReturnType<typeof getEmailActivity>> | null>(null);
+
+  async function check(target: string) {
+    if (!target.trim()) {
+      toast.error("Enter an email address first.");
+      return;
+    }
+    setLoading(true);
+    try {
+      const res = await getEmailActivity({ data: { email: target.trim() } });
+      setActivity(res);
+      setChecked(target.trim());
+    } catch {
+      toast.error("Could not load the delivery history.");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function sendTest(template: "checkin-nudge" | "signup") {
+    if (!email.trim()) {
+      toast.error("Enter an email address first.");
+      return;
+    }
+    setSending(true);
+    try {
+      const res = await sendMemberEmail({ data: { email: email.trim(), template } });
+      if (res.sent) {
+        toast.success("Test email sent. Give it a minute, then refresh the history below.");
+        setTimeout(() => check(email), 4000);
+      } else {
+        toast.info("Not sent — this address is on the do-not-send list.");
+      }
+    } catch {
+      toast.error("Could not send the test email.");
+    } finally {
+      setSending(false);
+    }
+  }
+
+  return (
+    <section
+      id="email-delivery"
+      className="space-y-4 rounded-2xl bg-paper/70 p-5 ring-1 ring-line backdrop-blur-md"
+    >
+      <div className="flex items-center gap-2">
+        <Mail className="size-4 text-copper-ink" />
+        <h2 className="font-display text-lg font-semibold">Email delivery check</h2>
+      </div>
+      <p className="text-xs text-muted-foreground">
+        Send a real test email to any member and see everything that has happened to their address:
+        sends, bounces, spam reports, unsubscribes and blocks. Opens aren't tracked.
+      </p>
+
+      <div className="flex flex-wrap gap-2">
+        <input
+          value={email}
+          onChange={(e) => onEmailChange(e.target.value)}
+          placeholder="member@example.com"
+          className="min-w-[240px] flex-1 rounded-xl bg-paper px-3 py-2 text-sm ring-1 ring-line outline-none focus:ring-copper/50"
+        />
+        <button
+          onClick={() => check(email)}
+          disabled={loading}
+          className="rounded-full bg-paper px-4 py-2 text-xs font-semibold ring-1 ring-line disabled:opacity-50"
+        >
+          {loading ? "Checking…" : "Check history"}
+        </button>
+        <button
+          onClick={() => sendTest("checkin-nudge")}
+          disabled={sending}
+          className="rounded-full bg-copper px-4 py-2 text-xs font-semibold text-paper disabled:opacity-50"
+        >
+          {sending ? "Sending…" : "Send test nudge"}
+        </button>
+        <button
+          onClick={() => sendTest("signup")}
+          disabled={sending}
+          className="rounded-full bg-paper px-4 py-2 text-xs font-semibold text-copper-ink ring-1 ring-copper/30 disabled:opacity-50"
+        >
+          Send test welcome
+        </button>
+      </div>
+
+      {activity && (
+        <div className="space-y-3">
+          <div className="flex flex-wrap items-center gap-2 text-[11px]">
+            <span className="font-semibold">{checked}</span>
+            <span
+              className={`rounded-full px-2 py-0.5 font-semibold ${
+                activity.subscribed === false
+                  ? "bg-clay/40 text-foreground"
+                  : "bg-sage/20 text-foreground"
+              }`}
+            >
+              {activity.subscribed === false ? "Unsubscribed" : "Able to receive email"}
+            </span>
+            {activity.history_starts_at && (
+              <span className="text-muted-foreground">
+                history from {fmt(activity.history_starts_at)}
+              </span>
+            )}
+          </div>
+
+          {activity.events.length === 0 ? (
+            <p className="rounded-xl bg-paper p-3 text-xs text-muted-foreground ring-1 ring-line">
+              Nothing recorded for this address in the visible window. If she expected an email,
+              send a test above — then check her spam and promotions folders.
+            </p>
+          ) : (
+            <ul className="divide-y divide-line/60 overflow-hidden rounded-xl bg-paper ring-1 ring-line">
+              {activity.events.map((e, i) => (
+                <li key={`${e.timestamp}-${i}`} className="flex flex-wrap items-center gap-2 px-3 py-2 text-xs">
+                  <span className="font-semibold">{EVENT_LABELS[e.event_type] ?? e.event_type}</span>
+                  <span className="text-muted-foreground">
+                    {new Date(e.timestamp).toLocaleString()}
+                  </span>
+                  {e.status && <span className="text-muted-foreground/80">· {e.status}</span>}
+                </li>
+              ))}
+            </ul>
+          )}
+          <p className="text-[11px] text-muted-foreground">{activity.note}</p>
+        </div>
+      )}
+    </section>
+  );
+}
+
+
+
 type FeedbackRow = {
   id: string;
   user_id: string;
