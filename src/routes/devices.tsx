@@ -58,6 +58,9 @@ function Devices() {
   });
 
   const byProvider = new Map(connections.map((c) => [c.provider, c]));
+  const { data: ouraStatus } = useOuraStatus();
+  const ouraConnected = !!ouraStatus?.connected;
+
 
   const connect = useMutation({
     mutationFn: async (provider: string) => {
