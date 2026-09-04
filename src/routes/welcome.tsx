@@ -5,6 +5,7 @@ import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/lib/auth";
 import { TreeGrowth } from "@/components/TreeGrowth";
+import { LIFE_STAGES } from "@/lib/life-stage";
 
 export const Route = createFileRoute("/welcome")({
   head: () => ({
@@ -54,6 +55,7 @@ const FOCUS = [
 
 type Answers = {
   displayName: string;
+  lifeStage: string;
   frequency: string;
   reminderTime: string;
   channel: string;
@@ -61,7 +63,7 @@ type Answers = {
   notes: string;
 };
 
-const STEPS = ["Your name", "Rhythm", "Where to meet you", "What matters", "Anything else"];
+const STEPS = ["Your name", "Your season", "Rhythm", "Where to meet you", "What matters", "Anything else"];
 
 /** A woman healer or keeper of wellness for each step of the journey. */
 const HEALER_WISDOM = [
@@ -70,6 +72,12 @@ const HEALER_WISDOM = [
       "In the 12th century, Hildegard von Bingen — abbess, herbalist and composer — wrote one of Europe's first medical texts on women's bodies, linking health to the whole of nature.",
     name: "Hildegard von Bingen",
     era: "1098 – 1179 · Germany",
+  },
+  {
+    quote:
+      "Midwife and healer Louyse Bourgeois wrote the first childbirth text authored by a woman, insisting that what women knew of their own bodies belonged in the record.",
+    name: "Louyse Bourgeois",
+    era: "1563 – 1636 · France",
   },
   {
     quote:
@@ -105,6 +113,7 @@ function WelcomePage() {
   const [saving, setSaving] = useState(false);
   const [a, setA] = useState<Answers>({
     displayName: "",
+    lifeStage: "",
     frequency: "daily",
     reminderTime: "08:00",
     channel: "app",
@@ -142,6 +151,7 @@ function WelcomePage() {
     setA((prev) => ({
       ...prev,
       displayName: profile.display_name ?? prev.displayName,
+      lifeStage: profile.life_stage ?? prev.lifeStage,
       frequency: profile.checkin_frequency ?? prev.frequency,
       reminderTime: (profile.reminder_time ?? prev.reminderTime).slice(0, 5),
       channel: profile.preferred_channel ?? prev.channel,
@@ -171,6 +181,7 @@ function WelcomePage() {
       const row = {
         id: user.id,
         display_name: a.displayName.trim() || null,
+        life_stage: a.lifeStage || null,
         checkin_frequency: a.frequency,
         reminder_time: a.frequency === "none" ? null : `${a.reminderTime}:00`,
         preferred_channel: a.channel,
@@ -273,6 +284,35 @@ function WelcomePage() {
           {step === 1 && (
             <div>
               <h2 className="font-display text-xl font-semibold">
+                Where are you in your journey right now?
+              </h2>
+              <p className="mt-1 text-sm text-muted-foreground">
+                Trying for a baby, pregnant, feeding, perimenopause or beyond — we'll lead with
+                what matters in your season. You can change it any time.
+              </p>
+              <div className="mt-3 grid gap-1.5">
+                {LIFE_STAGES.map((s) => (
+                  <button
+                    key={s.value}
+                    type="button"
+                    onClick={() => set("lifeStage", s.value)}
+                    className={`flex items-center justify-between rounded-2xl px-4 py-2 text-left ring-1 transition-colors ${
+                      a.lifeStage === s.value
+                        ? "bg-copper/12 ring-copper/40"
+                        : "bg-paper ring-line hover:bg-copper/10"
+                    }`}
+                  >
+                    <span className="text-sm font-semibold">{s.label}</span>
+                    <span className="text-xs text-muted-foreground">{s.hint}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {step === 2 && (
+            <div>
+              <h2 className="font-display text-xl font-semibold">
                 How often would you like a nudge to check in?
               </h2>
               <div className="mt-3 grid gap-1.5">
@@ -308,7 +348,7 @@ function WelcomePage() {
             </div>
           )}
 
-          {step === 2 && (
+          {step === 3 && (
             <div>
               <h2 className="font-display text-xl font-semibold">Where do you like to be met?</h2>
               <div className="mt-3 grid gap-1.5">
@@ -336,7 +376,7 @@ function WelcomePage() {
             </div>
           )}
 
-          {step === 3 && (
+          {step === 4 && (
             <div>
               <h2 className="font-display text-xl font-semibold">
                 What matters most right now?
@@ -363,7 +403,7 @@ function WelcomePage() {
             </div>
           )}
 
-          {step === 4 && (
+          {step === 5 && (
             <div>
               <h2 className="font-display text-xl font-semibold">
                 Anything else we should know?
