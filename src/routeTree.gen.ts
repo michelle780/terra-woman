@@ -16,6 +16,7 @@ import { Route as AstrologyRouteImport } from './routes/astrology'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as CycleRouteImport } from './routes/cycle'
 import { Route as DevicesRouteImport } from './routes/devices'
+import { Route as HealthRouteImport } from './routes/health'
 import { Route as InviteRouteImport } from './routes/invite'
 import { Route as JournalRouteImport } from './routes/journal'
 import { Route as MedicationsRouteImport } from './routes/medications'
@@ -69,6 +70,11 @@ const CycleRoute = CycleRouteImport.update({
 const DevicesRoute = DevicesRouteImport.update({
   id: '/devices',
   path: '/devices',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HealthRoute = HealthRouteImport.update({
+  id: '/health',
+  path: '/health',
   getParentRoute: () => rootRouteImport,
 } as any)
 const InviteRoute = InviteRouteImport.update({
@@ -176,6 +182,7 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthRoute
   '/cycle': typeof CycleRoute
   '/devices': typeof DevicesRoute
+  '/health': typeof HealthRoute
   '/invite': typeof InviteRoute
   '/journal': typeof JournalRoute
   '/medications': typeof MedicationsRoute
@@ -204,6 +211,7 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
   '/cycle': typeof CycleRoute
   '/devices': typeof DevicesRoute
+  '/health': typeof HealthRoute
   '/invite': typeof InviteRoute
   '/journal': typeof JournalRoute
   '/medications': typeof MedicationsRoute
@@ -233,6 +241,7 @@ export interface FileRoutesById {
   '/auth': typeof AuthRoute
   '/cycle': typeof CycleRoute
   '/devices': typeof DevicesRoute
+  '/health': typeof HealthRoute
   '/invite': typeof InviteRoute
   '/journal': typeof JournalRoute
   '/medications': typeof MedicationsRoute
@@ -263,6 +272,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/cycle'
     | '/devices'
+    | '/health'
     | '/invite'
     | '/journal'
     | '/medications'
@@ -291,6 +301,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/cycle'
     | '/devices'
+    | '/health'
     | '/invite'
     | '/journal'
     | '/medications'
@@ -319,6 +330,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/cycle'
     | '/devices'
+    | '/health'
     | '/invite'
     | '/journal'
     | '/medications'
@@ -348,6 +360,7 @@ export interface RootRouteChildren {
   AuthRoute: typeof AuthRoute
   CycleRoute: typeof CycleRoute
   DevicesRoute: typeof DevicesRoute
+  HealthRoute: typeof HealthRoute
   InviteRoute: typeof InviteRoute
   JournalRoute: typeof JournalRoute
   MedicationsRoute: typeof MedicationsRoute
@@ -418,6 +431,13 @@ declare module '@tanstack/react-router' {
       path: '/devices'
       fullPath: '/devices'
       preLoaderRoute: typeof DevicesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/health': {
+      id: '/health'
+      path: '/health'
+      fullPath: '/health'
+      preLoaderRoute: typeof HealthRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/invite': {
@@ -564,6 +584,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthRoute: AuthRoute,
   CycleRoute: CycleRoute,
   DevicesRoute: DevicesRoute,
+  HealthRoute: HealthRoute,
   InviteRoute: InviteRoute,
   JournalRoute: JournalRoute,
   MedicationsRoute: MedicationsRoute,

@@ -15,11 +15,8 @@ const NAV = [
   { to: "/", label: "Today" },
   { to: "/trends", label: "Trends" },
   { to: "/astrology", label: "Astrology & Moon" },
-  { to: "/cycle", label: "Cycle" },
-  { to: "/medications", label: "Meds" },
-  { to: "/journal", label: "Journal" },
+  { to: "/health", label: "Health" },
   { to: "/roots", label: "Roots" },
-  { to: "/devices", label: "Devices" },
   { to: "/share", label: "Share" },
 
 ] as const;
