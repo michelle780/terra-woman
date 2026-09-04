@@ -75,8 +75,18 @@ function tzOffsetMs(tz: string, utc: Date): number {
     minute: "2-digit",
     second: "2-digit",
   });
-  const p = Object.fromEntries(dtf.formatToParts(utc).map((x) => [x.type, x.value]));
-  const asUtc = Date.UTC(+p.year, +p.month - 1, +p.day, +p.hour, +p.minute, +p.second);
+  const p = Object.fromEntries(dtf.formatToParts(utc).map((x) => [x.type, x.value])) as Record<
+    string,
+    string
+  >;
+  const asUtc = Date.UTC(
+    Number(p["year"]),
+    Number(p["month"]) - 1,
+    Number(p["day"]),
+    Number(p["hour"]),
+    Number(p["minute"]),
+    Number(p["second"]),
+  );
   return asUtc - utc.getTime();
 }
 
