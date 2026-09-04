@@ -51,6 +51,11 @@ const SAMPLE: RootsRecord = {
   visual_asset_source: null,
   visual_asset_credit: null,
   visual_asset_rights_status: "UNKNOWN",
+  collection: "WISDOM",
+  tree_branch: "HEALING",
+  legacy_lens: null,
+  persecution_type: null,
+  region_group: "Europe",
 };
 
 const SHOWCASE_TYPES = [

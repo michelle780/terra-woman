@@ -464,6 +464,7 @@ export type Database = {
         Row: {
           approximate_year: number | null
           body: string | null
+          collection: string | null
           content_type: string | null
           created_at: string
           culture: string | null
@@ -475,12 +476,15 @@ export type Database = {
           historical_accuracy_status: string
           historical_period: string | null
           id: string
+          legacy_lens: string | null
           medical_context_required: boolean
           modern_context: string | null
           month: number | null
+          persecution_type: string | null
           published: boolean
           quote: string | null
           quote_attribution: string | null
+          region_group: string | null
           secondary_source_url: string | null
           short_body: string | null
           short_title: string | null
@@ -488,6 +492,7 @@ export type Database = {
           source_url: string | null
           title: string
           topic: string | null
+          tree_branch: string | null
           updated_at: string
           visual_asset_credit: string | null
           visual_asset_rights_status: string
@@ -502,6 +507,7 @@ export type Database = {
         Insert: {
           approximate_year?: number | null
           body?: string | null
+          collection?: string | null
           content_type?: string | null
           created_at?: string
           culture?: string | null
@@ -513,12 +519,15 @@ export type Database = {
           historical_accuracy_status?: string
           historical_period?: string | null
           id: string
+          legacy_lens?: string | null
           medical_context_required?: boolean
           modern_context?: string | null
           month?: number | null
+          persecution_type?: string | null
           published?: boolean
           quote?: string | null
           quote_attribution?: string | null
+          region_group?: string | null
           secondary_source_url?: string | null
           short_body?: string | null
           short_title?: string | null
@@ -526,6 +535,7 @@ export type Database = {
           source_url?: string | null
           title: string
           topic?: string | null
+          tree_branch?: string | null
           updated_at?: string
           visual_asset_credit?: string | null
           visual_asset_rights_status?: string
@@ -540,6 +550,7 @@ export type Database = {
         Update: {
           approximate_year?: number | null
           body?: string | null
+          collection?: string | null
           content_type?: string | null
           created_at?: string
           culture?: string | null
@@ -551,12 +562,15 @@ export type Database = {
           historical_accuracy_status?: string
           historical_period?: string | null
           id?: string
+          legacy_lens?: string | null
           medical_context_required?: boolean
           modern_context?: string | null
           month?: number | null
+          persecution_type?: string | null
           published?: boolean
           quote?: string | null
           quote_attribution?: string | null
+          region_group?: string | null
           secondary_source_url?: string | null
           short_body?: string | null
           short_title?: string | null
@@ -564,6 +578,7 @@ export type Database = {
           source_url?: string | null
           title?: string
           topic?: string | null
+          tree_branch?: string | null
           updated_at?: string
           visual_asset_credit?: string | null
           visual_asset_rights_status?: string
@@ -576,6 +591,35 @@ export type Database = {
           woman_name?: string | null
         }
         Relationships: []
+      }
+      roots_saves: {
+        Row: {
+          created_at: string
+          id: string
+          root_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          root_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          root_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "roots_saves_root_id_fkey"
+            columns: ["root_id"]
+            isOneToOne: false
+            referencedRelation: "roots_content"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       user_roles: {
         Row: {
