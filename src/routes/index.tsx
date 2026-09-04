@@ -322,98 +322,129 @@ function Today() {
         {editing && <MetricsForm metric={metric} onDone={() => setEditing(false)} />}
       </section>
 
-      <div className="mt-4 grid gap-4 md:grid-cols-2">
-        <section className="rise rounded-[24px] bg-paper/55 p-5 ring-1 ring-line backdrop-blur-md">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="eyebrow">Medications</p>
-              <h2 className="mt-0.5 text-xl">Today's check-in</h2>
-            </div>
-            <span className="rounded-full bg-mint/15 px-3 py-1 text-xs font-bold">
+      <section className="rise mt-4 rounded-[24px] bg-paper/55 p-5 ring-1 ring-line backdrop-blur-md sm:p-6">
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <div>
+            <p className="eyebrow">Medications</p>
+            <h2 className="mt-0.5 text-2xl">Tap once to confirm today</h2>
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="rounded-full bg-mint/15 px-3 py-1.5 text-sm font-bold">
               {meds.filter((m) => takenIds.has(m.id)).length}/{meds.length} taken
             </span>
+            <Link
+              to="/medications"
+              className="rounded-full bg-background px-3 py-1.5 text-xs font-semibold ring-1 ring-line"
+            >
+              Manage list
+            </Link>
           </div>
-          <div className="mt-4 space-y-2.5">
-            {meds.length === 0 && (
-              <p className="text-sm text-muted-foreground">
-                Nothing scheduled today.{" "}
-                <Link to="/medications" className="font-semibold underline">
-                  Set up your list
-                </Link>
-                .
-              </p>
-            )}
-            {dueNow.length > 1 && (
+        </div>
+
+        {meds.length > 0 && (
+          <div className="mt-3 h-2 w-full overflow-hidden rounded-full bg-background ring-1 ring-line">
+            <div
+              className="h-full rounded-full bg-mint transition-all"
+              style={{
+                width: `${(meds.filter((m) => takenIds.has(m.id)).length / meds.length) * 100}%`,
+              }}
+            />
+          </div>
+        )}
+
+        {dueNow.length > 1 && (
+          <button
+            onClick={() => confirmAll.mutate()}
+            disabled={confirmAll.isPending}
+            className="mt-4 w-full rounded-2xl bg-mint/25 px-4 py-3 text-sm font-bold ring-1 ring-mint/40 transition-colors hover:bg-mint/40 disabled:opacity-60"
+          >
+            Confirm all {dueNow.length} as taken
+          </button>
+        )}
+
+        {meds.length === 0 && (
+          <p className="mt-4 text-sm text-muted-foreground">
+            Nothing scheduled today.{" "}
+            <Link to="/medications" className="font-semibold underline">
+              Set up your list
+            </Link>
+            .
+          </p>
+        )}
+
+        <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          {meds.map((med) => {
+            const taken = takenIds.has(med.id);
+            return (
               <button
-                onClick={() => confirmAll.mutate()}
-                disabled={confirmAll.isPending}
-                className="w-full rounded-full bg-mint/25 px-4 py-2 text-xs font-bold ring-1 ring-mint/40 disabled:opacity-60"
+                key={med.id}
+                onClick={() => toggle.mutate(med.id)}
+                aria-pressed={taken}
+                className={`flex items-center gap-3 rounded-2xl px-4 py-4 text-left ring-1 transition-colors ${
+                  taken
+                    ? "bg-mint/15 ring-mint/40"
+                    : "bg-background ring-line hover:bg-cream"
+                }`}
               >
-                Confirm all {dueNow.length} as taken
-              </button>
-            )}
-            {meds.map((med) => {
-              const taken = takenIds.has(med.id);
-              return (
-                <button
-                  key={med.id}
-                  onClick={() => toggle.mutate(med.id)}
-                  className="flex w-full items-center gap-3 rounded-2xl bg-background px-3 py-2.5 text-left transition-colors hover:bg-cream"
+                <span
+                  className={`grid size-8 shrink-0 place-items-center rounded-full text-base font-bold text-paper ${
+                    taken ? "bg-mint" : "bg-background ring-1 ring-line"
+                  }`}
+                  aria-hidden
                 >
-                  <span
-                    className={`grid size-5 shrink-0 place-items-center rounded-full text-paper ${
-                      taken ? "bg-mint" : "ring-1 ring-line"
-                    }`}
-                    aria-hidden
-                  >
-                    {taken ? "✓" : ""}
+                  {taken ? "✓" : ""}
+                </span>
+                <span className="min-w-0 flex-1">
+                  <span className="block truncate text-base font-semibold">{med.name}</span>
+                  <span className="block truncate text-[11px] text-muted-foreground">
+                    {[med.dose, formatTime(med.time_of_day), scheduleLabel(med)]
+                      .filter(Boolean)
+                      .join(" · ")}
                   </span>
-                  <span className="flex-1">
-                    <span className="block text-sm font-semibold">{med.name}</span>
-                    <span className="block text-[11px] text-muted-foreground">
-                      {[med.dose, formatTime(med.time_of_day), scheduleLabel(med)]
-                        .filter(Boolean)
-                        .join(" · ")}
+                </span>
+                <span
+                  className={`shrink-0 rounded-full px-3 py-1.5 text-xs font-bold ${
+                    taken ? "text-mint" : "bg-amber/25"
+                  }`}
+                >
+                  {taken ? "Taken" : "Tap to log"}
+                </span>
+              </button>
+            );
+          })}
+        </div>
+
+        {asNeededMeds.length > 0 && (
+          <div className="mt-5 border-t border-line pt-4">
+            <p className="text-[11px] font-semibold tracking-wide text-muted-foreground uppercase">
+              As needed
+            </p>
+            <div className="mt-2 flex flex-wrap gap-2">
+              {asNeededMeds.map((med) => {
+                const taken = takenIds.has(med.id);
+                return (
+                  <button
+                    key={med.id}
+                    onClick={() => toggle.mutate(med.id)}
+                    aria-pressed={taken}
+                    className={`rounded-full px-4 py-2 text-sm font-semibold ring-1 transition-colors ${
+                      taken ? "bg-mint/20 ring-mint/40" : "bg-background ring-line hover:bg-cream"
+                    }`}
+                  >
+                    {med.name}
+                    <span className="ml-2 text-xs font-bold text-muted-foreground">
+                      {taken ? "Taken" : "Log dose"}
                     </span>
-                  </span>
-                  <span
-                    className={`rounded-full px-2.5 py-1 text-xs font-bold ${
-                      taken ? "text-mint" : "bg-amber/20"
-                    }`}
-                  >
-                    {taken ? "Taken" : "Log"}
-                  </span>
-                </button>
-              );
-            })}
-            {asNeededMeds.length > 0 && (
-              <div className="pt-2">
-                <p className="text-[11px] font-semibold text-muted-foreground">As needed</p>
-                <div className="mt-1.5 space-y-2">
-                  {asNeededMeds.map((med) => {
-                    const taken = takenIds.has(med.id);
-                    return (
-                      <button
-                        key={med.id}
-                        onClick={() => toggle.mutate(med.id)}
-                        className="flex w-full items-center gap-3 rounded-2xl bg-background px-3 py-2 text-left transition-colors hover:bg-cream"
-                      >
-                        <span className="flex-1 text-sm font-semibold">{med.name}</span>
-                        <span
-                          className={`rounded-full px-2.5 py-1 text-xs font-bold ${
-                            taken ? "text-mint" : "bg-amber/20"
-                          }`}
-                        >
-                          {taken ? "Taken" : "Log dose"}
-                        </span>
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
-            )}
+                  </button>
+                );
+              })}
+            </div>
           </div>
-        </section>
+        )}
+      </section>
+
+      <div className="mt-4 grid gap-4 md:grid-cols-2">
+
 
         <section className="rise rounded-[24px] bg-paper/55 p-5 ring-1 ring-line backdrop-blur-md">
           <div className="flex items-center justify-between">

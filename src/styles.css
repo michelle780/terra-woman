@@ -316,3 +316,18 @@
     filter: none;
   }
 }
+
+/* Auto-scrolling product preview on the sign-in page */
+@keyframes preview-scroll {
+  from { transform: translateY(0); }
+  to { transform: translateY(-50%); }
+}
+.preview-marquee {
+  animation: preview-scroll 42s linear infinite;
+}
+.preview-marquee:hover {
+  animation-play-state: paused;
+}
+@media (prefers-reduced-motion: reduce) {
+  .preview-marquee { animation: none; }
+}

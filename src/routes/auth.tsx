@@ -4,6 +4,8 @@ import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable/index";
 import { useAuth } from "@/lib/auth";
+import { ProductPreview } from "@/components/ProductPreview";
+
 
 export const Route = createFileRoute("/auth")({
   head: () => ({
@@ -79,7 +81,8 @@ function AuthPage() {
 
   return (
     <div className="grid min-h-screen place-items-center bg-background px-4 py-10">
-      <div className="w-full max-w-md">
+      <div className="grid w-full max-w-5xl items-center gap-8 lg:grid-cols-[minmax(0,26rem)_minmax(0,1fr)]">
+        <div className="mx-auto w-full max-w-md">
         <div className="flex items-center gap-3">
           <div className="grid size-9 place-items-center rounded-full bg-copper/15 ring-1 ring-copper/30">
             <span className="size-2.5 rounded-full bg-copper" />
@@ -88,6 +91,7 @@ function AuthPage() {
         </div>
 
         <div className="rise mt-4 rounded-[28px] bg-paper p-6 ring-1 ring-line">
+
           <p className="eyebrow">{mode === "signin" ? "Welcome back" : "Get started"}</p>
           <h1 className="mt-1 text-3xl leading-tight">
             {mode === "signin" ? "Step back into your oasis" : "Create your wellness oasis"}
@@ -158,7 +162,10 @@ function AuthPage() {
             .
           </p>
         </div>
+        </div>
+        <ProductPreview />
       </div>
     </div>
+
   );
 }
