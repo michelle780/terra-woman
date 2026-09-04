@@ -419,6 +419,8 @@ export type Database = {
           display_name: string | null
           focus_areas: string[]
           id: string
+          life_stage: string | null
+          life_stage_notes: string | null
           onboarded_at: string | null
           onboarding_notes: string | null
           preferred_channel: string | null
@@ -435,6 +437,8 @@ export type Database = {
           display_name?: string | null
           focus_areas?: string[]
           id: string
+          life_stage?: string | null
+          life_stage_notes?: string | null
           onboarded_at?: string | null
           onboarding_notes?: string | null
           preferred_channel?: string | null
@@ -451,6 +455,8 @@ export type Database = {
           display_name?: string | null
           focus_areas?: string[]
           id?: string
+          life_stage?: string | null
+          life_stage_notes?: string | null
           onboarded_at?: string | null
           onboarding_notes?: string | null
           preferred_channel?: string | null
