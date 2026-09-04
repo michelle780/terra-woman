@@ -110,10 +110,12 @@ export function birthUtcIsoToLocal(iso: string, tz: string): { date: string; tim
     hour: "2-digit",
     minute: "2-digit",
   });
-  const p = Object.fromEntries(dtf.formatToParts(new Date(iso)).map((x) => [x.type, x.value]));
+  const p = Object.fromEntries(
+    dtf.formatToParts(new Date(iso)).map((x) => [x.type, x.value]),
+  ) as Record<string, string>;
   return {
-    date: `${p.year}-${p.month}-${p.day}`,
-    time: `${p.hour}:${p.minute}`,
+    date: `${p["year"]}-${p["month"]}-${p["day"]}`,
+    time: `${p["hour"]}:${p["minute"]}`,
   };
 }
 
