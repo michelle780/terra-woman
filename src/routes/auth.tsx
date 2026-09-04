@@ -4,6 +4,8 @@ import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable/index";
 import { useAuth } from "@/lib/auth";
+import { ProductPreview } from "@/components/ProductPreview";
+
 
 export const Route = createFileRoute("/auth")({
   head: () => ({
@@ -160,7 +162,10 @@ function AuthPage() {
             .
           </p>
         </div>
+        </div>
+        <ProductPreview />
       </div>
     </div>
+
   );
 }
