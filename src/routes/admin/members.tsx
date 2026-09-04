@@ -63,6 +63,7 @@ function Stat({ label, value, icon }: { label: string; value: number; icon: Reac
 
 function MembersAdmin() {
   const { user } = useAuth();
+  const [emailCheck, setEmailCheck] = useState("");
   const { data: isEditor } = useQuery({
     queryKey: ["is-editor", user?.id],
     queryFn: () => fetchIsEditor(user!.id),
