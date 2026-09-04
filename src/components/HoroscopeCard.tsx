@@ -7,12 +7,42 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/lib/auth";
 import { getDailyHoroscope, ZODIAC_SIGNS } from "@/lib/horoscope.functions";
 import {
+  birthLocalToUtcIso,
+  birthUtcIsoToLocal,
   natalPlacements,
   placements,
   SIGN_GLYPHS,
   sunSignForBirth,
   type ZodiacSign,
 } from "@/lib/astro";
+
+const FALLBACK_ZONES = [
+  "America/Los_Angeles",
+  "America/Denver",
+  "America/Chicago",
+  "America/New_York",
+  "America/Anchorage",
+  "Pacific/Honolulu",
+  "Europe/London",
+  "Europe/Paris",
+  "Europe/Berlin",
+  "Asia/Dubai",
+  "Asia/Kolkata",
+  "Asia/Tokyo",
+  "Australia/Sydney",
+  "Pacific/Auckland",
+];
+
+const TIMEZONES: string[] =
+  typeof Intl.supportedValuesOf === "function"
+    ? Intl.supportedValuesOf("timeZone")
+    : FALLBACK_ZONES;
+
+const LOCAL_TZ = Intl.DateTimeFormat().resolvedOptions().timeZone || "America/Los_Angeles";
+
+function tzLabel(tz: string): string {
+  return tz.replace(/_/g, " ").replace("/", " — ");
+}
 
 export function HoroscopeCard() {
   const { user } = useAuth();
