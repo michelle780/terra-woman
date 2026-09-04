@@ -208,7 +208,7 @@ function SharedPage() {
         )}
 
         <p className="pb-6 text-center text-[11px] text-muted-foreground">
-          Terra Woman · See yourself whole · shared with consent · not medical advice
+          Terra Woman · See your WHOLE self · shared with consent · not medical advice
         </p>
       </div>
     </div>
