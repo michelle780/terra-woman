@@ -11,7 +11,6 @@ import { ReauthenticationEmail } from '@/lib/email-templates/reauthentication'
 // Configuration
 const SITE_NAME = "Terra Woman"
 const SENDER_DOMAIN = "notify.thedigitalfuture.xyz"
-const ROOT_DOMAIN = "thedigitalfuture.xyz"
 const FROM_DOMAIN = "notify.thedigitalfuture.xyz"
 const SITE_URL = "https://terra-woman.lovable.app"
 
