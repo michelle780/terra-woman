@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -122,6 +122,7 @@ function Devices() {
         {PROVIDERS.map((p) => {
           const conn = byProvider.get(p.id);
           const isOura = p.id === "oura";
+          const isApple = p.id === "apple_health";
           const connected = isOura ? ouraConnected : conn?.status === "connected";
           return (
             <div key={p.id} className="rise rounded-[24px] bg-paper p-5 ring-1 ring-line">
