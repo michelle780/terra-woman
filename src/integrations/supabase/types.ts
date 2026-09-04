@@ -245,6 +245,36 @@ export type Database = {
         }
         Relationships: []
       }
+      feedback: {
+        Row: {
+          category: string
+          created_at: string
+          id: string
+          message: string
+          page_path: string | null
+          resolved: boolean
+          user_id: string
+        }
+        Insert: {
+          category?: string
+          created_at?: string
+          id?: string
+          message: string
+          page_path?: string | null
+          resolved?: boolean
+          user_id: string
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          id?: string
+          message?: string
+          page_path?: string | null
+          resolved?: boolean
+          user_id?: string
+        }
+        Relationships: []
+      }
       horoscopes: {
         Row: {
           created_at: string
@@ -567,7 +597,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: { Args: { _role: string; _user_id: string }; Returns: boolean }
     }
     Enums: {
       app_role: "admin" | "editor" | "user"
