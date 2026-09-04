@@ -7,12 +7,53 @@ import { supabase } from "@/integrations/supabase/client";
 import { AppShell } from "@/components/AppShell";
 import { useAuth } from "@/lib/auth";
 import {
+  DAY_LABELS,
   fetchMedicationLogs,
   fetchMedications,
   formatTime,
+  isScheduledOn,
   lastNDays,
+  scheduleLabel,
   todayKey,
+  type MedFrequency,
+  type Medication,
 } from "@/lib/wellness";
+
+const FREQUENCIES: { value: MedFrequency; label: string }[] = [
+  { value: "daily", label: "Every day" },
+  { value: "weekdays", label: "Weekdays" },
+  { value: "specific_days", label: "Certain days" },
+  { value: "as_needed", label: "As needed" },
+];
+
+function DayPicker({
+  value,
+  onChange,
+}: {
+  value: number[];
+  onChange: (days: number[]) => void;
+}) {
+  return (
+    <div className="flex flex-wrap gap-1.5">
+      {DAY_LABELS.map((label, i) => {
+        const on = value.includes(i);
+        return (
+          <button
+            key={label}
+            type="button"
+            aria-pressed={on}
+            onClick={() => onChange(on ? value.filter((d) => d !== i) : [...value, i])}
+            className={`rounded-full px-3 py-1 text-[11px] font-bold ring-1 ${
+              on ? "bg-mint/30 ring-mint/50" : "bg-background ring-line text-muted-foreground"
+            }`}
+          >
+            {label}
+          </button>
+        );
+      })}
+    </div>
+  );
+}
 
 export const Route = createFileRoute("/medications")({
   head: () => ({
@@ -72,7 +113,14 @@ function Medications() {
   const qc = useQueryClient();
   const days = lastNDays(14);
   const today = todayKey();
-  const [form, setForm] = useState({ name: "", dose: "", time_of_day: "" });
+  const [form, setForm] = useState<{
+    name: string;
+    dose: string;
+    time_of_day: string;
+    frequency: MedFrequency;
+    days_of_week: number[];
+  }>({ name: "", dose: "", time_of_day: "", frequency: "daily", days_of_week: [] });
+  const [scheduleFor, setScheduleFor] = useState<string | null>(null);
   const [showImport, setShowImport] = useState(false);
   const [importText, setImportText] = useState("");
   const [preview, setPreview] = useState<ParsedMed[] | null>(null);
@@ -90,11 +138,13 @@ function Medications() {
         name: form.name.trim(),
         dose: form.dose.trim() || null,
         time_of_day: form.time_of_day || null,
+        frequency: form.frequency,
+        days_of_week: form.frequency === "specific_days" ? form.days_of_week : [],
       });
       if (error) throw error;
     },
     onSuccess: () => {
-      setForm({ name: "", dose: "", time_of_day: "" });
+      setForm({ name: "", dose: "", time_of_day: "", frequency: "daily", days_of_week: [] });
       qc.invalidateQueries({ queryKey: ["medications"] });
       toast.success("Medication added");
     },
@@ -142,8 +192,68 @@ function Medications() {
     onError: (e: Error) => toast.error(e.message),
   });
 
+  const updateSchedule = useMutation({
+    mutationFn: async (vars: { id: string; frequency: MedFrequency; days_of_week: number[] }) => {
+      const { error } = await supabase
+        .from("medications")
+        .update({
+          frequency: vars.frequency,
+          days_of_week: vars.frequency === "specific_days" ? vars.days_of_week : [],
+        })
+        .eq("id", vars.id);
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["medications"] });
+      toast.success("Schedule updated");
+    },
+    onError: (e: Error) => toast.error(e.message),
+  });
+
+  const toggleToday = useMutation({
+    mutationFn: async (vars: { id: string; taken: boolean }) => {
+      if (vars.taken) {
+        const { error } = await supabase
+          .from("medication_logs")
+          .delete()
+          .eq("medication_id", vars.id)
+          .eq("taken_on", today);
+        if (error) throw error;
+      } else {
+        const { error } = await supabase
+          .from("medication_logs")
+          .insert({ user_id: user!.id, medication_id: vars.id, taken_on: today });
+        if (error) throw error;
+      }
+    },
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["medication-logs"] }),
+    onError: (e: Error) => toast.error(e.message),
+  });
+
   const meds = medsQ.data ?? [];
   const logs = logsQ.data ?? [];
+  const takenToday = new Set(logs.filter((l) => l.taken_on === today).map((l) => l.medication_id));
+  const activeMeds = meds.filter((m) => m.active);
+  const dueToday = activeMeds.filter((m) => isScheduledOn(m, today));
+  const asNeeded = activeMeds.filter((m) => m.frequency === "as_needed");
+  const remaining = dueToday.filter((m) => !takenToday.has(m.id));
+
+  const confirmAll = useMutation({
+    mutationFn: async () => {
+      if (remaining.length === 0) return;
+      const { error } = await supabase.from("medication_logs").insert(
+        remaining.map((m) => ({ user_id: user!.id, medication_id: m.id, taken_on: today })),
+      );
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["medication-logs"] });
+      toast.success("Confirmed for today");
+    },
+    onError: (e: Error) => toast.error(e.message),
+  });
+
+  const scheduledDays = (med: Medication) => days.filter((d) => isScheduledOn(med, d));
 
   return (
     <>
