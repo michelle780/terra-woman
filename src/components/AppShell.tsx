@@ -192,7 +192,7 @@ export function AppShell({ children }: { children: ReactNode }) {
         <main className="tree-spine md:pl-8">{children}</main>
 
         <p className="mt-6 pb-4 text-center text-[11px] text-muted-foreground">
-          Terra Woman · See yourself whole · not medical advice ·{" "}
+          Terra Woman · See your WHOLE self · not medical advice ·{" "}
           <Link to="/welcome" className="font-semibold hover:underline">Preferences</Link>{" "}
           ·{" "}
           <Link to="/about" className="font-semibold hover:underline">Our story</Link>{" "}
