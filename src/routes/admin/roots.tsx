@@ -18,6 +18,7 @@ import {
   buildPreview,
   commitImport,
   countBy,
+  fetchIsAdmin,
   fetchIsEditor,
   fetchRoots,
   recordWarnings,
@@ -304,7 +305,8 @@ function RootsAdmin() {
 
   const warnings = useMemo(() => records.flatMap(recordWarnings), [records]);
 
-  if (roleLoading) return <p className="mt-8 text-sm text-muted-foreground">Checking access…</p>;
+  if (roleLoading || adminLoading)
+    return <p className="mt-8 text-sm text-muted-foreground">Checking access…</p>;
 
   if (!isEditor) {
     return (
