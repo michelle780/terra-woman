@@ -2,6 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { moonPhase, todayKey } from "@/lib/wellness";
 import { QUOTES } from "@/lib/quotes";
 import { ProductPreview } from "@/components/ProductPreview";
+import { FounderPreview } from "@/components/FounderPreview";
 import terraTree from "@/assets/terra-tree.png";
 
 const FEATURES = [
@@ -110,6 +111,10 @@ export function Landing({ invitedBy }: { invitedBy?: string | null }) {
               </p>
             </div>
           </div>
+        </div>
+
+        <div className="mt-4">
+          <FounderPreview />
         </div>
 
         <section className="rise mt-4 rounded-[28px] bg-paper/90 p-6 ring-1 ring-line backdrop-blur-sm">
