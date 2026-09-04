@@ -163,21 +163,26 @@ function WelcomePage() {
     if (!user) return;
     setSaving(true);
     try {
-      const { error } = await supabase.from("profiles").upsert(
-        {
-          id: user.id,
-          display_name: a.displayName.trim() || null,
-          checkin_frequency: a.frequency,
-          reminder_time: a.frequency === "none" ? null : `${a.reminderTime}:00`,
-          preferred_channel: a.channel,
-          contact_phone: a.channel === "sms" ? a.phone.trim() || null : null,
-          focus_areas: a.focus,
-          onboarding_notes: a.notes.trim() || null,
-          onboarded_at: new Date().toISOString(),
-        },
-        { onConflict: "id" },
-      );
+      const onboardedAt = new Date().toISOString();
+      const row = {
+        id: user.id,
+        display_name: a.displayName.trim() || null,
+        checkin_frequency: a.frequency,
+        reminder_time: a.frequency === "none" ? null : `${a.reminderTime}:00`,
+        preferred_channel: a.channel,
+        contact_phone: a.channel === "sms" ? a.phone.trim() || null : null,
+        focus_areas: a.focus,
+        onboarding_notes: a.notes.trim() || null,
+        onboarded_at: onboardedAt,
+      };
+      const { error } = await supabase.from("profiles").upsert(row, { onConflict: "id" });
       if (error) throw error;
+      // Update the profile cache synchronously so AppShell's onboarding guard
+      // never sees a stale row and bounces the member back to /welcome.
+      queryClient.setQueryData(["profile", user.id], (old: Record<string, unknown> | null) => ({
+        ...(old ?? {}),
+        ...row,
+      }));
       await queryClient.invalidateQueries({ queryKey: ["profile"] });
       toast.success("You're all set. Welcome to Terra Woman.");
       navigate({ to: "/", replace: true });
