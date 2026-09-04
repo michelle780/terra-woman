@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { moonPhase, todayKey } from "@/lib/wellness";
 import { QUOTES } from "@/lib/quotes";
+import { BRANCHES, BRANCH_BLURB } from "@/lib/roots-editorial";
 import { ProductPreview } from "@/components/ProductPreview";
 import { FounderPreview } from "@/components/FounderPreview";
 import terraTree from "@/assets/terra-tree.png";
@@ -28,7 +29,19 @@ const FEATURES = [
   },
 ];
 
-const LANDING_QUOTES = QUOTES.slice(0, 3);
+/** One quote per woman — the strip never repeats an author. */
+const LANDING_QUOTES = (() => {
+  const seen = new Set<string>();
+  return QUOTES.filter((q) => {
+    const key = q.author.toLowerCase();
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  }).slice(0, 3);
+})();
+
+/** A taste of the living archive for the invite page. */
+const ROOTS_TEASER_BRANCHES = BRANCHES.slice(0, 6);
 
 export function Landing({ invitedBy }: { invitedBy?: string | null }) {
   return (
