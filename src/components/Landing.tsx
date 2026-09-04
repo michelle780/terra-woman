@@ -29,13 +29,23 @@ const FEATURES = [
 
 export function Landing({ invitedBy }: { invitedBy?: string | null }) {
   return (
-    <div className="min-h-screen bg-background text-foreground">
-      <div className="mx-auto max-w-5xl px-4 py-6 sm:px-6">
+    <div className="relative min-h-screen bg-background text-foreground">
+      <div
+        aria-hidden
+        className="pointer-events-none fixed inset-0 z-0 flex items-center justify-center overflow-hidden"
+      >
+        <img
+          src={terraTree}
+          alt=""
+          width={1005}
+          height={1007}
+          className="h-[92vh] w-auto max-w-none opacity-[0.18]"
+        />
+      </div>
+      <div className="relative z-10 mx-auto max-w-6xl px-4 py-6 sm:px-6">
         <header className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="grid size-9 place-items-center rounded-full bg-copper/15 ring-1 ring-copper/30">
-              <span className="size-2.5 rounded-full bg-copper" />
-            </div>
+            <img src={terraTree} alt="" width={40} height={40} className="size-10 object-contain" />
             <span className="font-display text-base font-semibold uppercase tracking-[0.22em]">Terra Woman</span>
           </div>
           <Link
