@@ -116,54 +116,69 @@ function Devices() {
       <section className="grid gap-3 sm:grid-cols-2">
         {PROVIDERS.map((p) => {
           const conn = byProvider.get(p.id);
+          const isOura = p.id === "oura";
+          const connected = isOura ? ouraConnected : conn?.status === "connected";
           return (
             <div key={p.id} className="rise rounded-[24px] bg-paper p-5 ring-1 ring-line">
               <div className="flex items-baseline justify-between gap-2">
                 <h2 className="text-lg">{p.name}</h2>
                 <span
                   className={`rounded-full px-3 py-1 text-[11px] font-bold ${
-                    conn ? "bg-sage/25 text-foreground" : "bg-background text-muted-foreground"
+                    conn || connected ? "bg-sage/25 text-foreground" : "bg-background text-muted-foreground"
                   }`}
                 >
-                  {conn ? (conn.status === "connected" ? "Connected" : "Pending") : "Not linked"}
+                  {connected ? "Connected" : conn ? "Pending" : "Not linked"}
                 </span>
               </div>
               <p className="mt-1 text-xs text-muted-foreground">{p.blurb}</p>
+              {isOura && (
+                <p className="mt-2 text-[11px] text-muted-foreground">
+                  You'll sign in to your own Oura account — only your ring data comes into your
+                  private Terra Woman account.
+                </p>
+              )}
               {conn?.last_synced_at && (
                 <p className="mt-2 text-[11px] text-muted-foreground">
                   Last sync {new Date(conn.last_synced_at).toLocaleString()}
                 </p>
               )}
-              <div className="mt-4 flex flex-wrap gap-2">
-                {conn ? (
-                  <>
+              {isOura ? (
+                <div className="mt-4">
+                  <OuraConnect compact />
+                </div>
+              ) : (
+                <div className="mt-4 flex flex-wrap gap-2">
+                  {conn ? (
+                    <>
+                      <button
+                        onClick={() => sync.mutate(conn.id)}
+                        className="rounded-full bg-primary px-4 py-1.5 text-xs font-bold text-primary-foreground"
+                      >
+                        Mark synced
+                      </button>
+                      <button
+                        onClick={() => disconnect.mutate(conn.id)}
+                        className="rounded-full bg-background px-4 py-1.5 text-xs font-bold ring-1 ring-line"
+                      >
+                        Remove
+                      </button>
+                    </>
+                  ) : (
                     <button
-                      onClick={() => sync.mutate(conn.id)}
-                      className="rounded-full bg-primary px-4 py-1.5 text-xs font-bold text-primary-foreground"
+                      onClick={() => connect.mutate(p.id)}
+                      disabled={connect.isPending}
+                      className="rounded-full bg-primary px-4 py-1.5 text-xs font-bold text-primary-foreground disabled:opacity-50"
                     >
-                      Mark synced
+                      Connect
                     </button>
-                    <button
-                      onClick={() => disconnect.mutate(conn.id)}
-                      className="rounded-full bg-background px-4 py-1.5 text-xs font-bold ring-1 ring-line"
-                    >
-                      Remove
-                    </button>
-                  </>
-                ) : (
-                  <button
-                    onClick={() => connect.mutate(p.id)}
-                    disabled={connect.isPending}
-                    className="rounded-full bg-primary px-4 py-1.5 text-xs font-bold text-primary-foreground disabled:opacity-50"
-                  >
-                    Connect
-                  </button>
-                )}
-              </div>
+                  )}
+                </div>
+              )}
             </div>
           );
         })}
       </section>
+
 
       <section className="rise rounded-[24px] bg-paper p-5 ring-1 ring-line">
         <h2 className="text-xl">Another API or device</h2>
