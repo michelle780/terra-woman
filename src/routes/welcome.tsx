@@ -130,6 +130,14 @@ function WelcomePage() {
     },
   });
 
+  // Already onboarded members should never sit on /welcome — send them home.
+  useEffect(() => {
+    if (user && profile?.onboarded_at) {
+      navigate({ to: "/", replace: true });
+    }
+  }, [user, profile, navigate]);
+  });
+
   useEffect(() => {
     if (!profile) return;
     setA((prev) => ({
