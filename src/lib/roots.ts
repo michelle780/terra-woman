@@ -100,6 +100,15 @@ export async function fetchIsEditor(userId: string): Promise<boolean> {
   return (data ?? []).some((r) => r.role === "admin" || r.role === "editor");
 }
 
+export async function fetchIsAdmin(userId: string): Promise<boolean> {
+  const { data, error } = await supabase
+    .from("user_roles")
+    .select("role")
+    .eq("user_id", userId);
+  if (error) throw error;
+  return (data ?? []).some((r) => r.role === "admin");
+}
+
 /* ---------------- editorial warnings ---------------- */
 
 export type Warning = { id: string; title: string; kind: string; detail: string };

@@ -24,6 +24,7 @@ import { Route as TermsRouteImport } from './routes/terms'
 import { Route as TrendsRouteImport } from './routes/trends'
 import { Route as WelcomeRouteImport } from './routes/welcome'
 import { Route as AdminLabRouteImport } from './routes/admin/lab'
+import { Route as AdminMembersRouteImport } from './routes/admin/members'
 import { Route as AdminRootsRouteImport } from './routes/admin/roots'
 import { Route as RootsIdRouteImport } from './routes/roots.$id'
 import { Route as OauthOuraReturnRouteImport } from './routes/oauth.oura.return'
@@ -103,6 +104,11 @@ const AdminLabRoute = AdminLabRouteImport.update({
   path: '/admin/lab',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminMembersRoute = AdminMembersRouteImport.update({
+  id: '/admin/members',
+  path: '/admin/members',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminRootsRoute = AdminRootsRouteImport.update({
   id: '/admin/roots',
   path: '/admin/roots',
@@ -135,6 +141,7 @@ export interface FileRoutesByFullPath {
   '/trends': typeof TrendsRoute
   '/welcome': typeof WelcomeRoute
   '/admin/lab': typeof AdminLabRoute
+  '/admin/members': typeof AdminMembersRoute
   '/admin/roots': typeof AdminRootsRoute
   '/roots/$id': typeof RootsIdRoute
   '/oauth/oura/return': typeof OauthOuraReturnRoute
@@ -155,6 +162,7 @@ export interface FileRoutesByTo {
   '/trends': typeof TrendsRoute
   '/welcome': typeof WelcomeRoute
   '/admin/lab': typeof AdminLabRoute
+  '/admin/members': typeof AdminMembersRoute
   '/admin/roots': typeof AdminRootsRoute
   '/roots/$id': typeof RootsIdRoute
   '/oauth/oura/return': typeof OauthOuraReturnRoute
@@ -176,6 +184,7 @@ export interface FileRoutesById {
   '/trends': typeof TrendsRoute
   '/welcome': typeof WelcomeRoute
   '/admin/lab': typeof AdminLabRoute
+  '/admin/members': typeof AdminMembersRoute
   '/admin/roots': typeof AdminRootsRoute
   '/roots/$id': typeof RootsIdRoute
   '/oauth/oura/return': typeof OauthOuraReturnRoute
@@ -198,6 +207,7 @@ export interface FileRouteTypes {
     | '/trends'
     | '/welcome'
     | '/admin/lab'
+    | '/admin/members'
     | '/admin/roots'
     | '/roots/$id'
     | '/oauth/oura/return'
@@ -218,6 +228,7 @@ export interface FileRouteTypes {
     | '/trends'
     | '/welcome'
     | '/admin/lab'
+    | '/admin/members'
     | '/admin/roots'
     | '/roots/$id'
     | '/oauth/oura/return'
@@ -238,6 +249,7 @@ export interface FileRouteTypes {
     | '/trends'
     | '/welcome'
     | '/admin/lab'
+    | '/admin/members'
     | '/admin/roots'
     | '/roots/$id'
     | '/oauth/oura/return'
@@ -259,6 +271,7 @@ export interface RootRouteChildren {
   TrendsRoute: typeof TrendsRoute
   WelcomeRoute: typeof WelcomeRoute
   AdminLabRoute: typeof AdminLabRoute
+  AdminMembersRoute: typeof AdminMembersRoute
   AdminRootsRoute: typeof AdminRootsRoute
   OauthOuraReturnRoute: typeof OauthOuraReturnRoute
 }
@@ -370,6 +383,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminLabRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/members': {
+      id: '/admin/members'
+      path: '/admin/members'
+      fullPath: '/admin/members'
+      preLoaderRoute: typeof AdminMembersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin/roots': {
       id: '/admin/roots'
       path: '/admin/roots'
@@ -420,6 +440,7 @@ const rootRouteChildren: RootRouteChildren = {
   TrendsRoute: TrendsRoute,
   WelcomeRoute: WelcomeRoute,
   AdminLabRoute: AdminLabRoute,
+  AdminMembersRoute: AdminMembersRoute,
   AdminRootsRoute: AdminRootsRoute,
   OauthOuraReturnRoute: OauthOuraReturnRoute,
 }
