@@ -4,14 +4,15 @@ import type {} from "@tanstack/react-start";
 const BASE_URL = "https://terrawoman.org";
 
 const BRANCH_SLUGS = [
+  "body",
+  "cycle",
+  "birth",
+  "sexuality",
+  "mind",
   "healing",
-  "wisdom",
-  "voice",
-  "craft",
-  "care",
+  "aging",
   "science",
-  "leadership",
-  "spirit",
+  "community",
 ] as const;
 
 interface SitemapEntry {
