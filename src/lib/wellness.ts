@@ -127,7 +127,7 @@ export function formatTime(value: string | null): string {
 export async function fetchMedications(): Promise<Medication[]> {
   const { data, error } = await supabase
     .from("medications")
-    .select("id, name, dose, time_of_day, schedule_note, active")
+    .select("id, name, dose, time_of_day, schedule_note, active, frequency, days_of_week")
     .order("time_of_day", { ascending: true, nullsFirst: false })
     .order("created_at", { ascending: true });
   if (error) throw error;
