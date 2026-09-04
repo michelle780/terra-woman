@@ -12,7 +12,8 @@ import {
   listAnnouncements,
   setAnnouncementPublished,
 } from "@/lib/announcements.functions";
-import { Users, UserCheck, UserPlus, Activity, Megaphone, Trash2, Mail } from "lucide-react";
+import { Users, UserCheck, UserPlus, Activity, Megaphone, Trash2, Mail, MessageCircleHeart, Check } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/admin/members")({
   head: () => ({
@@ -179,7 +180,102 @@ function MembersAdmin() {
       </div>
 
       <AnnouncementsPanel />
+      <FeedbackPanel members={members} />
     </div>
+  );
+}
+
+type FeedbackRow = {
+  id: string;
+  user_id: string;
+  category: string;
+  message: string;
+  page_path: string | null;
+  resolved: boolean;
+  created_at: string;
+};
+
+const CATEGORY_LABELS: Record<string, string> = {
+  idea: "Idea",
+  bug: "Not working",
+  confusing: "Confusing",
+  general: "General",
+};
+
+function FeedbackPanel({ members }: { members: MemberSummary[] }) {
+  const queryClient = useQueryClient();
+  const { data } = useQuery({
+    queryKey: ["admin-feedback"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("feedback")
+        .select("*")
+        .order("created_at", { ascending: false })
+        .limit(100);
+      if (error) throw error;
+      return data as FeedbackRow[];
+    },
+  });
+  const items = data ?? [];
+  const open = items.filter((f) => !f.resolved);
+
+  const emailFor = (userId: string) =>
+    members.find((m) => m.id === userId)?.email ?? "member";
+
+  return (
+    <section className="space-y-4 rounded-2xl bg-paper/70 p-5 ring-1 ring-line backdrop-blur-md">
+      <div className="flex items-center gap-2">
+        <MessageCircleHeart className="size-4 text-copper-ink" />
+        <h2 className="font-display text-lg font-semibold">Member feedback</h2>
+        <span className="rounded-full bg-copper/15 px-2.5 py-0.5 text-[11px] font-semibold text-copper-ink">
+          {open.length} open
+        </span>
+      </div>
+
+      {items.length === 0 && (
+        <p className="text-xs text-muted-foreground">
+          No feedback yet — members can share thoughts from the “Help us improve” button.
+        </p>
+      )}
+
+      <ul className="space-y-2.5">
+        {items.map((f) => (
+          <li
+            key={f.id}
+            className={`rounded-xl bg-paper p-3.5 ring-1 ring-line ${f.resolved ? "opacity-55" : ""}`}
+          >
+            <div className="flex flex-wrap items-center gap-2 text-[11px] text-muted-foreground">
+              <span className="rounded-full bg-sky/15 px-2 py-0.5 font-semibold text-sky-ink">
+                {CATEGORY_LABELS[f.category] ?? f.category}
+              </span>
+              <span className="font-semibold text-foreground">{emailFor(f.user_id)}</span>
+              <span>{fmt(f.created_at)}</span>
+              {f.page_path && <span className="text-muted-foreground/70">on {f.page_path}</span>}
+            </div>
+            <p className="mt-1.5 text-sm leading-relaxed">{f.message}</p>
+            <div className="mt-2 flex justify-end">
+              <button
+                onClick={async () => {
+                  const { error } = await supabase
+                    .from("feedback")
+                    .update({ resolved: !f.resolved })
+                    .eq("id", f.id);
+                  if (error) {
+                    toast.error("Couldn't update that item.");
+                    return;
+                  }
+                  queryClient.invalidateQueries({ queryKey: ["admin-feedback"] });
+                }}
+                className="inline-flex items-center gap-1 rounded-full bg-paper px-3 py-1 text-[11px] font-semibold ring-1 ring-line hover:bg-background"
+              >
+                <Check className="size-3" />
+                {f.resolved ? "Reopen" : "Mark resolved"}
+              </button>
+            </div>
+          </li>
+        ))}
+      </ul>
+    </section>
   );
 }
 

@@ -7,6 +7,7 @@ import { useAuth } from "@/lib/auth";
 import terraTree from "@/assets/terra-tree.png";
 import { fetchIsAdmin, fetchIsEditor } from "@/lib/roots";
 import { AnnouncementBanner } from "@/components/AnnouncementBanner";
+import { FeedbackWidget } from "@/components/FeedbackWidget";
 
 const NAV = [
   { to: "/", label: "Today" },
@@ -198,6 +199,7 @@ export function AppShell({ children }: { children: ReactNode }) {
           <Link to="/terms" className="font-semibold hover:underline">Terms</Link>
         </p>
       </div>
+      <FeedbackWidget />
     </div>
   );
 }
