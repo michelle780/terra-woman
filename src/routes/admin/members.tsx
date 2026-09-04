@@ -165,14 +165,29 @@ function MembersAdmin() {
                 <td className="px-4 py-3 text-xs text-muted-foreground">
                   {m.roles.length ? m.roles.join(", ") : "member"}
                 </td>
-                <td className="px-4 py-3 text-right">
-                  {m.preferred_channel === "email" && m.checkin_frequency !== "none" ? (
-                    <NudgeButton member={m} />
-                  ) : (
-                    <span className="text-[11px] text-muted-foreground">
-                      {m.preferred_channel === "email" ? "no reminders" : "in-app"}
-                    </span>
-                  )}
+                <td className="px-4 py-3">
+                  <div className="flex flex-wrap items-center justify-end gap-1.5">
+                    {m.preferred_channel === "email" && m.checkin_frequency !== "none" ? (
+                      <NudgeButton member={m} />
+                    ) : (
+                      <span className="text-[11px] text-muted-foreground">
+                        {m.preferred_channel === "email" ? "no reminders" : "in-app"}
+                      </span>
+                    )}
+                    {m.email && (
+                      <button
+                        onClick={() => {
+                          setEmailCheck(m.email!);
+                          document
+                            .getElementById("email-delivery")
+                            ?.scrollIntoView({ behavior: "smooth", block: "start" });
+                        }}
+                        className="rounded-full bg-paper px-3 py-1 text-[11px] font-semibold ring-1 ring-line hover:bg-background"
+                      >
+                        Check delivery
+                      </button>
+                    )}
+                  </div>
                 </td>
               </tr>
             ))}
@@ -180,6 +195,7 @@ function MembersAdmin() {
         </table>
       </div>
 
+      <EmailDeliveryPanel email={emailCheck} onEmailChange={setEmailCheck} />
       <AnnouncementsPanel />
       <FeedbackPanel members={members} />
     </div>
