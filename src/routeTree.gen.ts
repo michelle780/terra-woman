@@ -119,9 +119,9 @@ const RootsIndexRoute = RootsIndexRouteImport.update({
   getParentRoute: () => rootRouteImport,
 } as any)
 const RootsIdRoute = RootsIdRouteImport.update({
-  id: '/$id',
-  path: '/$id',
-  getParentRoute: () => RootsRoute,
+  id: '/roots/$id',
+  path: '/roots/$id',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const OauthOuraReturnRoute = OauthOuraReturnRouteImport.update({
   id: '/oauth/oura/return',
@@ -129,9 +129,9 @@ const OauthOuraReturnRoute = OauthOuraReturnRouteImport.update({
   getParentRoute: () => rootRouteImport,
 } as any)
 const RootsBranchBranchRoute = RootsBranchBranchRouteImport.update({
-  id: '/branch/$branch',
-  path: '/branch/$branch',
-  getParentRoute: () => RootsRoute,
+  id: '/roots/branch/$branch',
+  path: '/roots/branch/$branch',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const LovableEmailAuthPreviewRoute = LovableEmailAuthPreviewRouteImport.update({
   id: '/lovable/email/auth/preview',
@@ -321,8 +321,10 @@ export interface RootRouteChildren {
   WelcomeRoute: typeof WelcomeRoute
   AdminMembersRoute: typeof AdminMembersRoute
   AdminRootsRoute: typeof AdminRootsRoute
+  RootsIdRoute: typeof RootsIdRoute
   RootsIndexRoute: typeof RootsIndexRoute
   OauthOuraReturnRoute: typeof OauthOuraReturnRoute
+  RootsBranchBranchRoute: typeof RootsBranchBranchRoute
   LovableEmailAuthPreviewRoute: typeof LovableEmailAuthPreviewRoute
   LovableEmailAuthWebhookRoute: typeof LovableEmailAuthWebhookRoute
   LovableEmailTransactionalPreviewRoute: typeof LovableEmailTransactionalPreviewRoute
@@ -451,10 +453,10 @@ declare module '@tanstack/react-router' {
     }
     '/roots/$id': {
       id: '/roots/$id'
-      path: '/$id'
+      path: '/roots/$id'
       fullPath: '/roots/$id'
       preLoaderRoute: typeof RootsIdRouteImport
-      parentRoute: typeof RootsRoute
+      parentRoute: typeof rootRouteImport
     }
     '/oauth/oura/return': {
       id: '/oauth/oura/return'
@@ -465,10 +467,10 @@ declare module '@tanstack/react-router' {
     }
     '/roots/branch/$branch': {
       id: '/roots/branch/$branch'
-      path: '/branch/$branch'
+      path: '/roots/branch/$branch'
       fullPath: '/roots/branch/$branch'
       preLoaderRoute: typeof RootsBranchBranchRouteImport
-      parentRoute: typeof RootsRoute
+      parentRoute: typeof rootRouteImport
     }
     '/lovable/email/auth/preview': {
       id: '/lovable/email/auth/preview'
@@ -511,8 +513,10 @@ const rootRouteChildren: RootRouteChildren = {
   WelcomeRoute: WelcomeRoute,
   AdminMembersRoute: AdminMembersRoute,
   AdminRootsRoute: AdminRootsRoute,
+  RootsIdRoute: RootsIdRoute,
   RootsIndexRoute: RootsIndexRoute,
   OauthOuraReturnRoute: OauthOuraReturnRoute,
+  RootsBranchBranchRoute: RootsBranchBranchRoute,
   LovableEmailAuthPreviewRoute: LovableEmailAuthPreviewRoute,
   LovableEmailAuthWebhookRoute: LovableEmailAuthWebhookRoute,
   LovableEmailTransactionalPreviewRoute: LovableEmailTransactionalPreviewRoute,
