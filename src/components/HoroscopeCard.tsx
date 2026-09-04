@@ -23,7 +23,7 @@ export function HoroscopeCard() {
   const [draftTime, setDraftTime] = useState("");
 
   const profileQ = useQuery({
-    queryKey: ["profile", user!.id],
+    queryKey: ["profile", user!.id, "birth"],
     queryFn: async () => {
       const { data, error } = await supabase
         .from("profiles")
@@ -61,6 +61,7 @@ export function HoroscopeCard() {
     },
     onSuccess: (computed) => {
       qc.invalidateQueries({ queryKey: ["profile", user!.id] });
+      qc.invalidateQueries({ queryKey: ["profile", user!.id, "birth"] });
       qc.invalidateQueries({ queryKey: ["horoscope"] });
       setEditing(false);
       toast.success(`Birth chart saved — ${computed} sun`);
