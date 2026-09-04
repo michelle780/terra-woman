@@ -8,6 +8,8 @@ import terraTree from "@/assets/terra-tree.png";
 import { fetchIsAdmin, fetchIsEditor } from "@/lib/roots";
 import { AnnouncementBanner } from "@/components/AnnouncementBanner";
 import { FeedbackWidget } from "@/components/FeedbackWidget";
+import { WelcomeTour } from "@/components/WelcomeTour";
+
 
 const NAV = [
   { to: "/", label: "Today" },
@@ -200,6 +202,8 @@ export function AppShell({ children }: { children: ReactNode }) {
         </p>
       </div>
       <FeedbackWidget />
+      <WelcomeTour enabled={!!profile?.onboarded_at} />
+
     </div>
   );
 }
