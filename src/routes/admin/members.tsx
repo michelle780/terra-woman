@@ -5,14 +5,14 @@ import { toast } from "sonner";
 import { AppShell } from "@/components/AppShell";
 import { useAuth } from "@/lib/auth";
 import { fetchIsEditor } from "@/lib/roots";
-import { listMembers, type MemberSummary } from "@/lib/members.functions";
+import { listMembers, sendCheckinNudge, type MemberSummary } from "@/lib/members.functions";
 import {
   createAnnouncement,
   deleteAnnouncement,
   listAnnouncements,
   setAnnouncementPublished,
 } from "@/lib/announcements.functions";
-import { Users, UserCheck, UserPlus, Activity, Megaphone, Trash2 } from "lucide-react";
+import { Users, UserCheck, UserPlus, Activity, Megaphone, Trash2, Mail } from "lucide-react";
 
 export const Route = createFileRoute("/admin/members")({
   head: () => ({
@@ -134,6 +134,7 @@ function MembersAdmin() {
               <th className="px-4 py-3 text-right">Metric days</th>
               <th className="px-4 py-3 text-right">Devices</th>
               <th className="px-4 py-3">Role</th>
+              <th className="px-4 py-3 text-right">Nudge</th>
             </tr>
           </thead>
           <tbody>
@@ -161,6 +162,15 @@ function MembersAdmin() {
                 <td className="px-4 py-3 text-right">{m.devices_connected}</td>
                 <td className="px-4 py-3 text-xs text-muted-foreground">
                   {m.roles.length ? m.roles.join(", ") : "member"}
+                </td>
+                <td className="px-4 py-3 text-right">
+                  {m.preferred_channel === "email" && m.checkin_frequency !== "none" ? (
+                    <NudgeButton member={m} />
+                  ) : (
+                    <span className="text-[11px] text-muted-foreground">
+                      {m.preferred_channel === "email" ? "no reminders" : "in-app"}
+                    </span>
+                  )}
                 </td>
               </tr>
             ))}
