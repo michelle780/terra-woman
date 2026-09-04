@@ -136,7 +136,7 @@ function MembersAdmin() {
               <th className="px-4 py-3 text-right">Metric days</th>
               <th className="px-4 py-3 text-right">Devices</th>
               <th className="px-4 py-3">Role</th>
-              <th className="px-4 py-3 text-right">Nudge</th>
+              <th className="px-4 py-3 text-right">Email</th>
             </tr>
           </thead>
           <tbody>
