@@ -57,7 +57,6 @@ type Answers = {
   frequency: string;
   reminderTime: string;
   channel: string;
-  phone: string;
   focus: string[];
   notes: string;
 };
@@ -109,7 +108,6 @@ function WelcomePage() {
     frequency: "daily",
     reminderTime: "08:00",
     channel: "app",
-    phone: "",
     focus: [],
     notes: "",
   });
@@ -140,7 +138,6 @@ function WelcomePage() {
       frequency: profile.checkin_frequency ?? prev.frequency,
       reminderTime: (profile.reminder_time ?? prev.reminderTime).slice(0, 5),
       channel: profile.preferred_channel ?? prev.channel,
-      phone: profile.contact_phone ?? prev.phone,
       focus: profile.focus_areas?.length ? profile.focus_areas : prev.focus,
       notes: profile.onboarding_notes ?? prev.notes,
     }));
@@ -170,7 +167,7 @@ function WelcomePage() {
         checkin_frequency: a.frequency,
         reminder_time: a.frequency === "none" ? null : `${a.reminderTime}:00`,
         preferred_channel: a.channel,
-        contact_phone: a.channel === "sms" ? a.phone.trim() || null : null,
+        contact_phone: null,
         focus_areas: a.focus,
         onboarding_notes: a.notes.trim() || null,
         onboarded_at: onboardedAt,
