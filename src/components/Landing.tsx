@@ -66,11 +66,19 @@ export function Landing({ invitedBy }: { invitedBy?: string | null }) {
               <p className="eyebrow">A calm oasis for your wellbeing</p>
             )}
             <h1 className="mt-2 max-w-2xl text-4xl leading-[1.05] sm:text-5xl">
-              See your bigger picture — body, mood and all.
+              See yourself whole.
             </h1>
             <p className="mt-4 max-w-xl text-sm text-muted-foreground sm:text-base">
               Terra Woman is a happy, empowering place to notice how your sleep, energy,
               symptoms, cycle and mood move together. Everything stays private to your own account.
+            </p>
+            <p className="mt-3 max-w-xl text-sm text-muted-foreground">
+              Built by a woman who had more data about herself than ever — and none of it telling
+              the story of her.{" "}
+              <Link to="/about" className="font-semibold text-copper-ink hover:underline">
+                Read why I built Terra Woman
+              </Link>
+              .
             </p>
             <div className="mt-6 flex flex-wrap items-center gap-3">
               <Link
@@ -141,6 +149,9 @@ export function Landing({ invitedBy }: { invitedBy?: string | null }) {
         <footer className="mt-6 flex flex-wrap items-center justify-between gap-3 border-t border-line pt-5 text-xs text-muted-foreground">
           <span>Terra Woman is your personal wellness oasis — not medical advice.</span>
           <span className="flex gap-4">
+            <Link to="/about" className="font-semibold hover:text-foreground">
+              Our story
+            </Link>
             <Link to="/privacy" className="font-semibold hover:text-foreground">
               Privacy
             </Link>

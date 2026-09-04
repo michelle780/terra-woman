@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AboutRouteImport } from './routes/about'
 import { Route as AppleHealthRouteImport } from './routes/apple-health'
 import { Route as AstrologyRouteImport } from './routes/astrology'
 import { Route as AuthRouteImport } from './routes/auth'
@@ -34,6 +35,11 @@ import { Route as LovableEmailTransactionalPreviewRouteImport } from './routes/l
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AboutRoute = AboutRouteImport.update({
+  id: '/about',
+  path: '/about',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AppleHealthRoute = AppleHealthRouteImport.update({
@@ -140,6 +146,7 @@ const LovableEmailTransactionalPreviewRoute =
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
   '/apple-health': typeof AppleHealthRoute
   '/astrology': typeof AstrologyRoute
   '/auth': typeof AuthRoute
@@ -163,6 +170,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
   '/apple-health': typeof AppleHealthRoute
   '/astrology': typeof AstrologyRoute
   '/auth': typeof AuthRoute
@@ -187,6 +195,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
   '/apple-health': typeof AppleHealthRoute
   '/astrology': typeof AstrologyRoute
   '/auth': typeof AuthRoute
@@ -212,6 +221,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/about'
     | '/apple-health'
     | '/astrology'
     | '/auth'
@@ -235,6 +245,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/about'
     | '/apple-health'
     | '/astrology'
     | '/auth'
@@ -258,6 +269,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/about'
     | '/apple-health'
     | '/astrology'
     | '/auth'
@@ -282,6 +294,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AboutRoute: typeof AboutRoute
   AppleHealthRoute: typeof AppleHealthRoute
   AstrologyRoute: typeof AstrologyRoute
   AuthRoute: typeof AuthRoute
@@ -310,6 +323,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/about': {
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AboutRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/apple-health': {
@@ -467,6 +487,7 @@ const RootsRouteWithChildren = RootsRoute._addFileChildren(RootsRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AboutRoute: AboutRoute,
   AppleHealthRoute: AppleHealthRoute,
   AstrologyRoute: AstrologyRoute,
   AuthRoute: AuthRoute,

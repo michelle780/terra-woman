@@ -51,6 +51,21 @@ export const SignupEmail = ({
         <Button className="dm-btn" style={button} href={confirmationUrl}>
           Verify Email
         </Button>
+        <Text style={story}>
+          Terra Woman began with frustration. I had more information about myself
+          than ever &mdash; my ring knew how I slept, my watch knew how I moved &mdash; and
+          none of it came together to tell me the story of me. So I built a place
+          that reflects you back to you: sleep, mood, cycle, medications, moon and
+          rhythm, side by side. Holistic, not prescriptive. Data-driven, but deeply
+          human.
+        </Text>
+        <Text style={signoff}>&mdash; Michelle, founder</Text>
+        <Text style={tagline}>See yourself whole.</Text>
+        <Text style={text}>
+          <Link href={`${siteUrl}/about`} style={link}>
+            Read the full story
+          </Link>
+        </Text>
         <Text style={footer}>
           If you didn't create an account, you can safely ignore this email.
         </Text>
@@ -97,6 +112,21 @@ const button = {
   borderRadius: '8px',
   padding: '12px 20px',
   textDecoration: 'none',
+}
+const story = {
+  fontSize: '14px',
+  color: '#55604F',
+  lineHeight: '1.65',
+  margin: '30px 0 8px',
+  paddingTop: '22px',
+  borderTop: '1px solid #E7DFD2',
+}
+const signoff = { fontSize: '13px', color: '#8A9384', margin: '0 0 14px' }
+const tagline = {
+  fontSize: '20px',
+  color: '#A25D44',
+  fontFamily: "Georgia, 'Times New Roman', serif",
+  margin: '0 0 18px',
 }
 const footer = { fontSize: '12px', color: '#999999', margin: '30px 0 0' }
 // Rendered as a text child, which React may HTML-escape: keep this CSS free of >, &, and quotes.

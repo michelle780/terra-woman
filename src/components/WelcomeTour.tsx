@@ -5,7 +5,7 @@ const STORAGE_KEY = "terra-woman-tour-v1";
 const STEPS = [
   {
     title: "Welcome to Terra Woman",
-    body: "Your private oasis for how your body and mood actually move together. Nothing here is shared — it's yours alone.",
+    body: "This began with one woman who had more data about herself than ever, and none of it telling the story of her. Terra Woman is here to help you see yourself whole — privately, and only for you.",
   },
   {
     title: "Start with Today",
