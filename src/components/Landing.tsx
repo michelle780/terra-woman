@@ -146,29 +146,29 @@ export function Landing({ invitedBy }: { invitedBy?: string | null }) {
           </div>
         </section>
 
-        <section className="rise mt-4 overflow-hidden rounded-[28px] bg-forest p-6 text-cream ring-1 ring-line sm:p-8">
-          <p className="eyebrow text-cream/70">Roots — a living archive</p>
+        <section className="roots-forest rise mt-4 overflow-hidden rounded-[28px] p-6 ring-1 ring-line sm:p-8">
+          <p className="eyebrow opacity-70">Roots — a living archive</p>
           <h2 className="mt-2 font-display text-2xl leading-tight sm:text-3xl">
             The wisdom of women, gathered across centuries.
           </h2>
-          <p className="mt-3 max-w-2xl text-sm text-cream/80">
+          <p className="mt-3 max-w-2xl text-sm opacity-80">
             Roots is a growing collection of women's knowledge, voices and history — healers,
             midwives, scientists and everyday wisdom-keepers. A new story meets you on your Today
             page each morning.
           </p>
           <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {ROOTS_TEASER_BRANCHES.map((b) => (
-              <div key={b} className="rounded-[18px] bg-cream/10 p-4 ring-1 ring-cream/15">
-                <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-cream/70">
+              <div key={b} className="rounded-[18px] bg-background/10 p-4 ring-1 ring-background/15">
+                <p className="text-[10px] font-semibold uppercase tracking-[0.2em] opacity-70">
                   {b.toLowerCase()}
                 </p>
-                <p className="mt-1.5 text-sm text-cream/90">{BRANCH_BLURB[b]}</p>
+                <p className="mt-1.5 text-sm opacity-90">{BRANCH_BLURB[b]}</p>
               </div>
             ))}
           </div>
           <Link
             to="/auth"
-            className="mt-5 inline-block rounded-2xl bg-cream px-5 py-3 text-sm font-bold text-forest transition-opacity hover:opacity-90"
+            className="mt-5 inline-block rounded-2xl bg-background px-5 py-3 text-sm font-bold text-foreground transition-opacity hover:opacity-90"
           >
             Create a free account to explore Roots
           </Link>
