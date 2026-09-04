@@ -20,12 +20,12 @@ import { Route as InviteRouteImport } from './routes/invite'
 import { Route as JournalRouteImport } from './routes/journal'
 import { Route as MedicationsRouteImport } from './routes/medications'
 import { Route as PrivacyRouteImport } from './routes/privacy'
-import { Route as RootsRouteImport } from './routes/roots'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as TrendsRouteImport } from './routes/trends'
 import { Route as WelcomeRouteImport } from './routes/welcome'
 import { Route as AdminMembersRouteImport } from './routes/admin/members'
 import { Route as AdminRootsRouteImport } from './routes/admin/roots'
+import { Route as RootsIndexRouteImport } from './routes/roots.index'
 import { Route as RootsIdRouteImport } from './routes/roots.$id'
 import { Route as OauthOuraReturnRouteImport } from './routes/oauth.oura.return'
 import { Route as RootsBranchBranchRouteImport } from './routes/roots.branch.$branch'
@@ -88,11 +88,6 @@ const PrivacyRoute = PrivacyRouteImport.update({
   path: '/privacy',
   getParentRoute: () => rootRouteImport,
 } as any)
-const RootsRoute = RootsRouteImport.update({
-  id: '/roots',
-  path: '/roots',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const TermsRoute = TermsRouteImport.update({
   id: '/terms',
   path: '/terms',
@@ -118,10 +113,15 @@ const AdminRootsRoute = AdminRootsRouteImport.update({
   path: '/admin/roots',
   getParentRoute: () => rootRouteImport,
 } as any)
+const RootsIndexRoute = RootsIndexRouteImport.update({
+  id: '/roots/',
+  path: '/roots/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const RootsIdRoute = RootsIdRouteImport.update({
-  id: '/$id',
-  path: '/$id',
-  getParentRoute: () => RootsRoute,
+  id: '/roots/$id',
+  path: '/roots/$id',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const OauthOuraReturnRoute = OauthOuraReturnRouteImport.update({
   id: '/oauth/oura/return',
@@ -129,9 +129,9 @@ const OauthOuraReturnRoute = OauthOuraReturnRouteImport.update({
   getParentRoute: () => rootRouteImport,
 } as any)
 const RootsBranchBranchRoute = RootsBranchBranchRouteImport.update({
-  id: '/branch/$branch',
-  path: '/branch/$branch',
-  getParentRoute: () => RootsRoute,
+  id: '/roots/branch/$branch',
+  path: '/roots/branch/$branch',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const LovableEmailAuthPreviewRoute = LovableEmailAuthPreviewRouteImport.update({
   id: '/lovable/email/auth/preview',
@@ -162,13 +162,13 @@ export interface FileRoutesByFullPath {
   '/journal': typeof JournalRoute
   '/medications': typeof MedicationsRoute
   '/privacy': typeof PrivacyRoute
-  '/roots': typeof RootsRouteWithChildren
   '/terms': typeof TermsRoute
   '/trends': typeof TrendsRoute
   '/welcome': typeof WelcomeRoute
   '/admin/members': typeof AdminMembersRoute
   '/admin/roots': typeof AdminRootsRoute
   '/roots/$id': typeof RootsIdRoute
+  '/roots/': typeof RootsIndexRoute
   '/oauth/oura/return': typeof OauthOuraReturnRoute
   '/roots/branch/$branch': typeof RootsBranchBranchRoute
   '/lovable/email/auth/preview': typeof LovableEmailAuthPreviewRoute
@@ -187,13 +187,13 @@ export interface FileRoutesByTo {
   '/journal': typeof JournalRoute
   '/medications': typeof MedicationsRoute
   '/privacy': typeof PrivacyRoute
-  '/roots': typeof RootsRouteWithChildren
   '/terms': typeof TermsRoute
   '/trends': typeof TrendsRoute
   '/welcome': typeof WelcomeRoute
   '/admin/members': typeof AdminMembersRoute
   '/admin/roots': typeof AdminRootsRoute
   '/roots/$id': typeof RootsIdRoute
+  '/roots': typeof RootsIndexRoute
   '/oauth/oura/return': typeof OauthOuraReturnRoute
   '/roots/branch/$branch': typeof RootsBranchBranchRoute
   '/lovable/email/auth/preview': typeof LovableEmailAuthPreviewRoute
@@ -213,13 +213,13 @@ export interface FileRoutesById {
   '/journal': typeof JournalRoute
   '/medications': typeof MedicationsRoute
   '/privacy': typeof PrivacyRoute
-  '/roots': typeof RootsRouteWithChildren
   '/terms': typeof TermsRoute
   '/trends': typeof TrendsRoute
   '/welcome': typeof WelcomeRoute
   '/admin/members': typeof AdminMembersRoute
   '/admin/roots': typeof AdminRootsRoute
   '/roots/$id': typeof RootsIdRoute
+  '/roots/': typeof RootsIndexRoute
   '/oauth/oura/return': typeof OauthOuraReturnRoute
   '/roots/branch/$branch': typeof RootsBranchBranchRoute
   '/lovable/email/auth/preview': typeof LovableEmailAuthPreviewRoute
@@ -240,13 +240,13 @@ export interface FileRouteTypes {
     | '/journal'
     | '/medications'
     | '/privacy'
-    | '/roots'
     | '/terms'
     | '/trends'
     | '/welcome'
     | '/admin/members'
     | '/admin/roots'
     | '/roots/$id'
+    | '/roots/'
     | '/oauth/oura/return'
     | '/roots/branch/$branch'
     | '/lovable/email/auth/preview'
@@ -265,13 +265,13 @@ export interface FileRouteTypes {
     | '/journal'
     | '/medications'
     | '/privacy'
-    | '/roots'
     | '/terms'
     | '/trends'
     | '/welcome'
     | '/admin/members'
     | '/admin/roots'
     | '/roots/$id'
+    | '/roots'
     | '/oauth/oura/return'
     | '/roots/branch/$branch'
     | '/lovable/email/auth/preview'
@@ -290,13 +290,13 @@ export interface FileRouteTypes {
     | '/journal'
     | '/medications'
     | '/privacy'
-    | '/roots'
     | '/terms'
     | '/trends'
     | '/welcome'
     | '/admin/members'
     | '/admin/roots'
     | '/roots/$id'
+    | '/roots/'
     | '/oauth/oura/return'
     | '/roots/branch/$branch'
     | '/lovable/email/auth/preview'
@@ -316,13 +316,15 @@ export interface RootRouteChildren {
   JournalRoute: typeof JournalRoute
   MedicationsRoute: typeof MedicationsRoute
   PrivacyRoute: typeof PrivacyRoute
-  RootsRoute: typeof RootsRouteWithChildren
   TermsRoute: typeof TermsRoute
   TrendsRoute: typeof TrendsRoute
   WelcomeRoute: typeof WelcomeRoute
   AdminMembersRoute: typeof AdminMembersRoute
   AdminRootsRoute: typeof AdminRootsRoute
+  RootsIdRoute: typeof RootsIdRoute
+  RootsIndexRoute: typeof RootsIndexRoute
   OauthOuraReturnRoute: typeof OauthOuraReturnRoute
+  RootsBranchBranchRoute: typeof RootsBranchBranchRoute
   LovableEmailAuthPreviewRoute: typeof LovableEmailAuthPreviewRoute
   LovableEmailAuthWebhookRoute: typeof LovableEmailAuthWebhookRoute
   LovableEmailTransactionalPreviewRoute: typeof LovableEmailTransactionalPreviewRoute
@@ -407,13 +409,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PrivacyRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/roots': {
-      id: '/roots'
-      path: '/roots'
-      fullPath: '/roots'
-      preLoaderRoute: typeof RootsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/terms': {
       id: '/terms'
       path: '/terms'
@@ -449,12 +444,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminRootsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/roots/': {
+      id: '/roots/'
+      path: '/roots'
+      fullPath: '/roots/'
+      preLoaderRoute: typeof RootsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/roots/$id': {
       id: '/roots/$id'
-      path: '/$id'
+      path: '/roots/$id'
       fullPath: '/roots/$id'
       preLoaderRoute: typeof RootsIdRouteImport
-      parentRoute: typeof RootsRoute
+      parentRoute: typeof rootRouteImport
     }
     '/oauth/oura/return': {
       id: '/oauth/oura/return'
@@ -465,10 +467,10 @@ declare module '@tanstack/react-router' {
     }
     '/roots/branch/$branch': {
       id: '/roots/branch/$branch'
-      path: '/branch/$branch'
+      path: '/roots/branch/$branch'
       fullPath: '/roots/branch/$branch'
       preLoaderRoute: typeof RootsBranchBranchRouteImport
-      parentRoute: typeof RootsRoute
+      parentRoute: typeof rootRouteImport
     }
     '/lovable/email/auth/preview': {
       id: '/lovable/email/auth/preview'
@@ -494,18 +496,6 @@ declare module '@tanstack/react-router' {
   }
 }
 
-interface RootsRouteChildren {
-  RootsIdRoute: typeof RootsIdRoute
-  RootsBranchBranchRoute: typeof RootsBranchBranchRoute
-}
-
-const RootsRouteChildren: RootsRouteChildren = {
-  RootsIdRoute: RootsIdRoute,
-  RootsBranchBranchRoute: RootsBranchBranchRoute,
-}
-
-const RootsRouteWithChildren = RootsRoute._addFileChildren(RootsRouteChildren)
-
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
@@ -518,13 +508,15 @@ const rootRouteChildren: RootRouteChildren = {
   JournalRoute: JournalRoute,
   MedicationsRoute: MedicationsRoute,
   PrivacyRoute: PrivacyRoute,
-  RootsRoute: RootsRouteWithChildren,
   TermsRoute: TermsRoute,
   TrendsRoute: TrendsRoute,
   WelcomeRoute: WelcomeRoute,
   AdminMembersRoute: AdminMembersRoute,
   AdminRootsRoute: AdminRootsRoute,
+  RootsIdRoute: RootsIdRoute,
+  RootsIndexRoute: RootsIndexRoute,
   OauthOuraReturnRoute: OauthOuraReturnRoute,
+  RootsBranchBranchRoute: RootsBranchBranchRoute,
   LovableEmailAuthPreviewRoute: LovableEmailAuthPreviewRoute,
   LovableEmailAuthWebhookRoute: LovableEmailAuthWebhookRoute,
   LovableEmailTransactionalPreviewRoute: LovableEmailTransactionalPreviewRoute,
