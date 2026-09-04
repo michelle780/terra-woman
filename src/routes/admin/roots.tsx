@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useMemo, useRef, useState } from "react";
 import { AppShell } from "@/components/AppShell";
+import { VisualLab } from "@/components/roots/VisualLab";
 import { useAuth } from "@/lib/auth";
 import { supabase } from "@/integrations/supabase/client";
 import { RootsCard } from "@/components/roots/templates";
@@ -277,6 +278,7 @@ function ImportPanel({ existing, onDone }: { existing: RootsRecord[]; onDone: ()
 
 function RootsAdmin() {
   const { user } = useAuth();
+  const [tab, setTab] = useState<"library" | "lab">("library");
   const queryClient = useQueryClient();
 
   const { data: isEditor, isLoading: roleLoading } = useQuery({
