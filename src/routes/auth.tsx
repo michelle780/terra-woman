@@ -164,7 +164,10 @@ function AuthPage() {
           </p>
         </div>
         </div>
-        <ProductPreview />
+        <div className="space-y-4">
+          <ProductPreview />
+          <FounderPreview compact />
+        </div>
       </div>
     </div>
 
