@@ -27,6 +27,8 @@ const FEATURES = [
   },
 ];
 
+const LANDING_QUOTES = QUOTES.slice(0, 3);
+
 export function Landing({ invitedBy }: { invitedBy?: string | null }) {
   return (
     <div className="relative min-h-screen bg-background text-foreground">
