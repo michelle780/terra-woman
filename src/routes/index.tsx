@@ -6,6 +6,7 @@ import { getOuraStatus, syncOura } from "@/lib/oura.functions";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { AppShell } from "@/components/AppShell";
+import { Landing } from "@/components/Landing";
 
 import { CheckInCard } from "@/components/CheckInCard";
 import { DailyQuoteCard } from "@/components/DailyQuoteCard";
@@ -49,7 +50,7 @@ export const Route = createFileRoute("/")({
 });
 
 function Home() {
-  const { loading } = useAuth();
+  const { user, loading } = useAuth();
 
   if (loading) {
     return (
@@ -59,8 +60,11 @@ function Home() {
     );
   }
 
-  // AppShell redirects to /auth when signed out, so Today is always the
-  // landing page after sign-in.
+  // Signed-out visitors see the full invite landing page.
+  if (!user) {
+    return <Landing />;
+  }
+
   return (
     <AppShell>
       <Today />
