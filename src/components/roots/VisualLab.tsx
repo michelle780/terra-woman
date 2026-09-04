@@ -1,41 +1,10 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
-import { AppShell } from "@/components/AppShell";
-import { useAuth } from "@/lib/auth";
-import { fetchIsEditor, fetchRoots, type RootsRecord } from "@/lib/roots";
+import { useQuery } from "@tanstack/react-query";
+import { fetchRoots, type RootsRecord } from "@/lib/roots";
 import { RootsCard } from "@/components/roots/templates";
 import { TerraWomanTree, PRIMARY_BRANCHES, type BranchName } from "@/components/roots/TerraWomanTree";
-import {
-  recommendTemplate,
-  VISUAL_TEMPLATES,
-  type VisualTemplate,
-} from "@/lib/roots-visual";
+import { recommendTemplate, VISUAL_TEMPLATES, type VisualTemplate } from "@/lib/roots-visual";
 
-export const Route = createFileRoute("/admin/lab")({
-  head: () => ({
-    meta: [
-      { title: "ROOTS Visual Lab — Terra Woman" },
-      {
-        name: "description",
-        content:
-          "Approve the Terra Woman ROOTS visual language: six editorial archive treatments and the Terra Woman Tree architecture.",
-      },
-      { property: "og:title", content: "ROOTS Visual Lab — Terra Woman" },
-      {
-        property: "og:description",
-        content: "Six reusable ROOTS visual treatments rendered side by side for editorial approval.",
-      },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary_large_image" },
-    ],
-  }),
-  component: () => (
-    <AppShell>
-      <VisualLab />
-    </AppShell>
-  ),
-});
 
 /* A fully-populated fallback story so the lab renders even before content loads. */
 const SAMPLE: RootsRecord = {
@@ -96,16 +65,10 @@ function SectionHeading({ eyebrow, title, note }: { eyebrow: string; title: stri
   );
 }
 
-function VisualLab() {
-  const { user } = useAuth();
-  const { data: isEditor, isLoading: roleLoading } = useQuery({
-    queryKey: ["is-editor", user?.id],
-    enabled: !!user,
-    queryFn: () => fetchIsEditor(user!.id),
-  });
+
+export function VisualLab() {
   const { data: records = [] } = useQuery({
-    queryKey: ["roots"],
-    enabled: !!isEditor,
+    queryKey: ["roots-content"],
     queryFn: fetchRoots,
   });
 
@@ -136,19 +99,6 @@ function VisualLab() {
     return out;
   }, [records]);
 
-  if (roleLoading) {
-    return <p className="text-sm text-muted-foreground">Loading…</p>;
-  }
-  if (!isEditor) {
-    return (
-      <div className="rounded-2xl bg-paper p-6 ring-1 ring-line">
-        <h1 className="font-display text-2xl">ROOTS Visual Lab</h1>
-        <p className="mt-2 text-sm text-muted-foreground">
-          This page is available to editors and administrators.
-        </p>
-      </div>
-    );
-  }
 
   return (
     <div className="space-y-16 pb-20">

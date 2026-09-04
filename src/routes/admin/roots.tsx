@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useMemo, useRef, useState } from "react";
 import { AppShell } from "@/components/AppShell";
+import { VisualLab } from "@/components/roots/VisualLab";
 import { useAuth } from "@/lib/auth";
 import { supabase } from "@/integrations/supabase/client";
 import { RootsCard } from "@/components/roots/templates";
@@ -277,6 +278,7 @@ function ImportPanel({ existing, onDone }: { existing: RootsRecord[]; onDone: ()
 
 function RootsAdmin() {
   const { user } = useAuth();
+  const [tab, setTab] = useState<"library" | "lab">("library");
   const queryClient = useQueryClient();
 
   const { data: isEditor, isLoading: roleLoading } = useQuery({
@@ -325,7 +327,33 @@ function RootsAdmin() {
         </p>
       </header>
 
-      {isLoading ? (
+      <div className="mt-4 flex gap-1.5">
+        {(
+          [
+            ["library", "Library & import"],
+            ["lab", "Visual lab"],
+          ] as const
+        ).map(([key, label]) => (
+          <button
+            key={key}
+            type="button"
+            onClick={() => setTab(key)}
+            className={`rounded-full px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.14em] ring-1 transition-colors ${
+              tab === key
+                ? "bg-copper/25 text-foreground ring-copper/30"
+                : "bg-copper/10 text-copper-ink ring-copper/20"
+            }`}
+          >
+            {label}
+          </button>
+        ))}
+      </div>
+
+      {tab === "lab" ? (
+        <div className="mt-6">
+          <VisualLab />
+        </div>
+      ) : isLoading ? (
         <p className="mt-6 text-sm text-muted-foreground">Loading the library…</p>
       ) : (
         <>
@@ -637,12 +665,6 @@ function VisualTreatmentPanel({ records, onSaved }: { records: RootsRecord[]; on
               >
                 {busy ? "Saving…" : "Save visual treatment"}
               </button>
-              <Link
-                to="/admin/lab"
-                className="rounded-full bg-background px-4 py-2 text-xs font-semibold ring-1 ring-line"
-              >
-                Open Visual Lab
-              </Link>
             </div>
             {message && (
               <p className="mt-3 rounded-xl bg-mint/20 px-3 py-2 text-xs font-semibold">{message}</p>
