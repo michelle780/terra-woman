@@ -196,6 +196,12 @@ function MembersAdmin() {
         </table>
       </div>
 
+      <EmailInboxPanel onCheckRecipient={(email) => {
+        setEmailCheck(email);
+        document
+          .getElementById("email-delivery")
+          ?.scrollIntoView({ behavior: "smooth", block: "start" });
+      }} />
       <EmailDeliveryPanel email={emailCheck} onEmailChange={setEmailCheck} />
       <AnnouncementsPanel />
       <FeedbackPanel members={members} />
