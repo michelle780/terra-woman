@@ -1,4 +1,5 @@
 import { createServerFn } from "@tanstack/react-start";
+import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 
 export type MemberSummary = {
@@ -12,7 +13,20 @@ export type MemberSummary = {
   checkins: number;
   metrics_days: number;
   devices_connected: number;
+  preferred_channel: string | null;
+  checkin_frequency: string | null;
 };
+
+/** Throws unless the caller is an admin. Returns true when admin. */
+async function assertAdmin(supabase: any, userId: string) {
+  const { data: roleRows, error: roleError } = await supabase
+    .from("user_roles")
+    .select("role")
+    .eq("user_id", userId);
+  if (roleError) throw roleError;
+  const isAdmin = (roleRows ?? []).some((r: any) => r.role === "admin");
+  if (!isAdmin) throw new Response("Forbidden", { status: 403 });
+}
 
 export const listMembers = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
