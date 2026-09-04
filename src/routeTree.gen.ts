@@ -25,6 +25,7 @@ import { Route as WelcomeRouteImport } from './routes/welcome'
 import { Route as AdminLabRouteImport } from './routes/admin/lab'
 import { Route as AdminRootsRouteImport } from './routes/admin/roots'
 import { Route as RootsIdRouteImport } from './routes/roots.$id'
+import { Route as OauthOuraReturnRouteImport } from './routes/oauth.oura.return'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -106,6 +107,11 @@ const RootsIdRoute = RootsIdRouteImport.update({
   path: '/$id',
   getParentRoute: () => RootsRoute,
 } as any)
+const OauthOuraReturnRoute = OauthOuraReturnRouteImport.update({
+  id: '/oauth/oura/return',
+  path: '/oauth/oura/return',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -124,6 +130,7 @@ export interface FileRoutesByFullPath {
   '/admin/lab': typeof AdminLabRoute
   '/admin/roots': typeof AdminRootsRoute
   '/roots/$id': typeof RootsIdRoute
+  '/oauth/oura/return': typeof OauthOuraReturnRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -142,6 +149,7 @@ export interface FileRoutesByTo {
   '/admin/lab': typeof AdminLabRoute
   '/admin/roots': typeof AdminRootsRoute
   '/roots/$id': typeof RootsIdRoute
+  '/oauth/oura/return': typeof OauthOuraReturnRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -161,6 +169,7 @@ export interface FileRoutesById {
   '/admin/lab': typeof AdminLabRoute
   '/admin/roots': typeof AdminRootsRoute
   '/roots/$id': typeof RootsIdRoute
+  '/oauth/oura/return': typeof OauthOuraReturnRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -181,6 +190,7 @@ export interface FileRouteTypes {
     | '/admin/lab'
     | '/admin/roots'
     | '/roots/$id'
+    | '/oauth/oura/return'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -199,6 +209,7 @@ export interface FileRouteTypes {
     | '/admin/lab'
     | '/admin/roots'
     | '/roots/$id'
+    | '/oauth/oura/return'
   id:
     | '__root__'
     | '/'
@@ -217,6 +228,7 @@ export interface FileRouteTypes {
     | '/admin/lab'
     | '/admin/roots'
     | '/roots/$id'
+    | '/oauth/oura/return'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -235,6 +247,7 @@ export interface RootRouteChildren {
   WelcomeRoute: typeof WelcomeRoute
   AdminLabRoute: typeof AdminLabRoute
   AdminRootsRoute: typeof AdminRootsRoute
+  OauthOuraReturnRoute: typeof OauthOuraReturnRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -351,6 +364,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RootsIdRouteImport
       parentRoute: typeof RootsRoute
     }
+    '/oauth/oura/return': {
+      id: '/oauth/oura/return'
+      path: '/oauth/oura/return'
+      fullPath: '/oauth/oura/return'
+      preLoaderRoute: typeof OauthOuraReturnRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -380,6 +400,7 @@ const rootRouteChildren: RootRouteChildren = {
   WelcomeRoute: WelcomeRoute,
   AdminLabRoute: AdminLabRoute,
   AdminRootsRoute: AdminRootsRoute,
+  OauthOuraReturnRoute: OauthOuraReturnRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
