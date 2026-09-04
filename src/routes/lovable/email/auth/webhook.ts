@@ -9,11 +9,11 @@ import { EmailChangeEmail } from '@/lib/email-templates/email-change'
 import { ReauthenticationEmail } from '@/lib/email-templates/reauthentication'
 
 // Configuration
-const SITE_NAME = "My Wellness Hub"
+const SITE_NAME = "Terra Woman"
 const SENDER_DOMAIN = "notify.thedigitalfuture.xyz"
 const ROOT_DOMAIN = "thedigitalfuture.xyz"
 const FROM_DOMAIN = "notify.thedigitalfuture.xyz"
-const SITE_URL = `https://${ROOT_DOMAIN}`
+const SITE_URL = "https://terra-woman.lovable.app"
 
 // The SDK handler owns verification, dispatch, and retry semantics; this file
 // owns only the email decisions: subjects, templates, and per-type props.

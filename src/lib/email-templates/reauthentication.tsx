@@ -20,6 +20,7 @@ export const ReauthenticationEmail = ({ token }: ReauthenticationEmailProps) => 
     <Preview>Your verification code</Preview>
     <Body style={main}>
       <Container style={container}>
+        <Text style={wordmark}>TERRA WOMAN</Text>
         <Heading style={h1}>Confirm reauthentication</Heading>
         <Text style={text}>Use the code below to confirm your identity:</Text>
         <Text style={codeStyle}>{token}</Text>
@@ -34,17 +35,30 @@ export const ReauthenticationEmail = ({ token }: ReauthenticationEmailProps) => 
 
 export default ReauthenticationEmail
 
-const main = { backgroundColor: '#ffffff', fontFamily: 'Arial, sans-serif' }
-const container = { padding: '20px 25px' }
+const wordmark = {
+  fontSize: '12px',
+  letterSpacing: '3px',
+  color: '#A25D44',
+  fontFamily: "Georgia, 'Times New Roman', serif",
+  margin: '0 0 18px',
+}
+const main = { backgroundColor: '#F6F2EB', fontFamily: 'Arial, sans-serif' }
+const container = {
+  padding: '28px 25px',
+  backgroundColor: '#FDFBF7',
+  borderTop: '4px solid #A25D44',
+  borderRadius: '8px',
+}
 const h1 = {
   fontSize: '22px',
   fontWeight: 'bold' as const,
-  color: '#000000',
+  color: '#2F3A2E',
+  fontFamily: "Georgia, 'Times New Roman', serif",
   margin: '0 0 20px',
 }
 const text = {
   fontSize: '14px',
-  color: '#55575d',
+  color: '#55604F',
   lineHeight: '1.5',
   margin: '0 0 25px',
 }
@@ -52,7 +66,8 @@ const codeStyle = {
   fontFamily: 'Courier, monospace',
   fontSize: '22px',
   fontWeight: 'bold' as const,
-  color: '#000000',
+  color: '#2F3A2E',
+  fontFamily: "Georgia, 'Times New Roman', serif",
   margin: '0 0 30px',
 }
 const footer = { fontSize: '12px', color: '#999999', margin: '30px 0 0' }

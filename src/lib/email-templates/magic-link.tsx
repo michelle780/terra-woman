@@ -27,6 +27,7 @@ export const MagicLinkEmail = ({
     <Preview>Your login link for {siteName}</Preview>
     <Body style={main}>
       <Container style={container}>
+        <Text style={wordmark}>TERRA WOMAN</Text>
         <Heading style={h1}>Your login link</Heading>
         <Text style={text}>
           Click the button below to log in to {siteName}. This link will expire
@@ -45,25 +46,38 @@ export const MagicLinkEmail = ({
 
 export default MagicLinkEmail
 
-const main = { backgroundColor: '#ffffff', fontFamily: 'Arial, sans-serif' }
-const container = { padding: '20px 25px' }
+const wordmark = {
+  fontSize: '12px',
+  letterSpacing: '3px',
+  color: '#A25D44',
+  fontFamily: "Georgia, 'Times New Roman', serif",
+  margin: '0 0 18px',
+}
+const main = { backgroundColor: '#F6F2EB', fontFamily: 'Arial, sans-serif' }
+const container = {
+  padding: '28px 25px',
+  backgroundColor: '#FDFBF7',
+  borderTop: '4px solid #A25D44',
+  borderRadius: '8px',
+}
 const h1 = {
   fontSize: '22px',
   fontWeight: 'bold' as const,
-  color: '#000000',
+  color: '#2F3A2E',
+  fontFamily: "Georgia, 'Times New Roman', serif",
   margin: '0 0 20px',
 }
 const text = {
   fontSize: '14px',
-  color: '#55575d',
+  color: '#55604F',
   lineHeight: '1.5',
   margin: '0 0 25px',
 }
 const button = {
-  backgroundColor: '#000000',
+  backgroundColor: '#A25D44',
   color: '#ffffff',
   fontSize: '14px',
-  border: '1px solid #000000',
+  border: '1px solid #A25D44',
   borderRadius: '8px',
   padding: '12px 20px',
   textDecoration: 'none',
