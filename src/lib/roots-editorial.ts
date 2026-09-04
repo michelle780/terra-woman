@@ -195,12 +195,11 @@ function humanHost(url: string): string {
   try {
     const host = new URL(url).hostname;
     if (HOST_NAMES[host]) return HOST_NAMES[host]!;
-    return host
-      .replace(/^www\./, "")
-      .split(".")
-      .slice(0, -1)
-      .join(".")
-      .replace(/[-_]/g, " ")
+    const bare = host.replace(/^www\./, "");
+    const parts = bare.split(".");
+    const main = parts.length > 2 ? parts.slice(-3, -1).join(" ") : parts[0]!;
+    return main
+      .replace(/[-_.]/g, " ")
       .replace(/\b\w/g, (c) => c.toUpperCase());
   } catch {
     return "Source";
