@@ -79,17 +79,17 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Terra Woman — your calm wellness oasis" },
+      { title: "Terra Woman — Women's Wellness, Cycle & Sleep Tracker" },
       {
         name: "description",
         content:
-          "A calm, empowering oasis to track sleep, energy, cycle, symptoms and medications — and see your bigger picture.",
+          "A private wellness oasis for women — track sleep, cycle, mood, symptoms and medications, and see how your body, mood and hormones move together.",
       },
-      { property: "og:title", content: "Terra Woman — your calm wellness oasis" },
+      { property: "og:title", content: "Terra Woman — Women's Wellness, Cycle & Sleep Tracker" },
       {
         property: "og:description",
         content:
-          "A calm, empowering oasis to track sleep, energy, cycle, symptoms and medications — and see your bigger picture.",
+          "A private wellness oasis for women — track sleep, cycle, mood, symptoms and medications, and see how your body, mood and hormones move together.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
