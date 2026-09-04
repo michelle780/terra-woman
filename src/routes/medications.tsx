@@ -101,7 +101,9 @@ function Medications() {
     onError: (e: Error) => toast.error(e.message),
   });
 
-  const existingNames = new Set(meds.map((m) => m.name.trim().toLowerCase()));
+  const existingNames = new Set(
+    (medsQ.data ?? []).map((m) => m.name.trim().toLowerCase()),
+  );
   const newMeds = (preview ?? []).filter((p) => !existingNames.has(p.name.toLowerCase()));
   const skipped = (preview ?? []).length - newMeds.length;
 
