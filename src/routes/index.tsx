@@ -49,7 +49,7 @@ export const Route = createFileRoute("/")({
 });
 
 function Home() {
-  const { loading } = useAuth();
+  const { user, loading } = useAuth();
 
   if (loading) {
     return (
@@ -59,8 +59,11 @@ function Home() {
     );
   }
 
-  // AppShell redirects to /auth when signed out, so Today is always the
-  // landing page after sign-in.
+  // Signed-out visitors see the full invite landing page.
+  if (!user) {
+    return <Landing />;
+  }
+
   return (
     <AppShell>
       <Today />
