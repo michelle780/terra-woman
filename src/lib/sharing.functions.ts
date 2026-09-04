@@ -151,7 +151,7 @@ export type SharedView = {
     resting_hr: number | null;
     steps: number | null;
   }[];
-  checkins?: Record<string, unknown>[];
+  checkins?: ({ checkin_date: string } & Record<string, number | null>)[];
   medications?: { name: string; dose: string | null; frequency: string; active: boolean }[];
   cycle?: { start_date: string; end_date: string | null; flow: string | null; symptoms: string[] }[];
   journal?: { entry_date: string; mood: string | null; energy: number | null; symptoms: string[]; note: string | null }[];
