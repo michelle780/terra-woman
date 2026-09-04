@@ -60,7 +60,7 @@ export const SignupEmail = ({
           human.
         </Text>
         <Text style={signoff}>&mdash; Michelle, founder</Text>
-        <Text style={tagline}>See yourself whole.</Text>
+        <Text style={tagline}>See your WHOLE self.</Text>
         <Text style={text}>
           <Link href={`${siteUrl}/about`} style={link}>
             Read the full story
