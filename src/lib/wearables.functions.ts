@@ -153,10 +153,10 @@ async function tokenRequest(
   }
   const res = await fetch(cfg.tokenUrl, { method: "POST", headers, body });
   const json = (await res.json().catch(() => ({}))) as Record<string, unknown>;
-  if (!res.ok || typeof json.access_token !== "string") {
+  if (!res.ok || typeof json["access_token"] !== "string") {
     throw new Error(`${cfg.displayName} connection failed — please try connecting again.`);
   }
-  return json as { access_token: string; refresh_token?: string; expires_in?: number };
+  return json as unknown as { access_token: string; refresh_token?: string; expires_in?: number };
 }
 
 export const completeWearableConnection = createServerFn({ method: "POST" })
@@ -217,27 +217,30 @@ async function wearableFetch(
   provider: WearableProvider,
   path: string,
 ): Promise<Response> {
-  const { cfg } = PROVIDERS[provider];
+  const cfg = PROVIDERS[provider];
   const { getWearableTokens, saveWearableTokens } = await import("@/server/wearableTokens.server");
   let tokens = await getWearableTokens(userId, provider);
   if (!tokens) throw new Error(`${cfg.displayName} is not connected for this account yet.`);
 
   // Refresh if expired (or expiring within 2 minutes) and we have a refresh token.
   if (tokens.expires_at && tokens.expires_at < Date.now() + 120_000 && tokens.refresh_token) {
+    const refreshToken = tokens.refresh_token;
     const refreshed = await tokenRequest(
       provider,
-      new URLSearchParams({ grant_type: "refresh_token", refresh_token: tokens.refresh_token }),
+      new URLSearchParams({ grant_type: "refresh_token", refresh_token: refreshToken }),
     );
-    tokens = {
+    const next = {
       access_token: refreshed.access_token,
-      refresh_token: refreshed.refresh_token ?? tokens.refresh_token,
+      refresh_token: refreshed.refresh_token ?? refreshToken,
       expires_at: refreshed.expires_in ? Date.now() + refreshed.expires_in * 1000 : undefined,
     };
-    await saveWearableTokens(userId, provider, tokens);
+    await saveWearableTokens(userId, provider, next);
+    tokens = next;
   }
+  const accessToken = tokens.access_token;
 
   const res = await fetch(`${cfg.apiBase}${path}`, {
-    headers: { Authorization: `Bearer ${tokens.access_token}` },
+    headers: { Authorization: `Bearer ${accessToken}` },
   });
   if (res.status === 401 || res.status === 403) {
     throw new Error(`${cfg.displayName} access was declined or expired — reconnect from Devices.`);
@@ -264,7 +267,11 @@ function dateKey(d: Date): string {
   return d.toISOString().slice(0, 10);
 }
 
-function setIf(row: MetricRow, key: keyof MetricRow, value: number | null | undefined) {
+function setIf(
+  row: MetricRow,
+  key: "sleep_minutes" | "sleep_score" | "readiness" | "hrv" | "resting_hr" | "steps",
+  value: number | null | undefined,
+) {
   if (value != null && Number.isFinite(value)) row[key] = value;
 }
 

@@ -5,8 +5,8 @@ import { encryptConnectionKey, decryptConnectionKey } from "./connectionKeyCrypt
 
 export interface WearableTokens {
   access_token: string;
-  refresh_token?: string;
-  expires_at?: number; // epoch ms
+  refresh_token?: string | undefined;
+  expires_at?: number | undefined; // epoch ms
 }
 
 export async function saveWearableTokens(
