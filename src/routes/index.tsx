@@ -248,7 +248,7 @@ function Today() {
 
   return (
     <>
-      <section className="rise mt-4 rounded-[28px] bg-paper/75 p-5 ring-1 ring-line backdrop-blur-md sm:p-7">
+      <section className="rise mt-4 rounded-[28px] bg-paper/55 p-5 ring-1 ring-line backdrop-blur-md sm:p-7">
         <div className="flex flex-col gap-6 md:flex-row md:items-center">
           <Gauge value={metric?.readiness ?? null} />
           <div className="flex-1">
@@ -303,7 +303,7 @@ function Today() {
       </section>
 
       <div className="mt-4 grid gap-4 md:grid-cols-2">
-        <section className="rise rounded-[24px] bg-paper/75 p-5 ring-1 ring-line backdrop-blur-md">
+        <section className="rise rounded-[24px] bg-paper/55 p-5 ring-1 ring-line backdrop-blur-md">
           <div className="flex items-center justify-between">
             <div>
               <p className="eyebrow">Medications</p>
@@ -358,7 +358,7 @@ function Today() {
           </div>
         </section>
 
-        <section className="rise rounded-[24px] bg-paper/75 p-5 ring-1 ring-line backdrop-blur-md">
+        <section className="rise rounded-[24px] bg-paper/55 p-5 ring-1 ring-line backdrop-blur-md">
           <div className="flex items-center justify-between">
             <div>
               <p className="eyebrow">Journal</p>
@@ -433,7 +433,7 @@ function Today() {
 
       <InviteCard />
 
-      <section className="rise mt-4 rounded-[24px] bg-paper/75 p-5 ring-1 ring-line backdrop-blur-md">
+      <section className="rise mt-4 rounded-[24px] bg-paper/55 p-5 ring-1 ring-line backdrop-blur-md">
         <div className="flex items-center justify-between">
           <div>
             <p className="eyebrow">Trends</p>
