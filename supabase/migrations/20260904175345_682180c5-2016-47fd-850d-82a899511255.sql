@@ -1,0 +1,1 @@
+ALTER TABLE public.profiles ADD COLUMN IF NOT EXISTS life_stage text, ADD COLUMN IF NOT EXISTS life_stage_notes text;

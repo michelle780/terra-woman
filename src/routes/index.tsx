@@ -12,6 +12,7 @@ import { CheckInCard } from "@/components/CheckInCard";
 import { DailyQuoteCard } from "@/components/DailyQuoteCard";
 import { InviteCard } from "@/components/InviteCard";
 import { RootsTodayCard } from "@/components/RootsTodayCard";
+import { LifeStageCard } from "@/components/LifeStageCard";
 
 import { useAuth } from "@/lib/auth";
 import {
@@ -577,6 +578,7 @@ function Today() {
       </div>
 
       <div className="mt-4 grid gap-4">
+        <LifeStageCard />
         <RootsTodayCard />
         <DailyQuoteCard />
       </div>
