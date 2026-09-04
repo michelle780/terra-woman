@@ -142,6 +142,12 @@ function Devices() {
                   private Terra Woman account.
                 </p>
               )}
+              {isApple && (
+                <p className="mt-2 text-[11px] text-muted-foreground">
+                  Apple keeps Health data on your iPhone, so there's no web sign-in — enter your
+                  numbers here and they join the same private timeline.
+                </p>
+              )}
               {conn?.last_synced_at && (
                 <p className="mt-2 text-[11px] text-muted-foreground">
                   Last sync {new Date(conn.last_synced_at).toLocaleString()}
@@ -151,7 +157,25 @@ function Devices() {
                 <div className="mt-4">
                   <OuraConnect compact />
                 </div>
+              ) : isApple ? (
+                <div className="mt-4 flex flex-wrap gap-2">
+                  <Link
+                    to="/apple-health"
+                    className="rounded-full bg-primary px-4 py-1.5 text-xs font-bold text-primary-foreground"
+                  >
+                    {conn ? "Add today's numbers" : "Start entering data"}
+                  </Link>
+                  {conn && (
+                    <button
+                      onClick={() => disconnect.mutate(conn.id)}
+                      className="rounded-full bg-background px-4 py-1.5 text-xs font-bold ring-1 ring-line"
+                    >
+                      Remove
+                    </button>
+                  )}
+                </div>
               ) : (
+
                 <div className="mt-4 flex flex-wrap gap-2">
                   {conn ? (
                     <>
