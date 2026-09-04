@@ -28,6 +28,7 @@ import { Route as AdminMembersRouteImport } from './routes/admin/members'
 import { Route as AdminRootsRouteImport } from './routes/admin/roots'
 import { Route as RootsIdRouteImport } from './routes/roots.$id'
 import { Route as OauthOuraReturnRouteImport } from './routes/oauth.oura.return'
+import { Route as RootsBranchBranchRouteImport } from './routes/roots.branch.$branch'
 import { Route as LovableEmailAuthPreviewRouteImport } from './routes/lovable/email/auth/preview'
 import { Route as LovableEmailAuthWebhookRouteImport } from './routes/lovable/email/auth/webhook'
 import { Route as LovableEmailTransactionalPreviewRouteImport } from './routes/lovable/email/transactional/preview'
@@ -127,6 +128,11 @@ const OauthOuraReturnRoute = OauthOuraReturnRouteImport.update({
   path: '/oauth/oura/return',
   getParentRoute: () => rootRouteImport,
 } as any)
+const RootsBranchBranchRoute = RootsBranchBranchRouteImport.update({
+  id: '/branch/$branch',
+  path: '/branch/$branch',
+  getParentRoute: () => RootsRoute,
+} as any)
 const LovableEmailAuthPreviewRoute = LovableEmailAuthPreviewRouteImport.update({
   id: '/lovable/email/auth/preview',
   path: '/lovable/email/auth/preview',
@@ -164,6 +170,7 @@ export interface FileRoutesByFullPath {
   '/admin/roots': typeof AdminRootsRoute
   '/roots/$id': typeof RootsIdRoute
   '/oauth/oura/return': typeof OauthOuraReturnRoute
+  '/roots/branch/$branch': typeof RootsBranchBranchRoute
   '/lovable/email/auth/preview': typeof LovableEmailAuthPreviewRoute
   '/lovable/email/auth/webhook': typeof LovableEmailAuthWebhookRoute
   '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
@@ -188,6 +195,7 @@ export interface FileRoutesByTo {
   '/admin/roots': typeof AdminRootsRoute
   '/roots/$id': typeof RootsIdRoute
   '/oauth/oura/return': typeof OauthOuraReturnRoute
+  '/roots/branch/$branch': typeof RootsBranchBranchRoute
   '/lovable/email/auth/preview': typeof LovableEmailAuthPreviewRoute
   '/lovable/email/auth/webhook': typeof LovableEmailAuthWebhookRoute
   '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
@@ -213,6 +221,7 @@ export interface FileRoutesById {
   '/admin/roots': typeof AdminRootsRoute
   '/roots/$id': typeof RootsIdRoute
   '/oauth/oura/return': typeof OauthOuraReturnRoute
+  '/roots/branch/$branch': typeof RootsBranchBranchRoute
   '/lovable/email/auth/preview': typeof LovableEmailAuthPreviewRoute
   '/lovable/email/auth/webhook': typeof LovableEmailAuthWebhookRoute
   '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
@@ -239,6 +248,7 @@ export interface FileRouteTypes {
     | '/admin/roots'
     | '/roots/$id'
     | '/oauth/oura/return'
+    | '/roots/branch/$branch'
     | '/lovable/email/auth/preview'
     | '/lovable/email/auth/webhook'
     | '/lovable/email/transactional/preview'
@@ -263,6 +273,7 @@ export interface FileRouteTypes {
     | '/admin/roots'
     | '/roots/$id'
     | '/oauth/oura/return'
+    | '/roots/branch/$branch'
     | '/lovable/email/auth/preview'
     | '/lovable/email/auth/webhook'
     | '/lovable/email/transactional/preview'
@@ -287,6 +298,7 @@ export interface FileRouteTypes {
     | '/admin/roots'
     | '/roots/$id'
     | '/oauth/oura/return'
+    | '/roots/branch/$branch'
     | '/lovable/email/auth/preview'
     | '/lovable/email/auth/webhook'
     | '/lovable/email/transactional/preview'
@@ -451,6 +463,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof OauthOuraReturnRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/roots/branch/$branch': {
+      id: '/roots/branch/$branch'
+      path: '/branch/$branch'
+      fullPath: '/roots/branch/$branch'
+      preLoaderRoute: typeof RootsBranchBranchRouteImport
+      parentRoute: typeof RootsRoute
+    }
     '/lovable/email/auth/preview': {
       id: '/lovable/email/auth/preview'
       path: '/lovable/email/auth/preview'
@@ -477,10 +496,12 @@ declare module '@tanstack/react-router' {
 
 interface RootsRouteChildren {
   RootsIdRoute: typeof RootsIdRoute
+  RootsBranchBranchRoute: typeof RootsBranchBranchRoute
 }
 
 const RootsRouteChildren: RootsRouteChildren = {
   RootsIdRoute: RootsIdRoute,
+  RootsBranchBranchRoute: RootsBranchBranchRoute,
 }
 
 const RootsRouteWithChildren = RootsRoute._addFileChildren(RootsRouteChildren)

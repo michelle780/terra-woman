@@ -79,6 +79,11 @@ export type RootsRecord = {
   visual_asset_source: string | null;
   visual_asset_credit: string | null;
   visual_asset_rights_status: string;
+  collection: string | null;
+  tree_branch: string | null;
+  legacy_lens: string | null;
+  persecution_type: string | null;
+  region_group: string | null;
   updated_at?: string;
 };
 
