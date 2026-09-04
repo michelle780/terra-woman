@@ -84,7 +84,7 @@ function Field({
   );
 }
 
-function AppleHealth() {
+export function AppleHealth() {
   const { user } = useAuth();
   const qc = useQueryClient();
   const [form, setForm] = useState<FormState>(EMPTY);

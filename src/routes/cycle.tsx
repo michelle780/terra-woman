@@ -61,7 +61,7 @@ function fmt(date: string | null): string {
   });
 }
 
-function Cycle() {
+export function Cycle() {
   const { user } = useAuth();
   const qc = useQueryClient();
   const today = todayKey();

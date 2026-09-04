@@ -108,7 +108,7 @@ function parseMedLines(text: string): ParsedMed[] {
   return out;
 }
 
-function Medications() {
+export function Medications() {
   const { user } = useAuth();
   const qc = useQueryClient();
   const days = lastNDays(14);
