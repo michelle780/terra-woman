@@ -14,7 +14,7 @@ export const Route = createFileRoute("/about")({
       {
         property: "og:description",
         content:
-          "The founder story behind Terra Woman — holistic, not prescriptive. Data-driven, deeply human. See yourself whole.",
+          "The founder story behind Terra Woman — holistic, not prescriptive. Data-driven, deeply human. See your WHOLE self.",
       },
       { property: "og:type", content: "article" },
       { name: "twitter:card", content: "summary_large_image" },
