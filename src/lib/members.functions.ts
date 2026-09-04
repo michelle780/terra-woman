@@ -87,9 +87,43 @@ export const listMembers = createServerFn({ method: "GET" })
           checkins: checkinCounts.get(u.id) ?? 0,
           metrics_days: metricCounts.get(u.id) ?? 0,
           devices_connected: deviceCounts.get(u.id) ?? 0,
+          preferred_channel: profile?.preferred_channel ?? null,
+          checkin_frequency: profile?.checkin_frequency ?? null,
         };
       })
       .sort((a, b) => (a.signed_up_at < b.signed_up_at ? 1 : -1));
 
     return { members, total: members.length };
+  });
+
+export const sendCheckinNudge = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((data) => z.object({ memberId: z.string().uuid() }).parse(data))
+  .handler(async ({ context, data }) => {
+    // Admin-only: verify the caller's role as the authenticated user (RLS applies).
+    await assertAdmin(context.supabase, context.userId);
+
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+
+    const { data: userData, error: userError } = await supabaseAdmin.auth.admin.getUserById(data.memberId);
+    if (userError) throw userError;
+    const email = userData.user?.email;
+    if (!email) throw new Error("Member has no email address");
+
+    const { data: profile } = await supabaseAdmin
+      .from("profiles")
+      .select("display_name, preferred_channel")
+      .eq("id", data.memberId)
+      .maybeSingle();
+
+    const { sendTemplateEmail } = await import("@/lib/email-templates/send-email");
+    const result = await sendTemplateEmail("checkin-nudge", email, {
+      templateData: {
+        memberName: profile?.display_name ?? "friend",
+        checkinUrl: "https://terra-woman.lovable.app/today",
+      },
+      idempotencyKey: `checkin-nudge-${data.memberId}-${new Date().toISOString().slice(0, 10)}`,
+    });
+
+    return { sent: result.sent, channel: profile?.preferred_channel ?? null };
   });
