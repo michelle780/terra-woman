@@ -106,19 +106,6 @@ function VisualLab() {
     return out;
   }, [records]);
 
-  if (roleLoading) {
-    return <p className="text-sm text-muted-foreground">Loading…</p>;
-  }
-  if (!isEditor) {
-    return (
-      <div className="rounded-2xl bg-paper p-6 ring-1 ring-line">
-        <h1 className="font-display text-2xl">ROOTS Visual Lab</h1>
-        <p className="mt-2 text-sm text-muted-foreground">
-          This page is available to editors and administrators.
-        </p>
-      </div>
-    );
-  }
 
   return (
     <div className="space-y-16 pb-20">
