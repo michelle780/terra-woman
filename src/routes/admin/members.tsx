@@ -6,14 +6,14 @@ import { AppShell } from "@/components/AppShell";
 import { useAuth } from "@/lib/auth";
 import { fetchIsEditor } from "@/lib/roots";
 import { listMembers, sendCheckinNudge, type MemberSummary } from "@/lib/members.functions";
-import { getEmailActivity, sendMemberEmail } from "@/lib/email-admin.functions";
+import { getEmailActivity, getEmailInbox, sendMemberEmail } from "@/lib/email-admin.functions";
 import {
   createAnnouncement,
   deleteAnnouncement,
   listAnnouncements,
   setAnnouncementPublished,
 } from "@/lib/announcements.functions";
-import { Users, UserCheck, UserPlus, Activity, Megaphone, Trash2, Mail, MessageCircleHeart, Check } from "lucide-react";
+import { Users, UserCheck, UserPlus, Activity, Megaphone, Trash2, Mail, Inbox, RefreshCw, MessageCircleHeart, Check } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/admin/members")({
