@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { moonPhase, todayKey } from "@/lib/wellness";
 import { QUOTES } from "@/lib/quotes";
+import { BRANCHES, BRANCH_BLURB } from "@/lib/roots-editorial";
 import { ProductPreview } from "@/components/ProductPreview";
 import { FounderPreview } from "@/components/FounderPreview";
 import terraTree from "@/assets/terra-tree.png";
@@ -28,7 +29,19 @@ const FEATURES = [
   },
 ];
 
-const LANDING_QUOTES = QUOTES.slice(0, 3);
+/** One quote per woman — the strip never repeats an author. */
+const LANDING_QUOTES = (() => {
+  const seen = new Set<string>();
+  return QUOTES.filter((q) => {
+    const key = q.author.toLowerCase();
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  }).slice(0, 3);
+})();
+
+/** A taste of the living archive for the invite page. */
+const ROOTS_TEASER_BRANCHES = BRANCHES.slice(0, 6);
 
 export function Landing({ invitedBy }: { invitedBy?: string | null }) {
   return (
@@ -133,6 +146,33 @@ export function Landing({ invitedBy }: { invitedBy?: string | null }) {
           </div>
         </section>
 
+        <section className="roots-forest rise mt-4 overflow-hidden rounded-[28px] p-6 ring-1 ring-line sm:p-8">
+          <p className="eyebrow opacity-70">Roots — a living archive</p>
+          <h2 className="mt-2 font-display text-2xl leading-tight sm:text-3xl">
+            The wisdom of women, gathered across centuries.
+          </h2>
+          <p className="mt-3 max-w-2xl text-sm opacity-80">
+            Roots is a growing collection of women's knowledge, voices and history — healers,
+            midwives, scientists and everyday wisdom-keepers. A new story meets you on your Today
+            page each morning.
+          </p>
+          <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            {ROOTS_TEASER_BRANCHES.map((b) => (
+              <div key={b} className="rounded-[18px] bg-background/10 p-4 ring-1 ring-background/15">
+                <p className="text-[10px] font-semibold uppercase tracking-[0.2em] opacity-70">
+                  {b.toLowerCase()}
+                </p>
+                <p className="mt-1.5 text-sm opacity-90">{BRANCH_BLURB[b]}</p>
+              </div>
+            ))}
+          </div>
+          <Link
+            to="/auth"
+            className="mt-5 inline-block rounded-2xl bg-background px-5 py-3 text-sm font-bold text-foreground transition-opacity hover:opacity-90"
+          >
+            Create a free account to explore Roots
+          </Link>
+        </section>
 
         <div className="mt-4 grid gap-4 sm:grid-cols-2">
           <LandingMoon />
