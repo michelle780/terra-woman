@@ -5,14 +5,14 @@ import { toast } from "sonner";
 import { AppShell } from "@/components/AppShell";
 import { useAuth } from "@/lib/auth";
 import { fetchIsEditor } from "@/lib/roots";
-import { listMembers, type MemberSummary } from "@/lib/members.functions";
+import { listMembers, sendCheckinNudge, type MemberSummary } from "@/lib/members.functions";
 import {
   createAnnouncement,
   deleteAnnouncement,
   listAnnouncements,
   setAnnouncementPublished,
 } from "@/lib/announcements.functions";
-import { Users, UserCheck, UserPlus, Activity, Megaphone, Trash2 } from "lucide-react";
+import { Users, UserCheck, UserPlus, Activity, Megaphone, Trash2, Mail } from "lucide-react";
 
 export const Route = createFileRoute("/admin/members")({
   head: () => ({
@@ -134,6 +134,7 @@ function MembersAdmin() {
               <th className="px-4 py-3 text-right">Metric days</th>
               <th className="px-4 py-3 text-right">Devices</th>
               <th className="px-4 py-3">Role</th>
+              <th className="px-4 py-3 text-right">Nudge</th>
             </tr>
           </thead>
           <tbody>
@@ -162,6 +163,15 @@ function MembersAdmin() {
                 <td className="px-4 py-3 text-xs text-muted-foreground">
                   {m.roles.length ? m.roles.join(", ") : "member"}
                 </td>
+                <td className="px-4 py-3 text-right">
+                  {m.preferred_channel === "email" && m.checkin_frequency !== "none" ? (
+                    <NudgeButton member={m} />
+                  ) : (
+                    <span className="text-[11px] text-muted-foreground">
+                      {m.preferred_channel === "email" ? "no reminders" : "in-app"}
+                    </span>
+                  )}
+                </td>
               </tr>
             ))}
           </tbody>
@@ -170,6 +180,34 @@ function MembersAdmin() {
 
       <AnnouncementsPanel />
     </div>
+  );
+}
+
+function NudgeButton({ member }: { member: MemberSummary }) {
+  const [sending, setSending] = useState(false);
+  return (
+    <button
+      disabled={sending}
+      onClick={async () => {
+        setSending(true);
+        try {
+          const res = await sendCheckinNudge({ data: { memberId: member.id } });
+          if (res.sent) {
+            toast.success(`Check-in nudge sent to ${member.display_name ?? member.email}.`);
+          } else {
+            toast.info("Not sent — this address is currently on the do-not-send list.");
+          }
+        } catch {
+          toast.error("Could not send the nudge. Try again in a moment.");
+        } finally {
+          setSending(false);
+        }
+      }}
+      className="inline-flex items-center gap-1 rounded-full bg-copper/10 px-3 py-1 text-[11px] font-semibold text-copper-ink ring-1 ring-copper/30 transition-opacity hover:opacity-80 disabled:opacity-50"
+    >
+      <Mail className="size-3" />
+      {sending ? "Sending…" : "Send nudge"}
+    </button>
   );
 }
 

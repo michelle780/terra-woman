@@ -1,4 +1,5 @@
 import { createServerFn } from "@tanstack/react-start";
+import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 
 export type MemberSummary = {
@@ -12,19 +13,26 @@ export type MemberSummary = {
   checkins: number;
   metrics_days: number;
   devices_connected: number;
+  preferred_channel: string | null;
+  checkin_frequency: string | null;
 };
+
+/** Throws unless the caller is an admin. Returns true when admin. */
+async function assertAdmin(supabase: any, userId: string) {
+  const { data: roleRows, error: roleError } = await supabase
+    .from("user_roles")
+    .select("role")
+    .eq("user_id", userId);
+  if (roleError) throw roleError;
+  const isAdmin = (roleRows ?? []).some((r: any) => r.role === "admin");
+  if (!isAdmin) throw new Response("Forbidden", { status: 403 });
+}
 
 export const listMembers = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
     // Admin-only: verify the caller's role as the authenticated user (RLS applies).
-    const { data: roleRows, error: roleError } = await context.supabase
-      .from("user_roles")
-      .select("role")
-      .eq("user_id", context.userId);
-    if (roleError) throw roleError;
-    const isAdmin = (roleRows ?? []).some((r) => r.role === "admin");
-    if (!isAdmin) throw new Response("Forbidden", { status: 403 });
+    await assertAdmin(context.supabase, context.userId);
 
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
 
@@ -42,7 +50,7 @@ export const listMembers = createServerFn({ method: "GET" })
 
     const [{ data: profiles }, { data: roles }, { data: checkins }, { data: metrics }, { data: devices }] =
       await Promise.all([
-        supabaseAdmin.from("profiles").select("id, display_name, onboarded_at"),
+        supabaseAdmin.from("profiles").select("id, display_name, onboarded_at, preferred_channel, checkin_frequency"),
         supabaseAdmin.from("user_roles").select("user_id, role"),
         supabaseAdmin.from("daily_checkins").select("user_id").limit(20000),
         supabaseAdmin.from("daily_metrics").select("user_id").limit(20000),
@@ -79,9 +87,43 @@ export const listMembers = createServerFn({ method: "GET" })
           checkins: checkinCounts.get(u.id) ?? 0,
           metrics_days: metricCounts.get(u.id) ?? 0,
           devices_connected: deviceCounts.get(u.id) ?? 0,
+          preferred_channel: profile?.preferred_channel ?? null,
+          checkin_frequency: profile?.checkin_frequency ?? null,
         };
       })
       .sort((a, b) => (a.signed_up_at < b.signed_up_at ? 1 : -1));
 
     return { members, total: members.length };
+  });
+
+export const sendCheckinNudge = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((data) => z.object({ memberId: z.string().uuid() }).parse(data))
+  .handler(async ({ context, data }) => {
+    // Admin-only: verify the caller's role as the authenticated user (RLS applies).
+    await assertAdmin(context.supabase, context.userId);
+
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+
+    const { data: userData, error: userError } = await supabaseAdmin.auth.admin.getUserById(data.memberId);
+    if (userError) throw userError;
+    const email = userData.user?.email;
+    if (!email) throw new Error("Member has no email address");
+
+    const { data: profile } = await supabaseAdmin
+      .from("profiles")
+      .select("display_name, preferred_channel")
+      .eq("id", data.memberId)
+      .maybeSingle();
+
+    const { sendTemplateEmail } = await import("@/lib/email-templates/send-email");
+    const result = await sendTemplateEmail("checkin-nudge", email, {
+      templateData: {
+        memberName: profile?.display_name ?? "friend",
+        checkinUrl: "https://terra-woman.lovable.app/today",
+      },
+      idempotencyKey: `checkin-nudge-${data.memberId}-${new Date().toISOString().slice(0, 10)}`,
+    });
+
+    return { sent: result.sent, channel: profile?.preferred_channel ?? null };
   });
