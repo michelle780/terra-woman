@@ -5,6 +5,7 @@ import {
   completeWearableConnection,
   disconnectWearable,
   getWearableStatus,
+  startWearableConnect,
   syncWearable,
   type WearableProvider,
 } from "@/lib/wearables.functions";

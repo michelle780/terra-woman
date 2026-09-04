@@ -32,6 +32,7 @@ import { Route as RootsIndexRouteImport } from './routes/roots.index'
 import { Route as RootsIdRouteImport } from './routes/roots.$id'
 import { Route as SharedTokenRouteImport } from './routes/shared.$token'
 import { Route as OauthOuraReturnRouteImport } from './routes/oauth.oura.return'
+import { Route as OauthWearableProviderRouteImport } from './routes/oauth.wearable.$provider'
 import { Route as RootsBranchBranchRouteImport } from './routes/roots.branch.$branch'
 import { Route as LovableEmailAuthPreviewRouteImport } from './routes/lovable/email/auth/preview'
 import { Route as LovableEmailAuthWebhookRouteImport } from './routes/lovable/email/auth/webhook'
@@ -152,6 +153,11 @@ const OauthOuraReturnRoute = OauthOuraReturnRouteImport.update({
   path: '/oauth/oura/return',
   getParentRoute: () => rootRouteImport,
 } as any)
+const OauthWearableProviderRoute = OauthWearableProviderRouteImport.update({
+  id: '/oauth/wearable/$provider',
+  path: '/oauth/wearable/$provider',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const RootsBranchBranchRoute = RootsBranchBranchRouteImport.update({
   id: '/roots/branch/$branch',
   path: '/roots/branch/$branch',
@@ -198,6 +204,7 @@ export interface FileRoutesByFullPath {
   '/shared/$token': typeof SharedTokenRoute
   '/roots/': typeof RootsIndexRoute
   '/oauth/oura/return': typeof OauthOuraReturnRoute
+  '/oauth/wearable/$provider': typeof OauthWearableProviderRoute
   '/roots/branch/$branch': typeof RootsBranchBranchRoute
   '/lovable/email/auth/preview': typeof LovableEmailAuthPreviewRoute
   '/lovable/email/auth/webhook': typeof LovableEmailAuthWebhookRoute
@@ -227,6 +234,7 @@ export interface FileRoutesByTo {
   '/shared/$token': typeof SharedTokenRoute
   '/roots': typeof RootsIndexRoute
   '/oauth/oura/return': typeof OauthOuraReturnRoute
+  '/oauth/wearable/$provider': typeof OauthWearableProviderRoute
   '/roots/branch/$branch': typeof RootsBranchBranchRoute
   '/lovable/email/auth/preview': typeof LovableEmailAuthPreviewRoute
   '/lovable/email/auth/webhook': typeof LovableEmailAuthWebhookRoute
@@ -257,6 +265,7 @@ export interface FileRoutesById {
   '/shared/$token': typeof SharedTokenRoute
   '/roots/': typeof RootsIndexRoute
   '/oauth/oura/return': typeof OauthOuraReturnRoute
+  '/oauth/wearable/$provider': typeof OauthWearableProviderRoute
   '/roots/branch/$branch': typeof RootsBranchBranchRoute
   '/lovable/email/auth/preview': typeof LovableEmailAuthPreviewRoute
   '/lovable/email/auth/webhook': typeof LovableEmailAuthWebhookRoute
@@ -288,6 +297,7 @@ export interface FileRouteTypes {
     | '/shared/$token'
     | '/roots/'
     | '/oauth/oura/return'
+    | '/oauth/wearable/$provider'
     | '/roots/branch/$branch'
     | '/lovable/email/auth/preview'
     | '/lovable/email/auth/webhook'
@@ -317,6 +327,7 @@ export interface FileRouteTypes {
     | '/shared/$token'
     | '/roots'
     | '/oauth/oura/return'
+    | '/oauth/wearable/$provider'
     | '/roots/branch/$branch'
     | '/lovable/email/auth/preview'
     | '/lovable/email/auth/webhook'
@@ -346,6 +357,7 @@ export interface FileRouteTypes {
     | '/shared/$token'
     | '/roots/'
     | '/oauth/oura/return'
+    | '/oauth/wearable/$provider'
     | '/roots/branch/$branch'
     | '/lovable/email/auth/preview'
     | '/lovable/email/auth/webhook'
@@ -376,6 +388,7 @@ export interface RootRouteChildren {
   SharedTokenRoute: typeof SharedTokenRoute
   RootsIndexRoute: typeof RootsIndexRoute
   OauthOuraReturnRoute: typeof OauthOuraReturnRoute
+  OauthWearableProviderRoute: typeof OauthWearableProviderRoute
   RootsBranchBranchRoute: typeof RootsBranchBranchRoute
   LovableEmailAuthPreviewRoute: typeof LovableEmailAuthPreviewRoute
   LovableEmailAuthWebhookRoute: typeof LovableEmailAuthWebhookRoute
@@ -545,6 +558,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof OauthOuraReturnRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/oauth/wearable/$provider': {
+      id: '/oauth/wearable/$provider'
+      path: '/oauth/wearable/$provider'
+      fullPath: '/oauth/wearable/$provider'
+      preLoaderRoute: typeof OauthWearableProviderRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/roots/branch/$branch': {
       id: '/roots/branch/$branch'
       path: '/roots/branch/$branch'
@@ -600,6 +620,7 @@ const rootRouteChildren: RootRouteChildren = {
   SharedTokenRoute: SharedTokenRoute,
   RootsIndexRoute: RootsIndexRoute,
   OauthOuraReturnRoute: OauthOuraReturnRoute,
+  OauthWearableProviderRoute: OauthWearableProviderRoute,
   RootsBranchBranchRoute: RootsBranchBranchRoute,
   LovableEmailAuthPreviewRoute: LovableEmailAuthPreviewRoute,
   LovableEmailAuthWebhookRoute: LovableEmailAuthWebhookRoute,
