@@ -66,16 +66,9 @@ function SectionHeading({ eyebrow, title, note }: { eyebrow: string; title: stri
 }
 
 
-function VisualLab() {
-  const { user } = useAuth();
-  const { data: isEditor, isLoading: roleLoading } = useQuery({
-    queryKey: ["is-editor", user?.id],
-    enabled: !!user,
-    queryFn: () => fetchIsEditor(user!.id),
-  });
+export function VisualLab() {
   const { data: records = [] } = useQuery({
-    queryKey: ["roots"],
-    enabled: !!isEditor,
+    queryKey: ["roots-content"],
     queryFn: fetchRoots,
   });
 
