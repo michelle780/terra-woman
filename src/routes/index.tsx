@@ -6,6 +6,7 @@ import { getOuraStatus, syncOura } from "@/lib/oura.functions";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { AppShell } from "@/components/AppShell";
+import { Landing } from "@/components/Landing";
 
 import { CheckInCard } from "@/components/CheckInCard";
 import { DailyQuoteCard } from "@/components/DailyQuoteCard";
