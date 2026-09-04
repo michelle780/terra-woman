@@ -341,16 +341,16 @@ function RootsAdmin() {
       <div className="mt-4 flex gap-1.5">
         {(
           [
-            ["library", "Library & import"],
-            ["lab", "Visual lab"],
-          ] as const
+            ...(isAdmin ? [["library", "Library & import"] as const] : []),
+            ["lab", "Visual lab"] as const,
+          ]
         ).map(([key, label]) => (
           <button
             key={key}
             type="button"
             onClick={() => setTab(key)}
             className={`rounded-full px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.14em] ring-1 transition-colors ${
-              tab === key
+              activeTab === key
                 ? "bg-copper/25 text-foreground ring-copper/30"
                 : "bg-copper/10 text-copper-ink ring-copper/20"
             }`}
@@ -360,7 +360,7 @@ function RootsAdmin() {
         ))}
       </div>
 
-      {tab === "lab" ? (
+      {activeTab === "lab" ? (
         <div className="mt-6">
           <VisualLab />
         </div>
