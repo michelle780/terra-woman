@@ -32,7 +32,7 @@ import {
   todaySeed,
 } from "@/lib/roots-editorial";
 
-export const Route = createFileRoute("/roots")({
+export const Route = createFileRoute("/roots/")({
   head: () => ({
     meta: [
       { title: "ROOTS — the women who brought us here · Terra Woman" },
