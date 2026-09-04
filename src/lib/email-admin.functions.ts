@@ -17,7 +17,7 @@ export type EmailActivity = {
   note: string | null;
 };
 
-const SENDER_DOMAIN = "notify.thedigitalfuture.xyz";
+const SENDER_DOMAIN = "notify.terrawoman.org";
 
 async function assertAdmin(supabase: any, userId: string) {
   const { data: roleRows, error } = await supabase

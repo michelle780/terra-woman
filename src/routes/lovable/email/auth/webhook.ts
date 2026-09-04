@@ -10,8 +10,8 @@ import { ReauthenticationEmail } from '@/lib/email-templates/reauthentication'
 
 // Configuration
 const SITE_NAME = "Terra Woman"
-const SENDER_DOMAIN = "notify.thedigitalfuture.xyz"
-const FROM_DOMAIN = "notify.thedigitalfuture.xyz"
+const SENDER_DOMAIN = "notify.terrawoman.org"
+const FROM_DOMAIN = "notify.terrawoman.org"
 const SITE_URL = "https://terra-woman.lovable.app"
 
 // The SDK handler owns verification, dispatch, and retry semantics; this file
