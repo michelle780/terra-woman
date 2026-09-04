@@ -278,7 +278,6 @@ function ImportPanel({ existing, onDone }: { existing: RootsRecord[]; onDone: ()
 
 function RootsAdmin() {
   const { user } = useAuth();
-  const [tab, setTab] = useState<"library" | "lab">("library");
   const queryClient = useQueryClient();
 
   const { data: isEditor, isLoading: roleLoading } = useQuery({
@@ -286,6 +285,16 @@ function RootsAdmin() {
     enabled: !!user,
     queryFn: () => fetchIsEditor(user!.id),
   });
+
+  const { data: isAdmin = false, isLoading: adminLoading } = useQuery({
+    queryKey: ["is-admin", user?.id],
+    enabled: !!user,
+    queryFn: () => fetchIsAdmin(user!.id),
+  });
+
+  const [tab, setTab] = useState<"library" | "lab">("lab");
+
+  const activeTab = isAdmin ? tab : "lab";
 
   const { data: records = [], isLoading } = useQuery({
     queryKey: ["roots-content"],
