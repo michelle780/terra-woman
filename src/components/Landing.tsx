@@ -1,5 +1,8 @@
 import { Link } from "@tanstack/react-router";
 import { moonPhase, todayKey } from "@/lib/wellness";
+import { QUOTES } from "@/lib/quotes";
+import { ProductPreview } from "@/components/ProductPreview";
+import terraTree from "@/assets/terra-tree.png";
 
 const FEATURES = [
   {
@@ -24,15 +27,27 @@ const FEATURES = [
   },
 ];
 
+const LANDING_QUOTES = QUOTES.slice(0, 3);
+
 export function Landing({ invitedBy }: { invitedBy?: string | null }) {
   return (
-    <div className="min-h-screen bg-background text-foreground">
-      <div className="mx-auto max-w-5xl px-4 py-6 sm:px-6">
+    <div className="relative min-h-screen bg-background text-foreground">
+      <div
+        aria-hidden
+        className="pointer-events-none fixed inset-0 z-0 flex items-center justify-center overflow-hidden"
+      >
+        <img
+          src={terraTree}
+          alt=""
+          width={1005}
+          height={1007}
+          className="h-[92vh] w-auto max-w-none opacity-[0.18]"
+        />
+      </div>
+      <div className="relative z-10 mx-auto max-w-6xl px-4 py-6 sm:px-6">
         <header className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="grid size-9 place-items-center rounded-full bg-copper/15 ring-1 ring-copper/30">
-              <span className="size-2.5 rounded-full bg-copper" />
-            </div>
+            <img src={terraTree} alt="" width={40} height={40} className="size-10 object-contain" />
             <span className="font-display text-base font-semibold uppercase tracking-[0.22em]">Terra Woman</span>
           </div>
           <Link
@@ -43,34 +58,68 @@ export function Landing({ invitedBy }: { invitedBy?: string | null }) {
           </Link>
         </header>
 
-        <section className="rise mt-6 rounded-[28px] bg-paper p-7 ring-1 ring-line sm:p-10">
-          {invitedBy ? (
-            <p className="eyebrow">{invitedBy} invited you to Terra Woman</p>
-          ) : (
-            <p className="eyebrow">A calm oasis for your wellbeing</p>
-          )}
-          <h1 className="mt-2 max-w-2xl text-4xl leading-[1.05] sm:text-6xl">
-            See your bigger picture — body, mood and all.
-          </h1>
-          <p className="mt-4 max-w-xl text-sm text-muted-foreground sm:text-base">
-            Terra Woman is a happy, empowering place to notice how your sleep, energy,
-            symptoms, cycle and mood move together. Everything stays private to your own account.
-          </p>
-          <div className="mt-6 flex flex-wrap items-center gap-3">
-            <Link
-              to="/auth"
-              className="rounded-2xl bg-primary px-5 py-3 text-sm font-bold text-primary-foreground transition-opacity hover:opacity-90"
-            >
-              Create your free account
-            </Link>
-            <Link
-              to="/auth"
-              className="rounded-2xl bg-background px-5 py-3 text-sm font-semibold ring-1 ring-line transition-colors hover:bg-cream"
-            >
-              I already have one
-            </Link>
+        <div className="mt-6 grid items-start gap-4 lg:grid-cols-[1.05fr_0.95fr]">
+          <section className="rise rounded-[28px] bg-paper/90 p-7 ring-1 ring-line backdrop-blur-sm sm:p-10">
+            {invitedBy ? (
+              <p className="eyebrow">{invitedBy} invited you to Terra Woman</p>
+            ) : (
+              <p className="eyebrow">A calm oasis for your wellbeing</p>
+            )}
+            <h1 className="mt-2 max-w-2xl text-4xl leading-[1.05] sm:text-5xl">
+              See your bigger picture — body, mood and all.
+            </h1>
+            <p className="mt-4 max-w-xl text-sm text-muted-foreground sm:text-base">
+              Terra Woman is a happy, empowering place to notice how your sleep, energy,
+              symptoms, cycle and mood move together. Everything stays private to your own account.
+            </p>
+            <div className="mt-6 flex flex-wrap items-center gap-3">
+              <Link
+                to="/auth"
+                className="rounded-2xl bg-primary px-5 py-3 text-sm font-bold text-primary-foreground transition-opacity hover:opacity-90"
+              >
+                Create your free account
+              </Link>
+              <Link
+                to="/auth"
+                className="rounded-2xl bg-background px-5 py-3 text-sm font-semibold ring-1 ring-line transition-colors hover:bg-cream"
+              >
+                I already have one
+              </Link>
+            </div>
+            <p className="eyebrow mt-8">A living record — like a tree of life</p>
+            <p className="mt-2 max-w-xl text-sm text-muted-foreground">
+              Roots hold the wisdom of women before you, the trunk is your daily check-in, and the
+              branches are the patterns that grow as you keep showing up.
+            </p>
+          </section>
+          <div className="rise">
+            <p className="eyebrow mb-2 px-1">A look inside</p>
+            <ProductPreview />
+            <div className="rounded-[24px] bg-paper/90 p-5 ring-1 ring-line backdrop-blur-sm lg:hidden">
+              <p className="text-sm text-muted-foreground">
+                Today, medications, check-ins, cycle, trends and daily wisdom — all in one calm,
+                private place.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <section className="rise mt-4 rounded-[28px] bg-paper/90 p-6 ring-1 ring-line backdrop-blur-sm">
+          <p className="eyebrow">In her words</p>
+          <div className="mt-3 grid gap-4 sm:grid-cols-3">
+            {LANDING_QUOTES.map((q) => (
+              <figure key={q.text} className="rounded-[20px] bg-background/70 p-4 ring-1 ring-line">
+                <blockquote className="font-display text-lg leading-snug text-pretty">
+                  “{q.text}”
+                </blockquote>
+                <figcaption className="mt-3 text-xs font-semibold uppercase tracking-[0.16em] text-copper-ink">
+                  {q.author}
+                </figcaption>
+              </figure>
+            ))}
           </div>
         </section>
+
 
         <div className="mt-4 grid gap-4 sm:grid-cols-2">
           <LandingMoon />
