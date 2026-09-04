@@ -152,7 +152,8 @@ export function HoroscopeCard() {
         >
           <p className="text-sm text-muted-foreground sm:col-span-2">
             Enter your birth date and we'll calculate your real sun sign and planetary placements
-            from the ephemeris. Birth time is optional — it sharpens the moon placement.
+            from the ephemeris. Birth time is optional — it sharpens the moon placement. Enter it in
+            your local time and pick your timezone; we handle the conversion.
           </p>
           <label className="grid gap-1 text-xs font-semibold">
             Birth date
@@ -165,13 +166,27 @@ export function HoroscopeCard() {
             />
           </label>
           <label className="grid gap-1 text-xs font-semibold">
-            Birth time (optional, UTC)
+            Birth time (optional, your local time)
             <input
               type="time"
               value={draftTime}
               onChange={(e) => setDraftTime(e.target.value)}
               className="rounded-2xl bg-background px-3 py-2 text-sm font-normal ring-1 ring-line"
             />
+          </label>
+          <label className="grid gap-1 text-xs font-semibold sm:col-span-2">
+            Timezone
+            <select
+              value={draftTz}
+              onChange={(e) => setDraftTz(e.target.value)}
+              className="rounded-2xl bg-background px-3 py-2 text-sm font-normal ring-1 ring-line"
+            >
+              {(TIMEZONES.includes(draftTz) ? TIMEZONES : [draftTz, ...TIMEZONES]).map((tz) => (
+                <option key={tz} value={tz}>
+                  {tzLabel(tz)}
+                </option>
+              ))}
+            </select>
           </label>
           <div className="flex gap-2 sm:col-span-2">
             <button
