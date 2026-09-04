@@ -324,23 +324,11 @@ function WelcomePage() {
                   </button>
                 ))}
               </div>
-              {a.channel === "sms" && (
-                <label className="mt-3 block">
-                  <span className="text-[11px] font-semibold tracking-[0.14em] text-muted-foreground uppercase">
-                    Mobile number
-                  </span>
-                  <input
-                    value={a.phone}
-                    onChange={(e) => set("phone", e.target.value)}
-                    placeholder="+1 555 123 4567"
-                    className="mt-1.5 w-full rounded-2xl bg-paper px-4 py-2 text-sm ring-1 ring-line outline-none focus:ring-2 focus:ring-copper/40"
-                  />
-                </label>
-              )}
               <p className="mt-4 text-xs text-muted-foreground">
-                We save your preference now; email and text delivery turn on once messaging is
-                connected. Nothing is shared with anyone else.
+                Email nudges are sent to the address you signed up with. Nothing is shared with
+                anyone else.
               </p>
+
             </div>
           )}
 
