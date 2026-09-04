@@ -49,7 +49,7 @@ export function WelcomeTour({ enabled }: { enabled: boolean }) {
   const last = step === STEPS.length - 1;
 
   return (
-    <div className="fixed inset-0 z-50 grid place-items-center bg-forest/40 px-4 backdrop-blur-sm">
+    <div className="fixed inset-0 z-50 grid place-items-center bg-foreground/40 px-4 backdrop-blur-sm">
       <div
         role="dialog"
         aria-modal="true"
