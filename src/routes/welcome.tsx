@@ -38,8 +38,8 @@ const FREQUENCIES = [
 const CHANNELS = [
   { value: "app", label: "In the app", hint: "A quiet card waiting for me" },
   { value: "email", label: "Email", hint: "A short note in my inbox" },
-  { value: "sms", label: "Text message", hint: "A nudge on my phone" },
 ] as const;
+
 
 const FOCUS = [
   "Sleep & recovery",
