@@ -80,7 +80,7 @@ export function Landing({ invitedBy }: { invitedBy?: string | null }) {
               <p className="eyebrow">A calm oasis for your wellbeing</p>
             )}
             <h1 className="mt-2 max-w-2xl text-4xl leading-[1.05] sm:text-5xl">
-              See yourself whole.
+              See your WHOLE self.
             </h1>
             <p className="mt-4 max-w-xl text-sm text-muted-foreground sm:text-base">
               Terra Woman is a happy, empowering place to notice how your sleep, energy,
