@@ -136,7 +136,6 @@ function WelcomePage() {
       navigate({ to: "/", replace: true });
     }
   }, [user, profile, navigate]);
-  });
 
   useEffect(() => {
     if (!profile) return;
