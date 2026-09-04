@@ -307,7 +307,7 @@ function Today() {
         <div className="flex flex-col gap-6 md:flex-row md:items-center">
           <Gauge value={metric?.readiness ?? null} />
           <div className="flex-1">
-            <p className="eyebrow">This morning</p>
+            <p className="eyebrow">{readingLabel}</p>
             <h1 className="mt-1 text-3xl leading-tight text-balance sm:text-4xl">
               {metric?.readiness
                 ? metric.readiness >= 80
@@ -317,15 +317,36 @@ function Today() {
             </h1>
             <p className="mt-2 max-w-[52ch] text-base text-pretty text-muted-foreground">
               {metric
-                ? "Ring and watch numbers for today are recorded. Live syncing with Oura and Apple Watch can be switched on later."
-                : "Nothing recorded yet today. Add your ring and watch numbers manually until live syncing is connected."}
+                ? isToday
+                  ? "Today's ring and watch numbers are in."
+                  : "Your ring hasn't posted today's numbers yet, so these are your most recent ones."
+                : "Nothing recorded yet. Connect your ring or add your numbers by hand."}
             </p>
-            <button
-              onClick={() => setEditing((v) => !v)}
-              className="mt-3 rounded-full bg-sky/20 px-4 py-1.5 text-xs font-bold ring-1 ring-sky/30"
-            >
-              {metric ? "Edit today's numbers" : "Add today's numbers"}
-            </button>
+            <div className="mt-3 flex flex-wrap gap-2">
+              <button
+                onClick={() => setEditing((v) => !v)}
+                className="rounded-full bg-sky/20 px-4 py-1.5 text-xs font-bold ring-1 ring-sky/30"
+              >
+                {todayMetric ? "Edit today's numbers" : "Add today's numbers"}
+              </button>
+              {ouraConnected ? (
+                <button
+                  onClick={() => sync.mutate()}
+                  disabled={sync.isPending}
+                  className="rounded-full bg-clay/20 px-4 py-1.5 text-xs font-bold ring-1 ring-clay/30 disabled:opacity-60"
+                >
+                  {sync.isPending ? "Syncing…" : "Sync Oura now"}
+                </button>
+              ) : (
+                <Link
+                  to="/devices"
+                  className="rounded-full bg-clay/20 px-4 py-1.5 text-xs font-bold ring-1 ring-clay/30"
+                >
+                  Connect your ring
+                </Link>
+              )}
+            </div>
+
           </div>
           <div className="grid grid-cols-2 gap-3 md:grid-cols-1 lg:grid-cols-2">
             <Stat
