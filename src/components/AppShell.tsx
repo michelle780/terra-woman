@@ -6,6 +6,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/lib/auth";
 import terraTree from "@/assets/terra-tree.png";
 import { fetchIsAdmin, fetchIsEditor } from "@/lib/roots";
+import { AnnouncementBanner } from "@/components/AnnouncementBanner";
 
 const NAV = [
   { to: "/", label: "Today" },
@@ -149,6 +150,8 @@ export function AppShell({ children }: { children: ReactNode }) {
             </span>
           </div>
         </header>
+
+        {user && <AnnouncementBanner />}
 
         <nav className="mt-4 flex gap-1.5 overflow-x-auto">
           {NAV.map((item) => (

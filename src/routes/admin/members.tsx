@@ -1,10 +1,18 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useState } from "react";
+import { toast } from "sonner";
 import { AppShell } from "@/components/AppShell";
 import { useAuth } from "@/lib/auth";
 import { fetchIsEditor } from "@/lib/roots";
 import { listMembers, type MemberSummary } from "@/lib/members.functions";
-import { Users, UserCheck, UserPlus, Activity } from "lucide-react";
+import {
+  createAnnouncement,
+  deleteAnnouncement,
+  listAnnouncements,
+  setAnnouncementPublished,
+} from "@/lib/announcements.functions";
+import { Users, UserCheck, UserPlus, Activity, Megaphone, Trash2 } from "lucide-react";
 
 export const Route = createFileRoute("/admin/members")({
   head: () => ({
@@ -159,6 +167,149 @@ function MembersAdmin() {
           </tbody>
         </table>
       </div>
+
+      <AnnouncementsPanel />
     </div>
+  );
+}
+
+function AnnouncementsPanel() {
+  const queryClient = useQueryClient();
+  const [title, setTitle] = useState("");
+  const [body, setBody] = useState("");
+  const [ctaLabel, setCtaLabel] = useState("");
+  const [ctaUrl, setCtaUrl] = useState("");
+  const [saving, setSaving] = useState(false);
+
+  const { data } = useQuery({
+    queryKey: ["admin-announcements"],
+    queryFn: () => listAnnouncements(),
+  });
+  const announcements = data?.announcements ?? [];
+
+  async function publish(asDraft: boolean) {
+    if (!title.trim()) {
+      toast.error("Give the announcement a title.");
+      return;
+    }
+    setSaving(true);
+    try {
+      await createAnnouncement({
+        data: { title, body, cta_label: ctaLabel, cta_url: ctaUrl, published: !asDraft },
+      });
+      toast.success(asDraft ? "Saved as draft." : "Published to all members.");
+      setTitle("");
+      setBody("");
+      setCtaLabel("");
+      setCtaUrl("");
+      queryClient.invalidateQueries({ queryKey: ["admin-announcements"] });
+      queryClient.invalidateQueries({ queryKey: ["announcement-banner"] });
+    } catch {
+      toast.error("Could not save the announcement.");
+    } finally {
+      setSaving(false);
+    }
+  }
+
+  return (
+    <section className="space-y-4 rounded-2xl bg-paper/70 p-5 ring-1 ring-line backdrop-blur-md">
+      <div className="flex items-center gap-2">
+        <Megaphone className="size-4 text-copper-ink" />
+        <h2 className="font-display text-lg font-semibold">Announce to all members</h2>
+      </div>
+      <p className="text-xs text-muted-foreground">
+        Published announcements appear as a banner at the top of every signed-in member's app until
+        they dismiss it.
+      </p>
+
+      <div className="grid gap-3 sm:grid-cols-2">
+        <input
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          placeholder="Title (e.g. New: moon-phase insights)"
+          maxLength={140}
+          className="rounded-xl bg-paper px-3 py-2 text-sm ring-1 ring-line outline-none focus:ring-copper/50 sm:col-span-2"
+        />
+        <textarea
+          value={body}
+          onChange={(e) => setBody(e.target.value)}
+          placeholder="Short message (optional)"
+          maxLength={2000}
+          rows={2}
+          className="rounded-xl bg-paper px-3 py-2 text-sm ring-1 ring-line outline-none focus:ring-copper/50 sm:col-span-2"
+        />
+        <input
+          value={ctaLabel}
+          onChange={(e) => setCtaLabel(e.target.value)}
+          placeholder="Button label (optional)"
+          maxLength={60}
+          className="rounded-xl bg-paper px-3 py-2 text-sm ring-1 ring-line outline-none focus:ring-copper/50"
+        />
+        <input
+          value={ctaUrl}
+          onChange={(e) => setCtaUrl(e.target.value)}
+          placeholder="Button link — /cycle or https://…"
+          maxLength={500}
+          className="rounded-xl bg-paper px-3 py-2 text-sm ring-1 ring-line outline-none focus:ring-copper/50"
+        />
+      </div>
+
+      <div className="flex gap-2">
+        <button
+          onClick={() => publish(false)}
+          disabled={saving}
+          className="rounded-full bg-copper px-5 py-2 text-xs font-semibold text-paper transition-opacity disabled:opacity-50"
+        >
+          Publish now
+        </button>
+        <button
+          onClick={() => publish(true)}
+          disabled={saving}
+          className="rounded-full bg-paper px-5 py-2 text-xs font-semibold ring-1 ring-line transition-opacity disabled:opacity-50"
+        >
+          Save draft
+        </button>
+      </div>
+
+      {announcements.length > 0 && (
+        <ul className="divide-y divide-line/60 border-t border-line/60">
+          {announcements.map((a) => (
+            <li key={a.id} className="flex items-center gap-3 py-2.5">
+              <span
+                className={`size-2 shrink-0 rounded-full ${a.published ? "bg-sage" : "bg-clay"}`}
+                title={a.published ? "Published" : "Draft"}
+              />
+              <div className="min-w-0 flex-1">
+                <p className="truncate text-sm font-semibold">{a.title}</p>
+                <p className="text-[11px] text-muted-foreground">
+                  {a.published ? "Live" : "Draft"} · {fmt(a.created_at)}
+                </p>
+              </div>
+              <button
+                onClick={async () => {
+                  await setAnnouncementPublished({ data: { id: a.id, published: !a.published } });
+                  queryClient.invalidateQueries({ queryKey: ["admin-announcements"] });
+                  queryClient.invalidateQueries({ queryKey: ["announcement-banner"] });
+                }}
+                className="rounded-full bg-paper px-3 py-1 text-[11px] font-semibold ring-1 ring-line"
+              >
+                {a.published ? "Unpublish" : "Publish"}
+              </button>
+              <button
+                onClick={async () => {
+                  await deleteAnnouncement({ data: { id: a.id } });
+                  queryClient.invalidateQueries({ queryKey: ["admin-announcements"] });
+                  queryClient.invalidateQueries({ queryKey: ["announcement-banner"] });
+                }}
+                aria-label="Delete announcement"
+                className="rounded-full p-1.5 text-muted-foreground hover:bg-paper"
+              >
+                <Trash2 className="size-3.5" />
+              </button>
+            </li>
+          ))}
+        </ul>
+      )}
+    </section>
   );
 }
