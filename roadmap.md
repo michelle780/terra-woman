@@ -12,3 +12,5 @@
 - [x] Apple Health manual entry route (/apple-health) linked from Devices
 
 - [x] Merged ROOTS Visual Lab into /admin/roots as a tab; removed /admin/lab route and the public Roots nav entry
+- [x] Direct Whoop + Fitbit OAuth connect/sync (custom, free web APIs) into daily_metrics
+- [ ] Add WHOOP_CLIENT_ID/SECRET + FITBIT_CLIENT_ID/SECRET secrets after registering developer apps
