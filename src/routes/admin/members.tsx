@@ -183,6 +183,34 @@ function MembersAdmin() {
   );
 }
 
+function NudgeButton({ member }: { member: MemberSummary }) {
+  const [sending, setSending] = useState(false);
+  return (
+    <button
+      disabled={sending}
+      onClick={async () => {
+        setSending(true);
+        try {
+          const res = await sendCheckinNudge({ data: { memberId: member.id } });
+          if (res.sent) {
+            toast.success(`Check-in nudge sent to ${member.display_name ?? member.email}.`);
+          } else {
+            toast.info("Not sent — this address is currently on the do-not-send list.");
+          }
+        } catch {
+          toast.error("Could not send the nudge. Try again in a moment.");
+        } finally {
+          setSending(false);
+        }
+      }}
+      className="inline-flex items-center gap-1 rounded-full bg-copper/10 px-3 py-1 text-[11px] font-semibold text-copper-ink ring-1 ring-copper/30 transition-opacity hover:opacity-80 disabled:opacity-50"
+    >
+      <Mail className="size-3" />
+      {sending ? "Sending…" : "Send nudge"}
+    </button>
+  );
+}
+
 function AnnouncementsPanel() {
   const queryClient = useQueryClient();
   const [title, setTitle] = useState("");
