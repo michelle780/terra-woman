@@ -51,7 +51,7 @@ const CheckinNudgeEmail = ({
 export const template = {
   component: CheckinNudgeEmail,
   subject: (data: Record<string, any>) =>
-    `A moment for you${data.memberName ? `, ${data.memberName}` : ''} — your daily check-in`,
+    `A moment for you${data['memberName'] ? `, ${data['memberName']}` : ''} — your daily check-in`,
   displayName: 'Daily check-in nudge',
   previewData: {
     memberName: 'Michelle',
