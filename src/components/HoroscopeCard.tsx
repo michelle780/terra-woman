@@ -23,7 +23,7 @@ export function HoroscopeCard() {
   const [draftTime, setDraftTime] = useState("");
 
   const profileQ = useQuery({
-    queryKey: ["profile", user!.id],
+    queryKey: ["profile", user!.id, "birth"],
     queryFn: async () => {
       const { data, error } = await supabase
         .from("profiles")
