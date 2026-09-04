@@ -18,6 +18,7 @@ import {
   buildPreview,
   commitImport,
   countBy,
+  fetchIsAdmin,
   fetchIsEditor,
   fetchRoots,
   recordWarnings,
@@ -278,7 +279,6 @@ function ImportPanel({ existing, onDone }: { existing: RootsRecord[]; onDone: ()
 
 function RootsAdmin() {
   const { user } = useAuth();
-  const [tab, setTab] = useState<"library" | "lab">("library");
   const queryClient = useQueryClient();
 
   const { data: isEditor, isLoading: roleLoading } = useQuery({
@@ -286,6 +286,16 @@ function RootsAdmin() {
     enabled: !!user,
     queryFn: () => fetchIsEditor(user!.id),
   });
+
+  const { data: isAdmin = false, isLoading: adminLoading } = useQuery({
+    queryKey: ["is-admin", user?.id],
+    enabled: !!user,
+    queryFn: () => fetchIsAdmin(user!.id),
+  });
+
+  const [tab, setTab] = useState<"library" | "lab">("lab");
+
+  const activeTab = isAdmin ? tab : "lab";
 
   const { data: records = [], isLoading } = useQuery({
     queryKey: ["roots-content"],
@@ -295,7 +305,8 @@ function RootsAdmin() {
 
   const warnings = useMemo(() => records.flatMap(recordWarnings), [records]);
 
-  if (roleLoading) return <p className="mt-8 text-sm text-muted-foreground">Checking access…</p>;
+  if (roleLoading || adminLoading)
+    return <p className="mt-8 text-sm text-muted-foreground">Checking access…</p>;
 
   if (!isEditor) {
     return (
@@ -330,16 +341,16 @@ function RootsAdmin() {
       <div className="mt-4 flex gap-1.5">
         {(
           [
-            ["library", "Library & import"],
-            ["lab", "Visual lab"],
-          ] as const
+            ...(isAdmin ? [["library", "Library & import"] as const] : []),
+            ["lab", "Visual lab"] as const,
+          ]
         ).map(([key, label]) => (
           <button
             key={key}
             type="button"
             onClick={() => setTab(key)}
             className={`rounded-full px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.14em] ring-1 transition-colors ${
-              tab === key
+              activeTab === key
                 ? "bg-copper/25 text-foreground ring-copper/30"
                 : "bg-copper/10 text-copper-ink ring-copper/20"
             }`}
@@ -349,7 +360,7 @@ function RootsAdmin() {
         ))}
       </div>
 
-      {tab === "lab" ? (
+      {activeTab === "lab" ? (
         <div className="mt-6">
           <VisualLab />
         </div>
