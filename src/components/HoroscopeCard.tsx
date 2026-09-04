@@ -125,8 +125,13 @@ export function HoroscopeCard() {
         {birthDate && !showForm && (
           <button
             onClick={() => {
-              setDraftDate(birthDate);
-              setDraftTime(birthTime ?? "");
+              const local =
+                birthTime && birthTime.includes("T")
+                  ? birthUtcIsoToLocal(birthTime, LOCAL_TZ)
+                  : null;
+              setDraftDate(local?.date ?? birthDate);
+              setDraftTime(local?.time ?? (birthTime && !birthTime.includes("T") ? birthTime : ""));
+              setDraftTz(LOCAL_TZ);
               setEditing(true);
             }}
             className="text-xs font-semibold text-muted-foreground underline"
