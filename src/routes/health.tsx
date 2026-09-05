@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState, type ComponentType } from "react";
+import { AppShell } from "@/components/AppShell";
 import { Cycle } from "./cycle";
 import { Medications } from "./medications";
 import { Journal } from "./journal";
