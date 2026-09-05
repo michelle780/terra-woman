@@ -99,7 +99,11 @@ export const syncOura = createServerFn({ method: "POST" })
     const days = Math.min(Math.max(data.days ?? 30, 1), 180);
     const end = new Date();
     const start = new Date(end.getTime() - days * 86_400_000);
-    const range = `start_date=${dateKey(start)}&end_date=${dateKey(end)}`;
+    // Oura publishes today's documents against tomorrow's boundary in some
+    // timezones, so ask one day past today or the newest night is missed.
+    const endPlusOne = new Date(end.getTime() + 86_400_000);
+    const range = `start_date=${dateKey(start)}&end_date=${dateKey(endPlusOne)}`;
+
 
     async function get(path: string): Promise<{ data?: unknown[] }> {
       const res = await callAsAppUser({
