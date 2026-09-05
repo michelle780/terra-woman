@@ -99,7 +99,11 @@ export const syncOura = createServerFn({ method: "POST" })
     const days = Math.min(Math.max(data.days ?? 30, 1), 180);
     const end = new Date();
     const start = new Date(end.getTime() - days * 86_400_000);
-    const range = `start_date=${dateKey(start)}&end_date=${dateKey(end)}`;
+    // Oura publishes today's documents against tomorrow's boundary in some
+    // timezones, so ask one day past today or the newest night is missed.
+    const endPlusOne = new Date(end.getTime() + 86_400_000);
+    const range = `start_date=${dateKey(start)}&end_date=${dateKey(endPlusOne)}`;
+
 
     async function get(path: string): Promise<{ data?: unknown[] }> {
       const res = await callAsAppUser({
@@ -161,11 +165,40 @@ export const syncOura = createServerFn({ method: "POST" })
 
     const rows = [...byDay.values()];
     if (rows.length > 0) {
+      // Merge over what's already stored: Oura publishes readiness/sleep score
+      // before the detailed sleep and activity documents, so a partial sync
+      // must never blank numbers that already arrived.
+      const { data: existing } = await context.supabase
+        .from("daily_metrics")
+        .select("metric_date, sleep_minutes, sleep_score, readiness, hrv, resting_hr, steps")
+        .eq("user_id", context.userId)
+        .in("metric_date", rows.map((r) => r.metric_date));
+
+      const prior = new Map((existing ?? []).map((r) => [r.metric_date, r]));
+      const merged = rows.map((r) => {
+        const before = prior.get(r.metric_date);
+        if (!before) return r;
+        const keys = [
+          "sleep_minutes",
+          "sleep_score",
+          "readiness",
+          "hrv",
+          "resting_hr",
+          "steps",
+        ] as const;
+        const out: MetricRow = { ...r };
+        for (const k of keys) {
+          if (out[k] == null && before[k] != null) out[k] = before[k];
+        }
+        return out;
+      });
+
       const { error } = await context.supabase
         .from("daily_metrics")
-        .upsert(rows, { onConflict: "user_id,metric_date" });
+        .upsert(merged, { onConflict: "user_id,metric_date" });
       if (error) throw error;
     }
+
 
     const syncedAt = new Date().toISOString();
     await context.supabase.from("device_connections").upsert(
