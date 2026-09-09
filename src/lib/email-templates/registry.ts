@@ -18,5 +18,6 @@ export interface TemplateEntry {
  */
 export const TEMPLATES: Record<string, TemplateEntry> = {
   'checkin-nudge': checkinNudge,
+  'getting-started': gettingStarted,
   'insights-update': insightsUpdate,
 }
