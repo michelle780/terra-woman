@@ -1,5 +1,6 @@
 import type { ComponentType } from 'react'
 import { template as checkinNudge } from './checkin-nudge'
+import { template as insightsUpdate } from './insights-update'
 
 export interface TemplateEntry {
   component: ComponentType<any>
@@ -16,4 +17,5 @@ export interface TemplateEntry {
  */
 export const TEMPLATES: Record<string, TemplateEntry> = {
   'checkin-nudge': checkinNudge,
+  'insights-update': insightsUpdate,
 }
