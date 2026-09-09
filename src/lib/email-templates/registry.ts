@@ -1,5 +1,6 @@
 import type { ComponentType } from 'react'
 import { template as checkinNudge } from './checkin-nudge'
+import { template as gettingStarted } from './getting-started'
 import { template as insightsUpdate } from './insights-update'
 
 export interface TemplateEntry {
