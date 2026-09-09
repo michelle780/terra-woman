@@ -21,6 +21,7 @@ import { Route as HealthRouteImport } from './routes/health'
 import { Route as InviteRouteImport } from './routes/invite'
 import { Route as JournalRouteImport } from './routes/journal'
 import { Route as MedicationsRouteImport } from './routes/medications'
+import { Route as PerimenopauseTrackerRouteImport } from './routes/perimenopause-tracker'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as ShareRouteImport } from './routes/share'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
@@ -97,6 +98,11 @@ const JournalRoute = JournalRouteImport.update({
 const MedicationsRoute = MedicationsRouteImport.update({
   id: '/medications',
   path: '/medications',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PerimenopauseTrackerRoute = PerimenopauseTrackerRouteImport.update({
+  id: '/perimenopause-tracker',
+  path: '/perimenopause-tracker',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PrivacyRoute = PrivacyRouteImport.update({
@@ -199,6 +205,7 @@ export interface FileRoutesByFullPath {
   '/invite': typeof InviteRoute
   '/journal': typeof JournalRoute
   '/medications': typeof MedicationsRoute
+  '/perimenopause-tracker': typeof PerimenopauseTrackerRoute
   '/privacy': typeof PrivacyRoute
   '/share': typeof ShareRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -230,6 +237,7 @@ export interface FileRoutesByTo {
   '/invite': typeof InviteRoute
   '/journal': typeof JournalRoute
   '/medications': typeof MedicationsRoute
+  '/perimenopause-tracker': typeof PerimenopauseTrackerRoute
   '/privacy': typeof PrivacyRoute
   '/share': typeof ShareRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -262,6 +270,7 @@ export interface FileRoutesById {
   '/invite': typeof InviteRoute
   '/journal': typeof JournalRoute
   '/medications': typeof MedicationsRoute
+  '/perimenopause-tracker': typeof PerimenopauseTrackerRoute
   '/privacy': typeof PrivacyRoute
   '/share': typeof ShareRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -295,6 +304,7 @@ export interface FileRouteTypes {
     | '/invite'
     | '/journal'
     | '/medications'
+    | '/perimenopause-tracker'
     | '/privacy'
     | '/share'
     | '/sitemap.xml'
@@ -326,6 +336,7 @@ export interface FileRouteTypes {
     | '/invite'
     | '/journal'
     | '/medications'
+    | '/perimenopause-tracker'
     | '/privacy'
     | '/share'
     | '/sitemap.xml'
@@ -357,6 +368,7 @@ export interface FileRouteTypes {
     | '/invite'
     | '/journal'
     | '/medications'
+    | '/perimenopause-tracker'
     | '/privacy'
     | '/share'
     | '/sitemap.xml'
@@ -389,6 +401,7 @@ export interface RootRouteChildren {
   InviteRoute: typeof InviteRoute
   JournalRoute: typeof JournalRoute
   MedicationsRoute: typeof MedicationsRoute
+  PerimenopauseTrackerRoute: typeof PerimenopauseTrackerRoute
   PrivacyRoute: typeof PrivacyRoute
   ShareRoute: typeof ShareRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
@@ -492,6 +505,13 @@ declare module '@tanstack/react-router' {
       path: '/medications'
       fullPath: '/medications'
       preLoaderRoute: typeof MedicationsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/perimenopause-tracker': {
+      id: '/perimenopause-tracker'
+      path: '/perimenopause-tracker'
+      fullPath: '/perimenopause-tracker'
+      preLoaderRoute: typeof PerimenopauseTrackerRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/privacy': {
@@ -629,6 +649,7 @@ const rootRouteChildren: RootRouteChildren = {
   InviteRoute: InviteRoute,
   JournalRoute: JournalRoute,
   MedicationsRoute: MedicationsRoute,
+  PerimenopauseTrackerRoute: PerimenopauseTrackerRoute,
   PrivacyRoute: PrivacyRoute,
   ShareRoute: ShareRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
