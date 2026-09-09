@@ -18,6 +18,7 @@ const NAV = [
   { to: "/health", label: "Health" },
   { to: "/roots", label: "Roots" },
   { to: "/share", label: "Share" },
+  { to: "/account", label: "Account" },
 
 ] as const;
 
@@ -193,7 +194,7 @@ export function AppShell({ children }: { children: ReactNode }) {
 
         <p className="mt-6 pb-4 text-center text-[11px] text-muted-foreground">
           Terra Woman · See your WHOLE self · not medical advice ·{" "}
-          <Link to="/welcome" className="font-semibold hover:underline">Preferences</Link>{" "}
+          <Link to="/account" className="font-semibold hover:underline">Account &amp; preferences</Link>{" "}
           ·{" "}
           <Link to="/about" className="font-semibold hover:underline">Our story</Link>{" "}
           ·{" "}
