@@ -267,18 +267,60 @@ export function Cycle() {
 
       <section className="rise rounded-[24px] bg-paper p-5 ring-1 ring-line">
         <h2 className="text-xl">{editing ? "Edit period" : "Log a period"}</h2>
+
+        {ongoing && !editing && (
+          <div className="mt-3 flex flex-wrap items-center justify-between gap-3 rounded-2xl bg-rose/15 px-4 py-3 ring-1 ring-rose/30">
+            <p className="text-sm">
+              <span className="font-semibold">You're on your period now</span> — started{" "}
+              {fmt(ongoing.start_date)}
+              {ongoingDay ? ` · day ${ongoingDay}` : ""}. No end date needed until it stops.
+            </p>
+            <div className="flex gap-2">
+              <button
+                onClick={() => endToday.mutate(ongoing.id)}
+                disabled={endToday.isPending}
+                className="rounded-full bg-primary px-4 py-1.5 text-xs font-bold text-primary-foreground disabled:opacity-50"
+              >
+                {endToday.isPending ? "Saving…" : "It ended today"}
+              </button>
+              <button
+                onClick={() => startEdit(ongoing)}
+                className="rounded-full bg-paper px-4 py-1.5 text-xs font-bold ring-1 ring-line"
+              >
+                Edit this one
+              </button>
+            </div>
+          </div>
+        )}
+
         <div className="mt-4 grid gap-3 sm:grid-cols-2">
           <label className="text-xs font-semibold">
             Start date
             <input
               type="date"
               value={startDate}
+              max={today}
               onChange={(e) => setStartDate(e.target.value)}
               className="mt-1 w-full rounded-2xl bg-background px-4 py-2.5 text-sm font-normal ring-1 ring-line focus:ring-2 focus:ring-primary focus:outline-none"
             />
           </label>
-          <label className="text-xs font-semibold">
-            End date <span className="text-muted-foreground">(leave blank if ongoing)</span>
+          <div className="text-xs font-semibold">
+            <div className="flex items-baseline justify-between gap-2">
+              <span>
+                End date{" "}
+                <span className="font-normal text-muted-foreground">
+                  (leave blank if it's still going)
+                </span>
+              </span>
+              {endDate && (
+                <button
+                  onClick={() => setEndDate("")}
+                  className="rounded-full bg-background px-3 py-1 text-[11px] font-bold text-copper-ink ring-1 ring-copper/30"
+                >
+                  Still ongoing
+                </button>
+              )}
+            </div>
             <input
               type="date"
               value={endDate}
@@ -286,8 +328,9 @@ export function Cycle() {
               onChange={(e) => setEndDate(e.target.value)}
               className="mt-1 w-full rounded-2xl bg-background px-4 py-2.5 text-sm font-normal ring-1 ring-line focus:ring-2 focus:ring-primary focus:outline-none"
             />
-          </label>
+          </div>
         </div>
+
 
         <p className="mt-4 eyebrow">Flow</p>
         <div className="mt-2 flex flex-wrap gap-2">
