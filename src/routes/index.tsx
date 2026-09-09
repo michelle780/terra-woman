@@ -13,6 +13,8 @@ import { DailyQuoteCard } from "@/components/DailyQuoteCard";
 import { InviteCard } from "@/components/InviteCard";
 import { RootsTodayCard } from "@/components/RootsTodayCard";
 import { LifeStageCard } from "@/components/LifeStageCard";
+import { GettingStarted } from "@/components/GettingStarted";
+
 
 import { useAuth } from "@/lib/auth";
 import {
