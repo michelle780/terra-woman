@@ -13,6 +13,8 @@ import { DailyQuoteCard } from "@/components/DailyQuoteCard";
 import { InviteCard } from "@/components/InviteCard";
 import { RootsTodayCard } from "@/components/RootsTodayCard";
 import { LifeStageCard } from "@/components/LifeStageCard";
+import { GettingStarted } from "@/components/GettingStarted";
+
 
 import { useAuth } from "@/lib/auth";
 import {
@@ -310,7 +312,9 @@ function Today() {
 
   return (
     <>
+      <GettingStarted className="mt-4" />
       <section className="rise mt-4 rounded-[28px] bg-paper/55 p-5 ring-1 ring-line backdrop-blur-md sm:p-7">
+
         <div className="flex flex-col gap-6 md:flex-row md:items-center">
           <Gauge value={metric?.readiness ?? null} />
           <div className="flex-1">

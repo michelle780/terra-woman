@@ -1,13 +1,20 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState, type ComponentType } from "react";
 import { AppShell } from "@/components/AppShell";
+import { GettingStarted } from "@/components/GettingStarted";
 import { Cycle } from "./cycle";
 import { Medications } from "./medications";
 import { Journal } from "./journal";
 import { Devices } from "./devices";
 import { AppleHealth } from "./apple-health";
 
+const TAB_IDS = ["cycle", "meds", "journal", "devices"] as const;
+type TabId = (typeof TAB_IDS)[number];
+
 export const Route = createFileRoute("/health")({
+  validateSearch: (search: Record<string, unknown>) => ({
+    tab: TAB_IDS.includes(search["tab"] as TabId) ? (search["tab"] as TabId) : undefined,
+  }),
   head: () => ({
     title: "Health — Terra Woman",
     meta: [
@@ -18,10 +25,8 @@ export const Route = createFileRoute("/health")({
       },
     ],
   }),
-  component: Health,
+  component: HealthPage,
 });
-
-type TabId = "cycle" | "meds" | "journal" | "devices";
 
 const TABS: { id: TabId; label: string; Component: ComponentType }[] = [
   { id: "cycle", label: "Cycle", Component: Cycle },
@@ -30,9 +35,25 @@ const TABS: { id: TabId; label: string; Component: ComponentType }[] = [
   { id: "devices", label: "Devices", Component: Devices },
 ];
 
+function HealthPage() {
+  return (
+    <AppShell>
+      <Health />
+    </AppShell>
+  );
+}
+
 function Health() {
-  const [active, setActive] = useState<TabId>("cycle");
+  const { tab } = Route.useSearch();
+  const navigate = useNavigate();
+  const [fallback, setFallback] = useState<TabId>("cycle");
+  const active: TabId = tab ?? fallback;
   const Active = TABS.find((t) => t.id === active)!.Component;
+
+  function select(id: TabId) {
+    setFallback(id);
+    navigate({ to: "/health", search: { tab: id }, replace: true });
+  }
 
   return (
     <div className="space-y-5">
@@ -45,11 +66,14 @@ function Health() {
         </p>
       </div>
 
+      <GettingStarted onSelectTab={(t) => select(t as TabId)} />
+
+
       <nav className="flex gap-1.5 overflow-x-auto">
         {TABS.map((t) => (
           <button
             key={t.id}
-            onClick={() => setActive(t.id)}
+            onClick={() => select(t.id)}
             className="rounded-full px-4 py-1.5 text-xs font-semibold ring-1 ring-line backdrop-blur-md transition-colors"
             style={
               active === t.id
