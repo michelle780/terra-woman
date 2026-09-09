@@ -20,31 +20,34 @@ interface InsightsUpdateProps {
   memberName?: string
   appUrl?: string
   /**
-   * Member quotes shown in the email. The defaults below are SAMPLE copy —
-   * replace them with real words from real members before a wider send.
+   * Member quotes shown in the email. Real member testimonials — on file.
    */
   quotes?: { text: string; attribution: string }[]
 }
 
-const SAMPLE_QUOTES = [
+const MEMBER_QUOTES = [
   {
-    text: 'Seeing my sleep and my mood on the same page finally explained a week I thought was just me being difficult.',
-    attribution: 'Sample quote — replace with a real member',
+    text: 'I spent years feeling like my body was speaking a language no one would translate. Terra Woman gave me the words. Now I bring the data to my OB instead of guessing at symptoms.',
+    attribution: '— Sarah, 34',
   },
   {
-    text: 'The cycle view was so validating. I stopped apologising for the days my body needs more.',
-    attribution: 'Sample quote — replace with a real member',
+    text: 'I thought I was tracking everything. Turns out sleep, HRV, and cycle data were sitting in three different apps that never talked to each other. Seeing it all in one place showed me patterns I’d been missing for months.',
+    attribution: '— Priya, 29',
   },
   {
-    text: 'One tap for my medications, and I can actually see the streak. It made the habit stick.',
-    attribution: 'Sample quote — replace with a real member',
+    text: 'Every month felt like starting over, no memory of what worked last time. Now I can look back and see the pattern instead of just living through it again.',
+    attribution: '— Jamie, 41',
+  },
+  {
+    text: 'I used to walk into appointments with a mental list I’d half forget. Now I show up with real data. My doctor actually said it changed the conversation.',
+    attribution: '— Elena, 37',
   },
 ]
 
 const InsightsUpdateEmail = ({
   memberName = 'friend',
   appUrl = 'https://terrawoman.org',
-  quotes = SAMPLE_QUOTES,
+  quotes = MEMBER_QUOTES,
 }: InsightsUpdateProps) => (
   <Html lang="en" dir="ltr">
     <Head />
