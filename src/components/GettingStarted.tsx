@@ -172,9 +172,9 @@ export function GettingStarted({
               )}
             </div>
             {!s.done &&
-              (onSelectTab && s.search?.tab ? (
+              (onSelectTab && s.search?.['tab'] ? (
                 <button
-                  onClick={() => onSelectTab(s.search!.tab as string)}
+                  onClick={() => onSelectTab(s.search!['tab'] as string)}
                   className="rounded-full bg-primary px-4 py-1.5 text-xs font-bold text-primary-foreground"
                 >
                   {s.cta}
