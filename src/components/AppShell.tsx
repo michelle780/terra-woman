@@ -18,6 +18,7 @@ const NAV = [
   { to: "/health", label: "Health" },
   { to: "/roots", label: "Roots" },
   { to: "/share", label: "Share" },
+  { to: "/account", label: "Account" },
 
 ] as const;
 
