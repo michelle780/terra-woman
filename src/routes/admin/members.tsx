@@ -357,7 +357,7 @@ function EmailDeliveryPanel({
     }
   }
 
-  async function sendTest(template: "checkin-nudge" | "signup" | "insights-update") {
+  async function sendTest(template: "checkin-nudge" | "signup" | "insights-update" | "getting-started") {
     if (!email.trim()) {
       toast.error("Enter an email address first.");
       return;
@@ -426,6 +426,13 @@ function EmailDeliveryPanel({
           className="rounded-full bg-paper px-4 py-2 text-xs font-semibold text-copper-ink ring-1 ring-copper/30 disabled:opacity-50"
         >
           Send test insights update
+        </button>
+        <button
+          onClick={() => sendTest("getting-started")}
+          disabled={sending}
+          className="rounded-full bg-paper px-4 py-2 text-xs font-semibold text-copper-ink ring-1 ring-copper/30 disabled:opacity-50"
+        >
+          Send test getting started
         </button>
       </div>
 
