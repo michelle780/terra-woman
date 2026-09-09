@@ -73,7 +73,7 @@ function Health() {
         {TABS.map((t) => (
           <button
             key={t.id}
-            onClick={() => setActive(t.id)}
+            onClick={() => select(t.id)}
             className="rounded-full px-4 py-1.5 text-xs font-semibold ring-1 ring-line backdrop-blur-md transition-colors"
             style={
               active === t.id
