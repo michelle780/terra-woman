@@ -203,7 +203,9 @@ function MembersAdmin() {
           ?.scrollIntoView({ behavior: "smooth", block: "start" });
       }} />
       <EmailDeliveryPanel email={emailCheck} onEmailChange={setEmailCheck} />
+      <GettingStartedPanel />
       <AnnouncementsPanel />
+
       <FeedbackPanel members={members} />
     </div>
   );
