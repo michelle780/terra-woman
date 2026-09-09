@@ -155,7 +155,13 @@ export function Cycle() {
       toast.success(editing ? "Period updated" : "Period logged");
       reset();
     },
-    onError: () => toast.error("Couldn't save that period — check the dates and try again"),
+    onError: (e: unknown) =>
+      toast.error(
+        e instanceof Error && e.message
+          ? e.message
+          : "Couldn't save that period — check the dates and try again",
+      ),
+
   });
 
   const remove = useMutation({
