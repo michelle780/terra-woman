@@ -11,9 +11,8 @@ const TAB_IDS = ["profile", "email", "privacy"] as const;
 type TabId = (typeof TAB_IDS)[number];
 
 export const Route = createFileRoute("/account")({
-  validateSearch: (search: Record<string, unknown>) => ({
-    tab: TAB_IDS.includes(search["tab"] as TabId) ? (search["tab"] as TabId) : undefined,
-  }),
+  validateSearch: (search: Record<string, unknown>): { tab?: TabId } =>
+    TAB_IDS.includes(search["tab"] as TabId) ? { tab: search["tab"] as TabId } : {},
   head: () => ({
     meta: [
       { title: "Your account — Terra Woman" },
