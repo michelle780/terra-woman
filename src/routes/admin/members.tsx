@@ -349,7 +349,7 @@ function EmailDeliveryPanel({
     }
   }
 
-  async function sendTest(template: "checkin-nudge" | "signup") {
+  async function sendTest(template: "checkin-nudge" | "signup" | "insights-update") {
     if (!email.trim()) {
       toast.error("Enter an email address first.");
       return;
@@ -411,6 +411,13 @@ function EmailDeliveryPanel({
           className="rounded-full bg-paper px-4 py-2 text-xs font-semibold text-copper-ink ring-1 ring-copper/30 disabled:opacity-50"
         >
           Send test welcome
+        </button>
+        <button
+          onClick={() => sendTest("insights-update")}
+          disabled={sending}
+          className="rounded-full bg-paper px-4 py-2 text-xs font-semibold text-copper-ink ring-1 ring-copper/30 disabled:opacity-50"
+        >
+          Send test insights update
         </button>
       </div>
 
@@ -664,7 +671,20 @@ function AnnouncementsPanel() {
         />
       </div>
 
-      <div className="flex gap-2">
+      <div className="flex flex-wrap gap-2">
+        <button
+          onClick={() => {
+            setTitle("Your patterns are starting to speak");
+            setBody(
+              "A few small notes a day \u2014 sleep, energy, mood, cycle, medications \u2014 and after a couple of weeks the heavy days start to have a shape. Other women are telling us the same thing: seeing it together is what makes it feel real."
+            );
+            setCtaLabel("See your patterns");
+            setCtaUrl("/trends");
+          }}
+          className="rounded-full bg-paper px-4 py-2 text-xs font-semibold text-copper-ink ring-1 ring-copper/30"
+        >
+          Use insights draft
+        </button>
         <button
           onClick={() => publish(false)}
           disabled={saving}

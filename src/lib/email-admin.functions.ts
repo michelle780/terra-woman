@@ -137,7 +137,7 @@ export const sendMemberEmail = createServerFn({ method: "POST" })
       templateData: {
         memberName: data.memberName || "friend",
         checkinUrl: "https://terra-woman.lovable.app/today",
-        appUrl: "https://terra-woman.lovable.app",
+        appUrl: "https://terrawoman.org",
       },
       idempotencyKey: `admin-test-${crypto.randomUUID()}`,
     });
