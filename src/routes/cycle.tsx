@@ -86,6 +86,15 @@ export function Cycle() {
   const avg = averageCycleLength(periods);
   const moon = moonPhase(today);
 
+  const ongoing = periods.find((p) => !p.end_date && p.start_date <= today) ?? null;
+  const ongoingDay = ongoing
+    ? Math.round(
+        (new Date(`${today}T00:00:00`).getTime() -
+          new Date(`${ongoing.start_date}T00:00:00`).getTime()) /
+          86400000,
+      ) + 1
+    : null;
+
   function reset() {
     setEditing(null);
     setStartDate(today);
@@ -94,6 +103,22 @@ export function Cycle() {
     setSymptoms([]);
     setNotes("");
   }
+
+  const endToday = useMutation({
+    mutationFn: async (id: string) => {
+      const { error } = await supabase
+        .from("cycle_periods")
+        .update({ end_date: today })
+        .eq("id", id);
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["cycle-periods"] });
+      toast.success("Marked as ended today");
+    },
+    onError: () => toast.error("Couldn't update that — please try again"),
+  });
+
 
   const save = useMutation({
     mutationFn: async () => {
