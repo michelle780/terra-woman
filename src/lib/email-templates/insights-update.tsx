@@ -47,7 +47,7 @@ const MEMBER_QUOTES = [
 const InsightsUpdateEmail = ({
   memberName = 'friend',
   appUrl = 'https://terrawoman.org',
-  quotes = SAMPLE_QUOTES,
+  quotes = MEMBER_QUOTES,
 }: InsightsUpdateProps) => (
   <Html lang="en" dir="ltr">
     <Head />
