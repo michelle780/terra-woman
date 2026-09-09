@@ -123,7 +123,7 @@ export const sendMemberEmail = createServerFn({ method: "POST" })
       .object({
         email: z.string().email(),
         template: z
-          .enum(["checkin-nudge", "signup", "insights-update"])
+          .enum(["checkin-nudge", "signup", "insights-update", "getting-started"])
           .default("checkin-nudge"),
         memberName: z.string().optional(),
       })
@@ -138,6 +138,7 @@ export const sendMemberEmail = createServerFn({ method: "POST" })
         memberName: data.memberName || "friend",
         checkinUrl: "https://terra-woman.lovable.app/today",
         appUrl: "https://terrawoman.org",
+        startUrl: "https://terrawoman.org",
       },
       idempotencyKey: `admin-test-${crypto.randomUUID()}`,
     });

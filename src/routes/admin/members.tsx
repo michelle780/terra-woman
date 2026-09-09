@@ -5,7 +5,13 @@ import { toast } from "sonner";
 import { AppShell } from "@/components/AppShell";
 import { useAuth } from "@/lib/auth";
 import { fetchIsEditor } from "@/lib/roots";
-import { listMembers, sendCheckinNudge, type MemberSummary } from "@/lib/members.functions";
+import {
+  listMembers,
+  listInactiveMembers,
+  sendCheckinNudge,
+  sendGettingStartedToInactive,
+  type MemberSummary,
+} from "@/lib/members.functions";
 import { getEmailActivity, getEmailInbox, sendMemberEmail } from "@/lib/email-admin.functions";
 import {
   createAnnouncement,
@@ -203,7 +209,9 @@ function MembersAdmin() {
           ?.scrollIntoView({ behavior: "smooth", block: "start" });
       }} />
       <EmailDeliveryPanel email={emailCheck} onEmailChange={setEmailCheck} />
+      <GettingStartedPanel />
       <AnnouncementsPanel />
+
       <FeedbackPanel members={members} />
     </div>
   );
@@ -349,7 +357,7 @@ function EmailDeliveryPanel({
     }
   }
 
-  async function sendTest(template: "checkin-nudge" | "signup" | "insights-update") {
+  async function sendTest(template: "checkin-nudge" | "signup" | "insights-update" | "getting-started") {
     if (!email.trim()) {
       toast.error("Enter an email address first.");
       return;
@@ -418,6 +426,13 @@ function EmailDeliveryPanel({
           className="rounded-full bg-paper px-4 py-2 text-xs font-semibold text-copper-ink ring-1 ring-copper/30 disabled:opacity-50"
         >
           Send test insights update
+        </button>
+        <button
+          onClick={() => sendTest("getting-started")}
+          disabled={sending}
+          className="rounded-full bg-paper px-4 py-2 text-xs font-semibold text-copper-ink ring-1 ring-copper/30 disabled:opacity-50"
+        >
+          Send test getting started
         </button>
       </div>
 
@@ -587,6 +602,84 @@ function NudgeButton({ member }: { member: MemberSummary }) {
       <Mail className="size-3" />
       {sending ? "Sending…" : "Send nudge"}
     </button>
+  );
+}
+
+function GettingStartedPanel() {
+  const [sending, setSending] = useState(false);
+  const inactive = useQuery({
+    queryKey: ["admin", "inactive-members"],
+    queryFn: () => listInactiveMembers(),
+  });
+
+  const members = inactive.data?.members ?? [];
+
+  async function sendAll() {
+    setSending(true);
+    try {
+      const res = await sendGettingStartedToInactive({ data: {} });
+      if (res.sent > 0) {
+        toast.success(`Getting-started email sent to ${res.sent} member${res.sent === 1 ? "" : "s"}.`);
+      } else {
+        toast.info("Nobody to send to right now.");
+      }
+      if (res.skipped > 0) toast.info(`${res.skipped} skipped (unsubscribed or already sent today).`);
+      if (res.failures.length > 0) toast.error(`${res.failures.length} failed to send.`);
+      inactive.refetch();
+    } catch {
+      toast.error("Could not send the emails.");
+    } finally {
+      setSending(false);
+    }
+  }
+
+  return (
+    <section className="space-y-4 rounded-2xl bg-paper/70 p-5 ring-1 ring-line backdrop-blur-md">
+      <div className="flex items-center gap-2">
+        <UserPlus className="size-4 text-copper-ink" />
+        <h2 className="font-display text-lg font-semibold">Nudge members who haven't started</h2>
+      </div>
+      <p className="text-xs text-muted-foreground">
+        These members signed up but have no check-ins, no device data, no medications and no cycle
+        logs. The getting-started email walks them through the first four steps. Each person only
+        receives it once a day, even if you press send twice.
+      </p>
+
+      <div className="flex flex-wrap items-center gap-3">
+        <span className="rounded-full bg-clay/30 px-3 py-1 text-xs font-semibold">
+          {inactive.isLoading ? "Counting…" : `${members.length} haven't started`}
+        </span>
+        <button
+          onClick={sendAll}
+          disabled={sending || members.length === 0}
+          className="rounded-full bg-copper px-4 py-2 text-xs font-semibold text-paper disabled:opacity-50"
+        >
+          {sending ? "Sending…" : `Send getting-started email to ${members.length}`}
+        </button>
+        <button
+          onClick={() => inactive.refetch()}
+          className="rounded-full bg-paper px-4 py-2 text-xs font-semibold ring-1 ring-line"
+        >
+          Refresh list
+        </button>
+      </div>
+
+      {members.length > 0 && (
+        <ul className="divide-y divide-line/60 overflow-hidden rounded-xl bg-paper ring-1 ring-line">
+          {members.slice(0, 25).map((m) => (
+            <li key={m.id} className="flex flex-wrap items-center justify-between gap-2 px-3 py-2 text-xs">
+              <span className="font-semibold">{m.display_name || m.email}</span>
+              <span className="text-muted-foreground">joined {fmt(m.signed_up_at)}</span>
+            </li>
+          ))}
+          {members.length > 25 && (
+            <li className="px-3 py-2 text-[11px] text-muted-foreground">
+              and {members.length - 25} more…
+            </li>
+          )}
+        </ul>
+      )}
+    </section>
   );
 }
 

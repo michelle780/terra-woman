@@ -127,3 +127,102 @@ export const sendCheckinNudge = createServerFn({ method: "POST" })
 
     return { sent: result.sent, channel: profile?.preferred_channel ?? null };
   });
+
+export type InactiveMember = {
+  id: string;
+  email: string;
+  display_name: string | null;
+  signed_up_at: string;
+};
+
+/** Members who signed up but have no check-ins, metrics, devices, meds or cycle logs. */
+async function findInactiveMembers(): Promise<InactiveMember[]> {
+  const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+
+  const authUsers: { id: string; email?: string; created_at: string }[] = [];
+  let page = 1;
+  for (;;) {
+    const { data, error } = await supabaseAdmin.auth.admin.listUsers({ page, perPage: 200 });
+    if (error) throw error;
+    authUsers.push(...(data?.users ?? []));
+    if (!data || (data.users ?? []).length < 200) break;
+    page += 1;
+    if (page > 20) break;
+  }
+
+  const [{ data: profiles }, { data: checkins }, { data: metrics }, { data: devices }, { data: meds }, { data: cycles }] =
+    await Promise.all([
+      supabaseAdmin.from("profiles").select("id, display_name"),
+      supabaseAdmin.from("daily_checkins").select("user_id").limit(20000),
+      supabaseAdmin.from("daily_metrics").select("user_id").limit(20000),
+      supabaseAdmin.from("device_connections").select("user_id").limit(20000),
+      supabaseAdmin.from("medications").select("user_id").limit(20000),
+      supabaseAdmin.from("cycle_periods").select("user_id").limit(20000),
+    ]);
+
+  const active = new Set<string>();
+  for (const rows of [checkins, metrics, devices, meds, cycles]) {
+    for (const row of (rows ?? []) as { user_id: string }[]) active.add(row.user_id);
+  }
+  const nameById = new Map((profiles ?? []).map((p) => [p.id, p.display_name]));
+
+  return authUsers
+    .filter((u) => !!u.email && !active.has(u.id))
+    .map((u) => ({
+      id: u.id,
+      email: u.email as string,
+      display_name: nameById.get(u.id) ?? null,
+      signed_up_at: u.created_at,
+    }))
+    .sort((a, b) => (a.signed_up_at < b.signed_up_at ? 1 : -1));
+}
+
+/** Admin preview: who would receive the getting-started email. */
+export const listInactiveMembers = createServerFn({ method: "GET" })
+  .middleware([requireSupabaseAuth])
+  .handler(async ({ context }) => {
+    await assertAdmin(context.supabase, context.userId);
+    const members = await findInactiveMembers();
+    return { members, total: members.length };
+  });
+
+/** Admin: send the getting-started email to every member who hasn't started. */
+export const sendGettingStartedToInactive = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((data) =>
+    z.object({ memberIds: z.array(z.string().uuid()).optional() }).parse(data ?? {})
+  )
+  .handler(async ({ context, data }) => {
+    await assertAdmin(context.supabase, context.userId);
+
+    let targets = await findInactiveMembers();
+    if (data.memberIds?.length) {
+      const wanted = new Set(data.memberIds);
+      targets = targets.filter((m) => wanted.has(m.id));
+    }
+
+    const { sendTemplateEmail } = await import("@/lib/email-templates/send-email");
+    const stamp = new Date().toISOString().slice(0, 10);
+
+    let sent = 0;
+    let skipped = 0;
+    const failures: string[] = [];
+
+    for (const member of targets) {
+      try {
+        const result = await sendTemplateEmail("getting-started", member.email, {
+          templateData: {
+            memberName: member.display_name ?? "friend",
+            startUrl: "https://terrawoman.org",
+          },
+          idempotencyKey: `getting-started-${member.id}-${stamp}`,
+        });
+        if (result.sent) sent += 1;
+        else skipped += 1;
+      } catch {
+        failures.push(member.email);
+      }
+    }
+
+    return { total: targets.length, sent, skipped, failures };
+  });
