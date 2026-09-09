@@ -122,6 +122,20 @@ export function Cycle() {
 
   const save = useMutation({
     mutationFn: async () => {
+      if (endDate && endDate < startDate) {
+        throw new Error("The end date is before the start date");
+      }
+      const clash = periods.find(
+        (p) =>
+          p.id !== editing &&
+          p.start_date <= (endDate || startDate) &&
+          (p.end_date ?? today) >= startDate,
+      );
+      if (clash) {
+        throw new Error(
+          `You already have a period logged from ${fmt(clash.start_date)} — edit that one instead`,
+        );
+      }
       const payload = {
         user_id: user!.id,
         start_date: startDate,
@@ -135,6 +149,7 @@ export function Cycle() {
         : await supabase.from("cycle_periods").insert(payload);
       if (error) throw error;
     },
+
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ["cycle-periods"] });
       toast.success(editing ? "Period updated" : "Period logged");
