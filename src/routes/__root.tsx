@@ -79,6 +79,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
+      {
+        name: "google-site-verification",
+        content: "F1_hIKlNHpS0bNg3dap-Xtt8-Z8MV2oBCT2ZNI2CM90",
+      },
       { title: "Terra Woman — Women's Wellness, Cycle & Sleep Tracker" },
       {
         name: "description",
